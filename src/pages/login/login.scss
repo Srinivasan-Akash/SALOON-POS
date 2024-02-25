@@ -1,0 +1,126 @@
+.loginScreen {
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  place-items: center;
+
+  .bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.4;
+    background: url("../../assets/pattern.png") #fffaf1;
+  }
+
+  .loginContainer {
+    width: 80%;
+    max-width: 900px;
+    max-height: 500px;
+    height: 80%;
+    background: #fff;
+    display: flex;
+
+    border-radius: 1rem;
+    border: 5px solid #000;
+
+    .left {
+        width: 50%;
+        height: 100%;
+        background: #BFA1FF;
+        border-radius: 10px;
+        display: flex;        
+        img {
+            width: 100%;
+        }
+    }
+
+    .right {
+        width: 50%;
+        border-radius: 10px;
+        padding: 1em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        h1 {
+            font-size: 1.5rem;
+            text-align: center;
+        }
+    //     h3 {
+    //         background-color: #ffcc00; /* Retro-style background color for the text */
+    //   color: #333; /* Retro-style text color */
+    //   padding: 10px 20px; /* Add some padding for better visibility */
+    //   border-radius: 8px; /* Rounded corners for a softer look */
+    //     }
+    
+    .or-container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin: 1em 0 .5em 0;
+      }
+  
+      .or-line {
+        flex: 1;
+        height: 3px;
+        background-color: #333; /* Retro-style line color */
+        margin: 0 10px; /* Adjust the margin for spacing */
+      }
+  
+      .or-text {
+        background-color: #BFA1FF;
+        border: 2px solid #000;/* Retro-style background color for the text */
+        color: #333; /* Retro-style text color */
+        padding: .5em 1em;
+        font-weight: 700; /* Add some padding for better visibility */
+        border-radius: 8px; /* Rounded corners for a softer look */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+      }
+        .box {
+            display: flex;
+            flex-direction: column;
+            gap: .5em;
+            margin-top: .5em;
+            width: 100%;
+
+            input {
+                padding: .5em;
+                font-size: 1rem;
+                outline: none;
+                background: #FFFAF1;
+                border: 2px solid #000;
+                border-radius: 5px;
+            }
+
+            a {
+              background: #a1ffe3 !important;
+            }
+
+            button, a {
+                font-size: 1rem;
+                padding: .5em;
+                text-align: center;
+                box-shadow: 3px 4px 0px rgba(0, 0, 0, 1);
+                border-radius: 5px;
+                border: 2px solid #000;
+                background: #BFA1FF;
+                cursor: pointer;
+            }
+
+
+            button:hover {
+                background: #a075fb;
+                transition: background .5s ease;
+            }
+
+            button:not(:hover) {
+                background: #BFA1FF;
+                transition: background .5s ease;
+            }
+        }
+    }
+  }
+}
