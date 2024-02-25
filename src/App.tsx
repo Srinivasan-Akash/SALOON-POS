@@ -7,9 +7,14 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Register />} />
+        {/* <Route path="/" element={<Register />} /> */}
         <Route path="/login" element={<Login />} />
-        <Route path="/about" element={<Dashboard />} />
+        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+
+        {/* TODO: Delete Below Code */}
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Register />} />
+
         {/* Add more routes for other components */}
       </Routes>
     </BrowserRouter>

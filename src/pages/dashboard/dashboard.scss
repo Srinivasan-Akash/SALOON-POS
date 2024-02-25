@@ -1,0 +1,81 @@
+.container {
+    height: 100vh;
+    display: flex;
+    color: #1b1f29;
+    .sideBar {
+        width: 30%;
+        max-width: 300px;
+        background: #1b1f29;
+        height: 100%;
+        padding: 1em;
+        display: flex;
+        flex-direction: column;
+        gap: .5em;
+        h2 {
+            background: #fff;
+            border: 2px solid #1b1f29;
+            padding: 5px;
+            font-size: 1rem;
+            border-radius: 10px;
+            box-shadow: 2px 2px 0px 0px #a075fb;
+            display: flex;
+            align-items: center;
+            gap: .5em;
+            cursor: pointer;
+
+            svg {
+                background: #1b1f29;
+                fill: #fff;
+                padding: .5em;
+                box-sizing: content-box;
+                border-radius: 5px;
+            }
+        }
+
+        h2:hover {
+            background: #a075fb;
+            transition: background .25s ease;
+        }
+    }
+
+    .content {
+        width: 80%;
+        nav {
+            width: 100%;
+            border-bottom: 5px solid #1b1f29;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: .5em 1em;
+
+            h2 {
+                font-weight: 800;
+            }
+
+            .logout {
+                display: flex;
+                align-items: center;
+                border: 3px solid #1b1f29;
+                background: #fff;
+                border-radius: 10px;
+                padding: .25em;
+                width: 180px;
+                cursor: pointer;
+                gap: 1.5em;
+                font-weight: 700;
+                font-size: 1rem;
+                img {
+                    border: 2px solid #1b1f29;
+                    border-radius: 5px;
+                    aspect-ratio: 1/1;
+                    width: 40px;
+                }
+            }
+
+            .logout:hover {
+                background: #a075fb;
+                transition: background .5s ease;
+            }
+        }
+    }
+}

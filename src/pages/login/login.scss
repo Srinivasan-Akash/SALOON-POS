@@ -24,7 +24,7 @@
     display: flex;
 
     border-radius: 1rem;
-    border: 5px solid #000;
+    border: 5px solid #1b1f29;
 
     .left {
         width: 50%;
@@ -72,7 +72,7 @@
   
       .or-text {
         background-color: #BFA1FF;
-        border: 2px solid #000;/* Retro-style background color for the text */
+        border: 2px solid #1b1f29;/* Retro-style background color for the text */
         color: #333; /* Retro-style text color */
         padding: .5em 1em;
         font-weight: 700; /* Add some padding for better visibility */
@@ -91,7 +91,7 @@
                 font-size: 1rem;
                 outline: none;
                 background: #FFFAF1;
-                border: 2px solid #000;
+                border: 2px solid #1b1f29;
                 border-radius: 5px;
             }
 
@@ -105,7 +105,7 @@
                 text-align: center;
                 box-shadow: 3px 4px 0px rgba(0, 0, 0, 1);
                 border-radius: 5px;
-                border: 2px solid #000;
+                border: 2px solid #1b1f29;
                 background: #BFA1FF;
                 cursor: pointer;
             }

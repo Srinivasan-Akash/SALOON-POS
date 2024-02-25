@@ -1,5 +1,6 @@
 import { app, BrowserWindow, Menu } from 'electron'
 import path from 'node:path'
+import { screen } from 'electron'
 // The built directory structure
 //
 // ├─┬─┬ dist
@@ -22,10 +23,12 @@ function createWindow() {
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true
     },
     width: 1000,
     height: 600,
   })
+  // win.webContents.openDevTools();
 
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
@@ -62,3 +65,9 @@ app.on('activate', () => {
 })
 
 app.whenReady().then(createWindow)
+
+export default function setFullScreen() {
+  if (win) {
+    win.setSize(screen.getPrimaryDisplay().workAreaSize.width, screen.getPrimaryDisplay().workAreaSize.height);
+  }
+}
