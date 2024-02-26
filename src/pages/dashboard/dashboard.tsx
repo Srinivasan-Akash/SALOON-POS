@@ -1,5 +1,6 @@
 import "./dashboard.scss"
 import { FaHome } from "react-icons/fa";
+import Index from "./components/Index/Index";
 
 export default function Dashboard() {
   return (
@@ -23,6 +24,10 @@ export default function Dashboard() {
             LOG OUT
           </button>
         </nav>
+        <div className="data">
+          <Index/>
+          <div className="overlay"></div>
+        </div>
       </div>
     </div>
   )

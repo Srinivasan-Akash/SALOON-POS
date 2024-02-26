@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './login.scss';
 import loginImg from '../../assets/login.png';
 import { useNavigate } from 'react-router-dom';
