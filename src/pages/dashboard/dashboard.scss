@@ -36,6 +36,17 @@
             }
         }
 
+        .active {
+            background: url('../../assets/pattern-dark.png') !important;
+            color: #fff !important;
+            transition: all .5s ease;
+
+            svg {
+                background: #fff;
+                fill: #1b1f29;
+            }
+        }
+
         h2:hover {
             background: url('../../assets/pattern-dark.png') #1b1f29;
             color: #fff;

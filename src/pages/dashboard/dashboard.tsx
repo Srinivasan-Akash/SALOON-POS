@@ -12,18 +12,29 @@ import Settings from "./components/Settings/Settings";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<string>("Dashboard")
+  const tabData = [
+    { key: "Dashboard", label: "Dashboard", component: <Index /> },
+    { key: "Billing", label: "Quick Billing", component: <Billing /> },
+    { key: "Customer Data", label: "Customer Data", component: <CustomerData /> },
+    { key: "Employee Data", label: "Employee Data", component: <EmployeeData /> },
+    { key: "Our Campaigns", label: "Our Campaigns", component: <Campaigns /> },
+    { key: "All Reports", label: "All Reports", component: <Reports /> },
+    { key: "Store Inventory", label: "Store Inventory", component: <Inventory /> },
+    { key: "Settings", label: "Settings", component: <Settings /> },
+  ];
 
   return (
     <div className="container">
       <div className="sideBar">
-        <h2 onClick={() => setActiveTab("Dashboard")}><FaHome size={25} /> Dashboard</h2>
-        <h2 onClick={() => setActiveTab("Billing")}><FaHome size={25}/> Quick Billing</h2>
-        <h2 onClick={() => setActiveTab("Customer Data")}><FaHome size={25}/> Customer Data</h2>
-        <h2 onClick={() => setActiveTab("Employee Data")}><FaHome size={25}/> Employee Data</h2>
-        <h2 onClick={() => setActiveTab("Our Campaigns")}><FaHome size={25}/> Our Campaigns</h2>
-        <h2 onClick={() => setActiveTab("All Reports")} ><FaHome size={25}/> All Reports</h2>
-        <h2 onClick={() => setActiveTab("Store Inventory")}><FaHome size={25}/> Store Inventory</h2>
-        <h2 onClick={() => setActiveTab("Settings")}><FaHome size={25}/> Settings</h2>
+      {tabData.map((tab) => (
+          <h2
+            key={tab.key}
+            onClick={() => setActiveTab(tab.key)}
+            className={activeTab === tab.key ? "active" : ""}
+          >
+            <FaHome size={25} /> {tab.label}
+          </h2>
+        ))}
       </div>
 
       <div className="content">
