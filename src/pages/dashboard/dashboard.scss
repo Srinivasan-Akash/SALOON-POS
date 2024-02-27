@@ -115,6 +115,7 @@
         .data {
             position: relative;
             width: 100%;
+            min-height: 80%;
             .overlay {
                 background: url('../../assets/pattern.png');
                 position: absolute;

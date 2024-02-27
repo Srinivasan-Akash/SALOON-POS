@@ -1,0 +1,77 @@
+.customerProfile{
+    margin: .5em;
+    .profileCard {
+        height: 20vh;
+        background: #a075fb;
+        border: 2px solid #1b1f29;
+        border-radius: 10px;
+        padding: 1em;
+        display: flex;
+        align-items: center;
+        gap: 1em;
+        h2 {
+            font-weight: 800;
+        }
+
+        p {
+            font-weight: 500;
+            font-size: .9rem;
+        }
+    }
+
+    .cards {
+        display: flex;
+        gap: .5em;
+        margin-top: .5em;
+
+        .card {
+            background: #fff;
+            width: 33.333%;
+            border: 2px solid #1b1f29;
+            border-radius: 8px;
+            padding: .5em;
+            text-align: center;
+
+            h2 {
+                font-weight: 800;
+                font-size: 1.5rem;
+            }
+        }
+    }
+
+    .btns {
+        display: flex;
+        gap: .5em;
+        .newBill {
+            width: 50%;
+            padding: .75em;
+            background: #a075fb;
+            border: 2px solid #1b1f29;
+            margin-top: .5em;
+            border-radius: 5px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .newBill:hover {
+            background: #8854f9;
+            transition: background .5s ease;
+        }
+
+        .newBill:not(:hover) {
+            background: #a075fb;
+            transition: background .5s ease;
+        }
+    }
+
+    .overlay {
+        background: url('../../assets/pattern.png');
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: .3;
+        z-index: -1;
+    }
+}
