@@ -1,6 +1,15 @@
 .window {
   padding-bottom: 0.5em;
 }
+
+.preview {
+  width: 100%;
+  aspect-ratio: 1/1.41;
+  margin-top: .5em;
+  border-radius: 10px;
+  border: 2px solid #1b1f29;
+}
+
 .customerProfileWindow {
   display: flex;
   overflow-y: auto;
@@ -175,6 +184,36 @@
     padding: 1em;
     margin-top: 0.5em;
 
+    .discount {
+      width: 100%;
+      border: 2px solid #1b1f29;
+      background: #fff;
+      border-radius: 5px;
+      margin-top: .5em;
+      overflow: hidden;
+      display: flex;
+
+      input {
+        width: 70%;
+        height: 100%;
+        padding: .7em;
+        outline: none;
+        border: none;
+      }
+
+      button {
+        width: 30%;
+        border-radius: 5px;
+        font-weight: 700;
+        padding: .5em 1em;
+        cursor: pointer;
+        background: #a075fb;
+        border-radius: 2px;
+        border: none;
+        border-left: 2px solid #1b1f29;
+      }
+    }
+
     .headline {
       .title {
         font-weight: 700;
@@ -185,13 +224,19 @@
       align-items: center;
       justify-content: space-between;
 
-      svg {
+      svg, button {
         cursor: pointer;
         background: #a075fb;
         border-radius: 100%;
         padding: 0.5em;
         border: 2px solid #1b1f29;
         box-sizing: content-box;
+      }
+
+      button {
+        border-radius: 5px;
+        font-weight: 700;
+        padding: .5em 1em;
       }
     }
 

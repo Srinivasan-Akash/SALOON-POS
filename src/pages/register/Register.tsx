@@ -24,11 +24,7 @@ export default function Register() {
       // Check if any field is empty
       if (!saloonName || !gmail || !password) {
         alert('Please fill in all fields');
-        setIsLoading(false);
-        return; // Stop execution if any field is empty
-      }
-  
-      if (authType === 'email') {
+      } else if (authType === 'email') {
         const response = await account.create(uuidv4(), gmail, password, saloonName);
         console.log(response); // Success
         alert('Successfully Registered');
@@ -41,7 +37,6 @@ export default function Register() {
       setIsLoading(false);
     }
   };
-  
 
   return (
     <div className='loginScreen'>

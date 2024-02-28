@@ -1,8 +1,9 @@
 import "./customerProfile.scss";
 import profile from "../../assets/profile.webp";
 import { FaHome, FaPlus, FaMinus } from "react-icons/fa";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Select, { StylesConfig } from "react-select";
+import InvoiceTemplate from "./invoiceTemplate";
 
 interface TabData {
     key: string;
@@ -104,6 +105,20 @@ export function PayNewBill() {
         { value: 'Tanjiro', label: 'Tanjiro' },
         // ...more options
     ];
+    
+    const invoicePreviewRef = useRef(null);
+    const printInvoice = () => {
+        const printWindow = window.open("", "_blank");
+        if (printWindow) {
+            printWindow.document.write("<html><head><title>Invoice Preview</title></head><body>");
+            printWindow.document.write(invoicePreviewRef.current.innerHTML);
+            printWindow.document.write("</body></html>");
+            printWindow.document.close();
+            printWindow.print();
+        } else {
+            console.error("Unable to open print window");
+        }
+    };
 
     const [formRows, setFormRows] = useState<FormRow[]>([
         { selectedService: null, selectedStaff: null, quantity: 0, price: 0 }
@@ -120,19 +135,20 @@ export function PayNewBill() {
             setFormRows(updatedFormRows);
         }
     };
-    
-
 
     const handleChange = (selectedOption: Option | null, index: number, field: string) => {
         const updatedFormRows = [...formRows];
         const selectedService = options.find((option) => option.value === selectedOption?.value);
 
+        // @ts-ignore
         updatedFormRows[index][field] = selectedOption;
 
         // Set the price based on the selected service
         if (selectedService) {
+            // @ts-ignore
             updatedFormRows[index].price = selectedService.price;
         } else {
+            // @ts-ignore
             updatedFormRows[index].price = undefined;
         }
 
@@ -145,7 +161,6 @@ export function PayNewBill() {
         setFormRows(updatedFormRows);
     };
 
-    // Custom styles (adjust as needed)
     const customStyles: StylesConfig<Option, false> = {
         container: (provided) => ({
             ...provided,
@@ -164,11 +179,12 @@ export function PayNewBill() {
             ...provided,
             position: 'absolute',
             top: '90%',
-            left: 0,
-            width: '100%',
+            left: '50%',
+            transform: "translate(-50%, 0)",
+            width: '120%',
             backgroundColor: '#fff',
             boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-            maxHeight: "100px",
+            maxHeight: "200px",
             overflowY: "scroll",
             border: '2px solid #1b1f29',
             padding: '5px',
@@ -176,15 +192,15 @@ export function PayNewBill() {
         }),
         option: (provided, { isSelected }: { isSelected: boolean }) => ({
             ...provided,
-            color: isSelected ? '#fff' : '#333',
-            backgroundColor: isSelected ? '#007bff' : '#fff',
+            color: isSelected ? '#fff' : '#1b1f29',
+            backgroundColor: isSelected ? '#1b1f29' : '#fff',
             border: '2px solid #1b1f29',
             borderRadius: '5px',
             marginTop: '.25em',
             cursor: 'pointer',
         }),
     };
-
+    
     return (
         <div className="window">
             <Profile />
@@ -216,11 +232,11 @@ export function PayNewBill() {
                             <input
                                 type="number"
                                 placeholder="Quantity"
-                                value={row.quantity}
+                                value={row.quantity !== 0 ? row.quantity : ""}
                                 onChange={(e) => handleQuantityChange(e, index)}
                             />
 
-                            <input type="number" value={row.price ?? 0} />
+                            <input type="number" value={row.price !== 0 ? row.price : ""} placeholder="Price" />
 
                             <div className="dropdown">
                                 <Select
@@ -235,6 +251,24 @@ export function PayNewBill() {
                         </div>
                     )
                 })}
+
+                <div className="discount">
+                <input type="text" placeholder="Enter Desired Discount in % or Rs"/>
+                <button>ADD DISCOUNT</button>
+                </div>
+            </div>
+
+            <div className="form">
+                <div className="headline">
+                    <h2 className="title">Invoice Preview</h2>
+                    <div style={{ "display": "flex", "gap": ".5em" }}>
+                        <button onClick={printInvoice}>PRINT</button>
+                    </div>
+                </div>
+
+                <div className="preview" ref={invoicePreviewRef}>
+                    <InvoiceTemplate data={"12"}/>
+                </div>
             </div>
         </div>
     );
