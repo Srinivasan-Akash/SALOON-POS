@@ -9,7 +9,7 @@ export default function Index() {
       <div className="realTimeUpdates">
         <div className="card">
           <h2>4.2k</h2>
-          <p>Paid Amount</p>
+          <p>Daily Revenue</p>
         </div>
         <div className="card">
           <h2>25+</h2>
@@ -21,18 +21,18 @@ export default function Index() {
         </div>
         <div className="card">
           <h2>40₹</h2>
-          <p>Employee Tips</p>
+          <p>Total Expenses</p>
         </div>
       </div>
       <div className="extras">
         <div className="cards">
           <div className="card">
             <h2>4.2k</h2>
-            <p>Paid Amount</p>
+            <p>Weekly Revenue</p>
           </div>
           <div className="card">
             <h2>4.2k</h2>
-            <p>Paid Amount</p>
+            <p>Monthly Revenue</p>
           </div>
         </div>
         <div className="chart">

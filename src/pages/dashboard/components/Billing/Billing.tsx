@@ -10,7 +10,7 @@ export default function Billing() {
   }
 
   const openPage = (items) => {
-    window.open("/customerProfile", "_blank", "width=500, height=500");
+    window.open("/customerProfile", "_blank", "width=800, height=500");
   }
   return (
     <div className="billingContainer">

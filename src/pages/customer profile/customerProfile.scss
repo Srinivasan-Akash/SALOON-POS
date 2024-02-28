@@ -1,77 +1,217 @@
-.customerProfile{
-    margin: .5em;
-    .profileCard {
-        height: 20vh;
-        background: #a075fb;
-        border: 2px solid #1b1f29;
-        border-radius: 10px;
-        padding: 1em;
-        display: flex;
-        align-items: center;
-        gap: 1em;
-        h2 {
-            font-weight: 800;
-        }
+.window {
+  padding-bottom: 0.5em;
+}
+.customerProfileWindow {
+  display: flex;
+  overflow-y: auto;
+  max-height: 100vh;
+  
+  .sidebar {
+    width: 30%;
+    position: sticky;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background: #a075fb;
+    border-right: 2px solid #1b1f29;
+    max-width: 300px;
+    overflow-y: auto;
+    background: #a075fb;
+    border-right: 2px solid #1b1f29;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    h2 {
+      background: #fff;
+      border: 2px solid #1b1f29;
+      padding: 5px;
+      font-size: 0.9rem;
+      border-radius: 10px;
+      box-shadow: 2px 2px 0px 0px #1b1f29;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      cursor: pointer;
 
-        p {
-            font-weight: 500;
-            font-size: .9rem;
-        }
+      svg {
+        background: #1b1f29;
+        fill: #fff;
+        padding: 0.25em;
+        border: 2px solid #1b1f29;
+        box-sizing: content-box;
+        border-radius: 5px;
+      }
+    }
+
+    .active {
+      background: url("../../assets/pattern-dark.png") !important;
+      color: #fff !important;
+      transition: all 0.5s ease;
+
+      svg {
+        background: #fff;
+        fill: #1b1f29;
+      }
+    }
+
+    h2:hover {
+      background: url("../../assets/pattern-dark.png") #1b1f29;
+      color: #fff;
+      transition: all 0.5s ease;
+
+      svg {
+        background: #fff;
+        fill: #1b1f29;
+      }
+    }
+
+    h2:not(:hover) {
+      background: #fff;
+      color: #1b1f29;
+      transition: all 0.5s ease;
+    }
+  }
+
+  .customerProfile {
+    width: 70%;
+    margin: 0.5em;
+
+    .profileCard {
+      height: 20vh;
+      background: #a075fb;
+      border: 2px solid #1b1f29;
+      border-radius: 10px;
+      padding: 1em;
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      h2 {
+        font-weight: 800;
+      }
+
+      p {
+        font-weight: 500;
+        font-size: 0.9rem;
+      }
     }
 
     .cards {
-        display: flex;
-        gap: .5em;
-        margin-top: .5em;
+      display: flex;
+      gap: 0.5em;
+      margin-top: 0.5em;
 
-        .card {
-            background: #fff;
-            width: 33.333%;
-            border: 2px solid #1b1f29;
-            border-radius: 8px;
-            padding: .5em;
-            text-align: center;
+      .red {
+        background: #fb7575 !important;
+      }
 
-            h2 {
-                font-weight: 800;
-                font-size: 1.5rem;
-            }
+      .card {
+        background: #fff;
+        width: 33.333%;
+        border: 2px solid #1b1f29;
+        border-radius: 8px;
+        padding: 0.5em;
+        text-align: center;
+
+        h2 {
+          font-weight: 800;
+          font-size: 1.5rem;
         }
+      }
     }
 
     .btns {
+      display: flex;
+      flex-direction: column;
+
+      .newBill {
+        width: 50%;
+        padding: 0.75em;
+        background: #a075fb;
+        border: 2px solid #1b1f29;
+        margin-top: 0.5em;
+        border-radius: 5px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .full {
+        width: 100%;
         display: flex;
-        gap: .5em;
-        .newBill {
-            width: 50%;
-            padding: .75em;
-            background: #a075fb;
-            border: 2px solid #1b1f29;
-            margin-top: .5em;
-            border-radius: 5px;
-            font-weight: 700;
-            cursor: pointer;
-        }
+        gap: 0.5em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-        .newBill:hover {
-            background: #8854f9;
-            transition: background .5s ease;
-        }
+      .newBill:hover {
+        background: #8854f9;
+        transition: background 0.5s ease;
+      }
 
-        .newBill:not(:hover) {
-            background: #a075fb;
-            transition: background .5s ease;
-        }
+      .newBill:not(:hover) {
+        background: #a075fb;
+        transition: background 0.5s ease;
+      }
     }
 
     .overlay {
-        background: url('../../assets/pattern.png');
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: .3;
-        z-index: -1;
+      background: url("../../assets/pattern.png");
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.3;
+      z-index: -1;
     }
+  }
+
+  .form {
+    width: 100%;
+    background: #fff;
+    border: 2px solid #1b1f29;
+    border-radius: 10px;
+    padding: 1em;
+    margin-top: 0.5em;
+
+    .headline {
+      .title {
+        font-weight: 700;
+        font-size: 1.25rem;
+      }
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      svg {
+        cursor: pointer;
+        background: #a075fb;
+        border-radius: 100%;
+        padding: 0.5em;
+        border: 2px solid #1b1f29;
+        box-sizing: content-box;
+      }
+    }
+
+    .formRow {
+      display: flex;
+      align-items: center;
+      gap: 0.25em;
+      .dropdown,
+      input {
+        border-radius: 5px;
+        margin-top: 0.5em;
+        width: 50%;
+        outline: none;
+      }
+
+      input {
+        border: 2px solid #1b1f29;
+        padding: 0.7em;
+        width: 25%;
+      }
+    }
+  }
 }

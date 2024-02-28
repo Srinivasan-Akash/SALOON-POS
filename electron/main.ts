@@ -28,7 +28,7 @@ function createWindow() {
     width: 1000,
     height: 600,
   })
-  // win.webContents.openDevTools();
+  win.webContents.openDevTools();
 
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {

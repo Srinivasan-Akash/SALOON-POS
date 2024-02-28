@@ -10,16 +10,16 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/" element={<Register />} /> */}
+        <Route path="/" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/customerRegistration" element={<CustomerRegistration />} />
         <Route path="/customerProfile" element={<CustomerProfile />} />
         <Route path="/customerBill" element={<CustomerBill />} />
-        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+        <Route path="/dashboard" element={<Dashboard />} />
 
         {/* TODO: Delete Below Code */}
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/dashboard" element={<Register />} />
+        {/* <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Register />} /> */}
 
         {/* Add more routes for other components */}
       </Routes>
