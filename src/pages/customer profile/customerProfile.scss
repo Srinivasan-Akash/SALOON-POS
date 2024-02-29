@@ -11,6 +11,60 @@
   display: none;
 }
 
+.tabularDisplay {
+  background: #fff;
+  border: 2px solid #1b1f29;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: .5em;
+
+  .head {
+      display: flex;
+      justify-content: space-around;
+      background: #1b1f29;
+      color: #fff;
+      div {
+          width: 25%;
+          text-align: center;
+          padding: .5em;               
+      }
+  }
+
+  .row {
+      display: flex;
+      justify-content: space-around;
+      border-bottom: solid 2px #1b1f29;
+      div {
+          width: 33.333%;
+          text-align: center;
+          border-right: 2px solid #1b1f29;
+          padding: .5em;
+
+          .green {
+              background: #adfb75;
+              padding: .25em 1em;
+              border: 2px solid #1b1f29;
+              border-radius: 5px;
+              font-size: .8rem;
+              font-weight: 800;
+          }
+
+          .red {
+              background: #fb7575;
+              padding: .25em 1em;
+              border: 2px solid #1b1f29;
+              border-radius: 5px;
+              font-size: .8rem;
+              font-weight: 800;
+          }
+      }
+  }
+
+  .row:last-child {
+      border-bottom: none;
+  }
+}
+
 .customerProfileWindow {
   display: flex;
   overflow-y: auto;

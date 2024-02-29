@@ -80,7 +80,14 @@ export default function InvoiceTemplate({ data, services, total, GST, discount }
 
         <div>
           <p style={{ textAlign: 'right', fontSize: '.8rem', lineHeight: '.5' }}>#2452208563ahjshn685</p>
-          <p style={{ textAlign: 'right', fontSize: '.8rem', lineHeight: '.5' }}>Printed On 20-12-2022 At 4:25am</p>
+          <p style={{ textAlign: 'right', fontSize: '.8rem', lineHeight: '.5' }}>Printed On {new Date().toLocaleString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+          })}</p>
         </div>
       </nav>
 
@@ -110,7 +117,7 @@ export default function InvoiceTemplate({ data, services, total, GST, discount }
             })
           }
 
-          
+
           <tr>
             <td style={invoiceStyle.td}>GST</td>
             <td style={invoiceStyle.td}>18% on flat</td>

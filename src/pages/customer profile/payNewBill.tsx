@@ -19,7 +19,7 @@ interface FormRow {
     price: number; // Add the price property
 }
 
-export function PayNewBill({ data }: { data: any }) {
+export function PayNewBill({ data, invoices }: { data: any, invoices: any }) {
     const options: Option[] = [
         { value: 'Hair Cut', label: 'Hair Cut', price: 40 },
         { value: 'Hair Dye', label: 'Hair Dye', price: 45 },
@@ -188,7 +188,7 @@ export function PayNewBill({ data }: { data: any }) {
 
     return (
         <div className="window">
-            <Profile data={data} />
+            <Profile data={data} invoices={invoices} />
 
             <div className="form">
                 <div className="headline">

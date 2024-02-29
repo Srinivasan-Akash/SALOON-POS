@@ -95,7 +95,7 @@ export default function Billing() {
           </div>
         </div>
       </div>
-      {!isLoading && (
+      {!isLoading? (
         <div className="tabularDisplay">
           <div className="head">
             <div>Name</div>
@@ -110,7 +110,7 @@ export default function Billing() {
             </div>
           ))}
         </div>
-      )}
+      ): <h2>LOADING.....</h2>}
     </div>
   );
 }
