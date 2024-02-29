@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { Profile } from "./customerProfile";
-import { FaMinus, FaPlus } from "react-icons/fa";
+import { FaMinus, FaPlus, FaSpinner } from "react-icons/fa";
 import Select, { StylesConfig } from "react-select";
 import InvoiceTemplate from "./invoiceTemplate";
 
@@ -38,18 +38,9 @@ export function PayNewBill({ data }: { data: any }) {
     ];
 
     const invoicePreviewRef = useRef<any>(null);
-    const printInvoice = () => {
-        const printWindow = window.open("", "_blank");
-        if (printWindow) {
-            printWindow.document.write("<html><head><title>Invoice Preview</title></head><body>");
-            printWindow.document.write(invoicePreviewRef.current.innerHTML);
-            printWindow.document.write("</body></html>");
-            printWindow.document.close();
-            printWindow.print();
-        } else {
-            console.error("Unable to open print window");
-        }
-    };
+    const discountField = useRef<any>(null)
+    const [discount, setDiscount] = useState<string>();
+    const [isLoading, setIsLoading] = useState<boolean>(false); // Add loading state
 
     const [formRows, setFormRows] = useState<FormRow[]>([
         { selectedService: null, selectedStaff: null, quantity: 0, price: 0 }
@@ -67,23 +58,52 @@ export function PayNewBill({ data }: { data: any }) {
         }
     };
 
+    const printInvoice = () => {
+        const printWindow = window.open("", "_blank");
+        if (printWindow) {
+            printWindow.document.write("<html><head><title>Invoice Preview</title></head><body>");
+            printWindow.document.write(invoicePreviewRef.current.innerHTML);
+            printWindow.document.write("</body></html>");
+            printWindow.document.close();
+            printWindow.print();
+        } else {
+            console.error("Unable to open print window");
+        }
+    };
+
     const handleServiceChange = (selectedOption: Option | null, index: number, field: string) => {
         const updatedFormRows: any = [...formRows];
         const selectedService = options.find((option) => option.value === selectedOption?.value);
-
         updatedFormRows[index][field] = selectedOption;
 
         // Set the price based on the selected service
         if (selectedService) {
             updatedFormRows[index].price = selectedService.price;
+            updatedFormRows[index].quantity += 1
         } else {
             updatedFormRows[index].price = undefined;
+            updatedFormRows[index].quantity += ""
         }
 
         setFormRows(updatedFormRows);
     };
 
-    const total = formRows.reduce((sum, row) => sum + row.price, 0);
+    const addTransaction = async () => {
+        setIsLoading(true)
+        
+    }
+
+    const handleStaffChange = (selectedOption: Option | null, index: number) => {
+        const updatedFormRows: any = [...formRows];
+        updatedFormRows[index].selectedStaff = selectedOption;
+        setFormRows(updatedFormRows);
+    };
+
+    const GST = 18 / 100 * formRows.reduce((sum, row) => sum + row.price, 0);
+    const subTotal = formRows.reduce((sum, row) => sum + row.price, 0) + GST;
+    const appliedDiscount: number = !discount ? 0 : discount.includes('%') ? subTotal * (parseFloat(discount.replace('%', '')) / 100) : parseFloat(discount);
+
+    const total = subTotal - appliedDiscount;
 
     const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const updatedFormRows = [...formRows];
@@ -126,7 +146,7 @@ export function PayNewBill({ data }: { data: any }) {
             width: '120%',
             backgroundColor: '#fff',
             boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-            maxHeight: "200px",
+            maxHeight: "150px",
             overflowY: "scroll",
             border: '2px solid #1b1f29',
             padding: '5px',
@@ -185,7 +205,7 @@ export function PayNewBill({ data }: { data: any }) {
                                     styles={customStyles}
                                     options={staff}
                                     value={row.selectedStaff}
-                                    onChange={(selectedOption) => handleServiceChange(selectedOption, index, 'selectedStaff')}
+                                    onChange={(selectedOption) => handleStaffChange(selectedOption, index)}
                                     placeholder="Select Staff"
                                     isClearable
                                 />
@@ -194,12 +214,21 @@ export function PayNewBill({ data }: { data: any }) {
                     )
                 })}
 
-                <div className="discount">
-                    <input type="text" placeholder="Enter Desired Discount in % or Rs" />
-                    <button>ADD DISCOUNT</button>
+                <div className="offers">
+                    <div className="discount">
+                        <input type="text" ref={discountField} placeholder="Enter Desired Discount in % or Rs" />
+                        <button onClick={() => setDiscount(discountField.current.value)}>ADD DISCOUNT</button>
+                    </div>
                 </div>
 
-                <div className="title">TOTAL:- {total}</div>
+                <button className="total" disabled={isLoading} onClick={addTransaction}>{isLoading ? (
+                    <>
+                        <FaSpinner className="loading-icon" /> LOADING PLEASE WAIT...
+                    </>
+                ) : (
+                    `ADD TRANSACTION OF ${total} ₹`
+                )}
+                </button>
 
             </div>
 

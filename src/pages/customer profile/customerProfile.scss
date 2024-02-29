@@ -8,6 +8,7 @@
   margin-top: .5em;
   border-radius: 10px;
   border: 2px solid #1b1f29;
+  display: none;
 }
 
 .customerProfileWindow {
@@ -211,6 +212,36 @@
         border-radius: 2px;
         border: none;
         border-left: 2px solid #1b1f29;
+      }
+    }
+
+    .total {
+      font-weight: 700;
+      font-size: 1rem;
+      width: 100%;
+      margin-top: .5em;
+      text-align: center;
+      background: #a075fb;
+      border: 2px solid #1b1f29;
+      border-radius: 5px;
+      padding: .7em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5em;
+      cursor: pointer;
+
+      svg {
+        @keyframes rotate {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      
+        animation: rotate 1s linear infinite;
       }
     }
 

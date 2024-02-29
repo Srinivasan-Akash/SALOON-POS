@@ -76,7 +76,7 @@ export function Profile({data}: {data: any}) {
                     <p>Lifetime Billing</p>
                 </div>
                 <div className="card">
-                    <h2>650</h2>
+                    <h2>{data.credits}</h2>
                     <p>Lifetime Credits</p>
                 </div>
                 <div className="card red">
