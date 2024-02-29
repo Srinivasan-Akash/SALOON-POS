@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FaSpinner } from 'react-icons/fa'; // Import the spinner icon
 import "./customerRegistration.scss";
 import profile from "../../assets/profile.webp";
-import { databases } from '../../appwrite/config';
+import { customerCollection, databaseID, databases } from '../../appwrite/config';
 import { v4 as uuidv4 } from 'uuid';
 
 export default function CustomerRegistration() {
@@ -20,7 +20,7 @@ export default function CustomerRegistration() {
         // Set loading state to true
         setIsLoading(true);
 
-        const promise = databases.createDocument('65dffc2a989e2a914a6c', '65dffc41a023e7961f61', uuidv4(), {
+        const promise = databases.createDocument(databaseID, customerCollection, uuidv4(), {
             name: customerName,
             gmail: customerEmail,
             phone: customerPhoneNumber

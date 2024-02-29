@@ -1,7 +1,8 @@
 import "./billing.scss";
-import { databases } from "../../../../appwrite/config";
+import { databaseID, databases } from "../../../../appwrite/config";
 import { useEffect, useRef, useState } from "react";
 import { Query } from "appwrite";
+import { customerCollection } from "../../../../appwrite/config";
 
 export default function Billing() {
   interface Customer {
@@ -18,7 +19,7 @@ export default function Billing() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response: any = await databases.listDocuments('65dffc2a989e2a914a6c', '65dffc41a023e7961f61');
+        const response: any = await databases.listDocuments(databaseID, customerCollection);
         const data: Customer[] = response.documents;
         console.log(data);
         setCustomerData(data);
@@ -54,9 +55,9 @@ export default function Billing() {
 
     try {
       const response = await databases.listDocuments(
-        '65dffc2a989e2a914a6c',
-        '65dffc41a023e7961f61',
-        [Query.equal(searchIndex, input)]
+        databaseID,
+        customerCollection,
+        [Query.search(searchIndex, input)]
       );
 
       const data: any = response.documents;
@@ -72,7 +73,7 @@ export default function Billing() {
     const queryParams = Object.entries(item)
       .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
       .join('&');
-  
+
     const url = `/customerProfile?${queryParams}`;
     window.open(url, '_blank', 'width=800, height=500');
   };
@@ -80,7 +81,7 @@ export default function Billing() {
   const openNewUserPage = () => {
     window.open("/customerRegistration", "_blank", "width=300, height=380");
   };
-  
+
   return (
     <div className="billingContainer">
       <div className="searchCard">
