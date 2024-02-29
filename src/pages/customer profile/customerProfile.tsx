@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { PayNewBill } from "./payNewBill";
 import { databaseID, databases, invoiceCollection } from "../../appwrite/config";
 import { Query } from "appwrite";
+import calculateTotalPrice from "../../utils/utils";
 
 interface TabData {
     key: string;
@@ -158,10 +159,4 @@ export function Bills({ invoices }: { invoices: any[] }) {
             ))}
         </div>
     );
-}
-
-function calculateTotalPrice(services: string): number {
-    const parsedServices = JSON.parse(services);
-    const totalPrice = parsedServices.reduce((acc: number, service: any) => acc + service.price, 0);
-    return totalPrice;
 }

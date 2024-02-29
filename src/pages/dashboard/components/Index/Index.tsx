@@ -1,8 +1,29 @@
+import { useEffect, useState } from "react";
 import "./index.scss"
+import { databaseID, databases, invoiceCollection } from "../../../../appwrite/config";
+import calculateTotalPrice from "../../../../utils/utils";
 
 export default function Index() {
 
-  
+  const [invoices, setInvoices] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const invoiceResponse: any = await databases.listDocuments(
+          databaseID,
+          invoiceCollection
+        );
+        const invoiceData = invoiceResponse.documents;
+        setInvoices(invoiceData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        alert("Error fetching data");
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <main className="parentContainer">
@@ -48,13 +69,15 @@ export default function Index() {
           <div>Date</div>
         </div>
         {
-          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => {
+          invoices.map((item: any, index) => {
             return (
               <div key={index} className="row">
-                <div>Akash Srinivasan</div>
-                <div><span className="green">PAID</span></div>
-                <div>4,050 ₹</div>
-                <div>11/5/2023</div>
+                <div>{item.customerName}</div>
+                <div>                        
+                  <span className={item.status === true ? "green" : "red"}>{item.status === true ? "PAID" : "PENDING"}</span>
+                </div>
+                <div>{calculateTotalPrice(item.services)} ₹</div>
+                <div>{new Date(item.$updatedAt).toLocaleDateString("en-GB")}</div>
               </div>
             )
           })
