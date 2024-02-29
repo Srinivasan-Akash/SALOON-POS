@@ -1,0 +1,220 @@
+import { useRef, useState } from "react";
+import { Profile } from "./customerProfile";
+import { FaMinus, FaPlus } from "react-icons/fa";
+import Select, { StylesConfig } from "react-select";
+import InvoiceTemplate from "./invoiceTemplate";
+
+interface Option {
+    value: string;
+    price?: number;
+    label: string;
+}
+
+interface FormRow {
+    selectedService: Option | null;
+    selectedStaff: Option | null;
+    quantity: number;
+    price: number; // Add the price property
+}
+
+export function PayNewBill({ data }: { data: any }) {
+    const options: Option[] = [
+        { value: 'Hair Cut', label: 'Hair Cut', price: 40 },
+        { value: 'Hair Dye', label: 'Hair Dye', price: 45 },
+        { value: 'Hair Wash', label: 'Hair Wash', price: 45 },
+        { value: 'Hair Cut', label: 'Hair Cut', price: 405 },
+        { value: 'Hair Dye', label: 'Hair Dye', price: 405 },
+        { value: 'Hair Wash', label: 'Hair Wash', price: 406 },
+    ];
+
+    const staff: Option[] = [
+        { value: 'Akash', label: 'Akash' },
+        { value: 'Indratej', label: 'Indratej' },
+        { value: 'Ram', label: 'Ram' },
+        { value: 'Sham', label: 'Sham' },
+        { value: 'Harvindhar', label: 'Harvindhar' },
+        { value: 'Tanjiro', label: 'Tanjiro' },
+        // ...more options
+    ];
+
+    const invoicePreviewRef = useRef<any>(null);
+    const printInvoice = () => {
+        const printWindow = window.open("", "_blank");
+        if (printWindow) {
+            printWindow.document.write("<html><head><title>Invoice Preview</title></head><body>");
+            printWindow.document.write(invoicePreviewRef.current.innerHTML);
+            printWindow.document.write("</body></html>");
+            printWindow.document.close();
+            printWindow.print();
+        } else {
+            console.error("Unable to open print window");
+        }
+    };
+
+    const [formRows, setFormRows] = useState<FormRow[]>([
+        { selectedService: null, selectedStaff: null, quantity: 0, price: 0 }
+    ]);
+
+    const addNewFormRow = () => {
+        setFormRows([...formRows, { selectedService: null, selectedStaff: null, quantity: 0, price: 0 }]);
+    };
+
+    const removeFormRow = () => {
+        if (formRows.length > 1) {
+            const updatedFormRows: FormRow[] = [...formRows];
+            updatedFormRows.pop(); // Remove the last element
+            setFormRows(updatedFormRows);
+        }
+    };
+
+    const handleServiceChange = (selectedOption: Option | null, index: number, field: string) => {
+        const updatedFormRows: any = [...formRows];
+        const selectedService = options.find((option) => option.value === selectedOption?.value);
+
+        updatedFormRows[index][field] = selectedOption;
+
+        // Set the price based on the selected service
+        if (selectedService) {
+            updatedFormRows[index].price = selectedService.price;
+        } else {
+            updatedFormRows[index].price = undefined;
+        }
+
+        setFormRows(updatedFormRows);
+    };
+
+    const total = formRows.reduce((sum, row) => sum + row.price, 0);
+
+    const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+        const updatedFormRows = [...formRows];
+        updatedFormRows[index].price = parseFloat(e.target.value) || 0;
+        setFormRows(updatedFormRows);
+    };
+
+    const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+        const updatedFormRows: any = [...formRows];
+        const quantity = parseInt(e.target.value, 10) || 0;
+
+        updatedFormRows[index].quantity = quantity;
+        if (updatedFormRows[index].selectedService) {
+            updatedFormRows[index].price = updatedFormRows[index].selectedService.price * quantity;
+        }
+
+        setFormRows(updatedFormRows);
+    };
+    
+    const customStyles: StylesConfig<Option, false> = {
+        container: (provided) => ({
+            ...provided,
+            position: 'relative',
+            border: '2px solid #1b1f29',
+            borderRadius: '5px',
+            outline: 'none',
+            fontSize: ".8rem",
+        }),
+        control: () => ({
+            display: "flex",
+            borderRadius: '5px',
+            outline: 'none',
+        }),
+        menu: (provided) => ({
+            ...provided,
+            position: 'absolute',
+            top: '90%',
+            left: '50%',
+            transform: "translate(-50%, 0)",
+            width: '120%',
+            backgroundColor: '#fff',
+            boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+            maxHeight: "200px",
+            overflowY: "scroll",
+            border: '2px solid #1b1f29',
+            padding: '5px',
+            borderRadius: "5px",
+        }),
+        option: (provided, { isSelected }: { isSelected: boolean }) => ({
+            ...provided,
+            color: isSelected ? '#fff' : '#1b1f29',
+            backgroundColor: isSelected ? '#1b1f29' : '#fff',
+            border: '2px solid #1b1f29',
+            borderRadius: '5px',
+            marginTop: '.25em',
+            cursor: 'pointer',
+        }),
+    };
+
+    return (
+        <div className="window">
+            <Profile data={data} />
+
+            <div className="form">
+                <div className="headline">
+                    <h2 className="title">Enter Billing Details</h2>
+                    <div style={{ "display": "flex", "gap": ".5em" }}>
+                        <div onClick={removeFormRow}><FaMinus size={12} /></div>
+                        <div onClick={addNewFormRow}><FaPlus size={12} /></div>
+                    </div>
+                </div>
+                {formRows.map((row, index) => {
+                    console.log(row)
+                    return (
+
+                        <div className="formRow" key={index}>
+                            <div className="dropdown">
+                                <Select
+                                    styles={customStyles}
+                                    options={options}
+                                    value={row.selectedService}
+                                    onChange={(selectedOption) => handleServiceChange(selectedOption, index, 'selectedService')}
+                                    placeholder="Select Services"
+                                    isClearable
+                                />
+                            </div>
+
+                            <input
+                                type="number"
+                                placeholder="Quantity"
+                                value={row.quantity !== 0 ? row.quantity : ""}
+                                onChange={(e) => handleQuantityChange(e, index)}
+                            />
+
+                            <input type="number" value={row.price !== 0 ? row.price : ""} placeholder="Price" onChange={(e) => handlePriceChange(e, index)} />
+
+                            <div className="dropdown">
+                                <Select
+                                    styles={customStyles}
+                                    options={staff}
+                                    value={row.selectedStaff}
+                                    onChange={(selectedOption) => handleServiceChange(selectedOption, index, 'selectedStaff')}
+                                    placeholder="Select Staff"
+                                    isClearable
+                                />
+                            </div>
+                        </div>
+                    )
+                })}
+
+                <div className="discount">
+                    <input type="text" placeholder="Enter Desired Discount in % or Rs" />
+                    <button>ADD DISCOUNT</button>
+                </div>
+
+                <div className="title">TOTAL:- {total}</div>
+
+            </div>
+
+            <div className="form">
+                <div className="headline">
+                    <h2 className="title">Invoice Preview</h2>
+                    <div style={{ "display": "flex", "gap": ".5em" }}>
+                        <button onClick={printInvoice}>PRINT</button>
+                    </div>
+                </div>
+
+                <div className="preview" ref={invoicePreviewRef}>
+                    <InvoiceTemplate data={data} />
+                </div>
+            </div>
+        </div>
+    );
+}

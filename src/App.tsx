@@ -5,7 +5,7 @@ import Login from "./pages/login/Login"
 import CustomerProfile from './pages/customer profile/customerProfile';
 
 import CustomerRegistration from './pages/customer registration/customerRegistration';
-import CustomerBill from './pages/customer bill/customerBill';
+// import CustomerBill from './pages/customer bill/customerBill';
 function App() {
   return (
     <BrowserRouter>
@@ -14,7 +14,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/customerRegistration" element={<CustomerRegistration />} />
         <Route path="/customerProfile" element={<CustomerProfile />} />
-        <Route path="/customerBill" element={<CustomerBill />} />
+        {/* <Route path="/customerBill" element={<CustomerBill />} /> */}
         <Route path="/dashboard" element={<Dashboard />} />
 
         {/* TODO: Delete Below Code */}

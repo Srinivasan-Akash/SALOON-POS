@@ -1,7 +1,5 @@
-import React from 'react';
-
-export default function InvoiceTemplate({ data }: { data: string }) {
-  const invoiceStyle = {
+export default function InvoiceTemplate({ data }: { data: any }) {
+  const invoiceStyle: any = {
     container: {
       padding: '1em',
       fontFamily: 'Arial, sans-serif',
@@ -43,8 +41,7 @@ export default function InvoiceTemplate({ data }: { data: string }) {
       borderCollapse: 'collapse',
       marginTop: '1em',
       borderRadius: '8px', // Adjusted border-radius
-      overflow: 'hidden',
-
+      overflow: 'hidden'
     },
     th: {
       border: '2px solid #1b1f29',
@@ -87,12 +84,11 @@ export default function InvoiceTemplate({ data }: { data: string }) {
 
       <div>
         <h3 style={{ lineHeight: '0', fontSize: '2rem', fontWeight: '800' }}>INVOICE TO:</h3>
-        <h4 style={{ lineHeight: '0', fontSize: '1rem' }}>Name Of The Customer:- <span style={{ fontWeight: '200' }}>Mr/Mrs Akash Srinivasan</span></h4>
-        <h4 style={{ lineHeight: '0', fontSize: '1rem' }}>Customer Phone Number:- <span style={{ fontWeight: '200' }}>91+ 7676856815</span></h4>
-        <h4 style={{ lineHeight: '0', fontSize: '1rem' }}>Customer G-Mail ID   :- <span style={{ fontWeight: '200' }}>qa.sixsigma@gmail.com</span></h4>
-        <h4 style={{ lineHeight: '0', fontSize: '1rem' }}>Invoice Number       :- <span style={{ fontWeight: '200' }}>#hjklcv53654835</span></h4>
+        <h4 style={{ lineHeight: '0', fontSize: '1rem' }}>Name Of The Customer:- <span style={{ fontWeight: '200' }}>Mr/Mrs {data.name}</span></h4>
+        <h4 style={{ lineHeight: '0', fontSize: '1rem' }}>Customer Phone Number:- <span style={{ fontWeight: '200' }}>91+ {data.phone}</span></h4>
+        <h4 style={{ lineHeight: '0', fontSize: '1rem' }}>Customer G-Mail ID   :- <span style={{ fontWeight: '200' }}>{data.gmail}</span></h4>
+        <h4 style={{ lineHeight: '0', fontSize: '1rem' }}>Invoice Number       :- <span style={{ fontWeight: '200' }}>{data.$id}</span></h4>
       </div>
-
       <table style={invoiceStyle.table}>
         <thead>
           <tr>
