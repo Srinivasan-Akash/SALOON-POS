@@ -102,8 +102,8 @@ export default function InvoiceTemplate({ data, services, total, GST, discount }
         <thead>
           <tr>
             <th style={invoiceStyle.th}>Service Name</th>
-            <th style={invoiceStyle.th}>Service Cost</th>
             <th style={invoiceStyle.th}>Quantity</th>
+            <th style={invoiceStyle.th}>Service Cost</th>
           </tr>
         </thead>
         <tbody>
@@ -111,8 +111,8 @@ export default function InvoiceTemplate({ data, services, total, GST, discount }
             services.map((item: any, index: number) => {
               return (<tr key={index}>
                 <td style={invoiceStyle.td}>{item.selectedService?.value || ""}</td>
-                <td style={invoiceStyle.td}>{item.price}</td>
                 <td style={invoiceStyle.td}>{item.quantity}</td>
+                <td style={invoiceStyle.td}>{item.price} ₹</td>
               </tr>)
             })
           }
