@@ -3,6 +3,8 @@ import { Profile } from "./customerProfile";
 import { FaMinus, FaPlus, FaSpinner } from "react-icons/fa";
 import Select, { StylesConfig } from "react-select";
 import InvoiceTemplate from "./invoiceTemplate";
+import { customerCollection, databaseID, databases, invoiceCollection } from "../../appwrite/config";
+import { v4 as uuidv4 } from 'uuid';
 
 interface Option {
     value: string;
@@ -79,7 +81,7 @@ export function PayNewBill({ data }: { data: any }) {
         // Set the price based on the selected service
         if (selectedService) {
             updatedFormRows[index].price = selectedService.price;
-            updatedFormRows[index].quantity += 1
+            updatedFormRows[index].quantity = 1
         } else {
             updatedFormRows[index].price = undefined;
             updatedFormRows[index].quantity += ""
@@ -90,7 +92,28 @@ export function PayNewBill({ data }: { data: any }) {
 
     const addTransaction = async () => {
         setIsLoading(true)
-        
+        try {          
+            const res = await databases.createDocument(databaseID, invoiceCollection, uuidv4(), {
+                customerName: data.name,
+                gmail: data.gmail,
+                phone: data.phone,
+                customerID: data.$id,
+                status: true,
+                services: JSON.stringify(formRows)
+            });
+    
+            const res2 = await databases.updateDocument(databaseID, customerCollection, data.$id, {
+                credits: Math.round(total / 100),
+                lifeTimeBilling: data.lifeTimeBilling + 1
+            });
+
+            console.log(res, res2)
+            alert("Invoice Registered Successfully");
+        } catch (error) {
+            alert(error);
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     const handleStaffChange = (selectedOption: Option | null, index: number) => {
@@ -99,11 +122,11 @@ export function PayNewBill({ data }: { data: any }) {
         setFormRows(updatedFormRows);
     };
 
-    const GST = 18 / 100 * formRows.reduce((sum, row) => sum + row.price, 0);
+    const GST = Math.round(18 / 100 * formRows.reduce((sum, row) => sum + row.price, 0));
     const subTotal = formRows.reduce((sum, row) => sum + row.price, 0) + GST;
     const appliedDiscount: number = !discount ? 0 : discount.includes('%') ? subTotal * (parseFloat(discount.replace('%', '')) / 100) : parseFloat(discount);
 
-    const total = subTotal - appliedDiscount;
+    const total = Math.round(subTotal - appliedDiscount);
 
     const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const updatedFormRows = [...formRows];
@@ -239,9 +262,8 @@ export function PayNewBill({ data }: { data: any }) {
                         <button onClick={printInvoice}>PRINT</button>
                     </div>
                 </div>
-
                 <div className="preview" ref={invoicePreviewRef}>
-                    <InvoiceTemplate data={data} />
+                    <InvoiceTemplate data={data} services={formRows} total={total} GST={GST} discount={appliedDiscount}/>
                 </div>
             </div>
         </div>

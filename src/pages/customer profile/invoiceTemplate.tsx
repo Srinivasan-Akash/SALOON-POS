@@ -1,4 +1,4 @@
-export default function InvoiceTemplate({ data }: { data: any }) {
+export default function InvoiceTemplate({ data, services, total, GST, discount }: { data: any, services: any, total: number, GST: number, discount: number }) {
   const invoiceStyle: any = {
     container: {
       padding: '1em',
@@ -61,6 +61,8 @@ export default function InvoiceTemplate({ data }: { data: any }) {
     },
   };
 
+  console.log(services)
+
   return (
     <div style={invoiceStyle.container}>
       <nav style={invoiceStyle.nav}>
@@ -98,46 +100,37 @@ export default function InvoiceTemplate({ data }: { data: any }) {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td style={invoiceStyle.td}>Hair Cut</td>
-            <td style={invoiceStyle.td}>400 Rs</td>
-            <td style={invoiceStyle.td}>4</td>
-          </tr>
-          <tr>
-            <td style={invoiceStyle.td}>Hair Cut</td>
-            <td style={invoiceStyle.td}>400 Rs</td>
-            <td style={invoiceStyle.td}>4</td>
-          </tr>
-          <tr>
-            <td style={invoiceStyle.td}>Hair Cut</td>
-            <td style={invoiceStyle.td}>400 Rs</td>
-            <td style={invoiceStyle.td}>4</td>
-          </tr>
-          <tr>
-            <td style={invoiceStyle.td}>Hair Cut</td>
-            <td style={invoiceStyle.td}>400 Rs</td>
-            <td style={invoiceStyle.td}>4</td>
-          </tr>
+          {
+            services.map((item: any, index: number) => {
+              return (<tr key={index}>
+                <td style={invoiceStyle.td}>{item.selectedService?.value || ""}</td>
+                <td style={invoiceStyle.td}>{item.price}</td>
+                <td style={invoiceStyle.td}>{item.quantity}</td>
+              </tr>)
+            })
+          }
+
+          
           <tr>
             <td style={invoiceStyle.td}>GST</td>
             <td style={invoiceStyle.td}>18% on flat</td>
-            <td style={invoiceStyle.td}>205 ₹</td>
+            <td style={invoiceStyle.td}>{GST} ₹</td>
           </tr>
           <tr>
+            <td style={invoiceStyle.td}></td>
             <td style={invoiceStyle.td}>Discount</td>
-            <td style={invoiceStyle.td}>-4% on flat</td>
-            <td style={invoiceStyle.td}>-205 ₹</td>
+            <td style={invoiceStyle.td}>-{discount} ₹</td>
           </tr>
           <tr style={invoiceStyle.totalRow}>
             <td style={{ border: 'none' }}></td>
             <td style={invoiceStyle.td}>TOTAL</td>
-            <td style={invoiceStyle.td}>1600 ₹</td>
+            <td style={invoiceStyle.td}>{total} ₹</td>
           </tr>
         </tbody>
       </table>
 
-      <div style={{display: 'flex', alignItems: "center", justifyContent: "center"}}>
-        <h1 style={{fontSize: "2rem", fontWeight: "800", textAlign: "center", width: '80%'}}>Congrats !! After Discount, You Have Saved ₹480/-</h1>
+      <div style={{ display: 'flex', alignItems: "center", justifyContent: "center" }}>
+        <h1 style={{ fontSize: "2rem", fontWeight: "800", textAlign: "center", width: '80%' }}>Congrats !! After Discount, You Have Saved ₹{discount}/-</h1>
       </div>
     </div>
   );
