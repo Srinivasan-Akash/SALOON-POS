@@ -4,12 +4,14 @@ import "./customerRegistration.scss";
 import profile from "../../assets/profile.webp";
 import { customerCollection, databaseID, databases } from '../../appwrite/config';
 import { v4 as uuidv4 } from 'uuid';
+import { useDataContext } from '../../context api/DataContext';
 
 export default function CustomerRegistration() {
     const [customerName, setCustomerName] = useState('');
     const [customerEmail, setCustomerEmail] = useState('');
     const [customerPhoneNumber, setCustomerPhoneNumber] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const { reFetch } = useDataContext();
 
     const handleFormSubmit = () => {
         if (!customerName || !customerEmail || !customerPhoneNumber) {
@@ -29,6 +31,7 @@ export default function CustomerRegistration() {
         promise
             .then(() => {
                 alert("Customer Registered Successfully");
+                reFetch("customers")
                 window.close()
             })
             .catch((error) => {

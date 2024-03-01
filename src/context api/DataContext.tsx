@@ -1,23 +1,32 @@
 // DataContext.tsx
 import React, { createContext, useContext, ReactNode, useEffect, useState } from 'react';
 import { customerCollection, databaseID, databases, invoiceCollection } from '../appwrite/config';
+import { Query } from 'appwrite';
 
 interface Invoice {
     id: number;
     customerName: string;
     amount: number;
+    status: boolean;
+    services: string; // Define the structure of your services data
+    $updatedAt: string;
 }
 
 interface Customer {
+    id: string;
     name: string;
-    phone: string;
     gmail: string;
+    phone: string;
     $id: string;
+    lifeTimeBilling: number;
+    credits: number;
 }
 
 interface DataContextProps {
     invoices: Invoice[];
     customers: Customer[];
+    filterCustomers: (searchInput: string) => void;
+    reFetch: (dataType: 'customers' | 'invoices') => void;
 }
 
 const DataContext = createContext<DataContextProps | undefined>(undefined);
@@ -38,33 +47,85 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
     const [invoices, setInvoices] = useState<Invoice[]>([]);
     const [customers, setCustomers] = useState<Customer[]>([]);
 
+    const fetchInvoicesData = async () => {
+        try {
+            const invoiceResponse: any = await databases.listDocuments(databaseID, invoiceCollection);
+            const invoiceData: Invoice[] = invoiceResponse.documents;
+            setInvoices(invoiceData);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            alert('Error fetching data');
+        }
+    };
+
+    const fetchCustomerData = async () => {
+        try {
+            const customerResponse: any = await databases.listDocuments(databaseID, customerCollection);
+            const customerData: Customer[] = customerResponse.documents;
+            setCustomers(customerData);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            alert('Error fetching data');
+        }
+    };
+
     useEffect(() => {
-        const fetchInvoicesData = async () => {
-            try {
-                const invoiceResponse: any = await databases.listDocuments(databaseID, invoiceCollection);
-                const invoiceData: Invoice[] = invoiceResponse.documents;
-                setInvoices(invoiceData);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                alert('Error fetching data');
-            }
-        };
-
-        const fetchCustomerData = async () => {
-            try {
-                const customerResponse: any = await databases.listDocuments(databaseID, customerCollection);
-                const customerData: Customer[] = customerResponse.documents;
-                setCustomers(customerData);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                alert('Error fetching data');
-            }
-        };
-
         fetchCustomerData()
-        fetchInvoicesData();
     }, []);
 
-    return <DataContext.Provider value={{ invoices, customers }}>{children}</DataContext.Provider>;
+    useEffect(() => {
+        fetchInvoicesData();
+    }, [])
+
+    const filterCustomers = async (searchInput: string) => {
+        let searchIndex: string = '';
+
+        switch (true) {
+            case /^\d{1,}$/.test(searchInput):
+                searchIndex = 'phone';
+                break;
+            case /^[a-zA-Z\s]+$/.test(searchInput):
+                searchIndex = 'name';
+                break;
+            case /@gmail\.com$/.test(searchInput):
+                searchIndex = 'gmail';
+                break;
+            default:
+                alert('Invalid input');
+                return;
+        }
+
+        try {
+            const response = await databases.listDocuments(
+                databaseID,
+                customerCollection,
+                [Query.search(searchIndex, searchInput)]
+            );
+
+            const data: any = response.documents;
+            console.log(data, searchInput);
+            setCustomers(data);
+        } catch (error) {
+            console.error('Error searching for customers:', error);
+            alert('Error searching for customers');
+        }
+    };
+
+    const reFetch = (dataType: 'customers' | 'invoices') => {
+        switch (dataType) {
+            case 'customers':
+                fetchCustomerData();
+                break;
+            case 'invoices':
+                fetchInvoicesData();
+                break;
+            // Add more cases for other data types if needed
+            default:
+                console.error('Invalid data type for reFetch');
+                break;
+        }
+    };
+
+    return <DataContext.Provider value={{ invoices, customers, filterCustomers, reFetch }}>{children}</DataContext.Provider>;
 };
 
