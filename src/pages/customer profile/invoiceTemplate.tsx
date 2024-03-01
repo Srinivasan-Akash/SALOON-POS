@@ -93,7 +93,7 @@ export default function InvoiceTemplate({ data, services, total, GST, discount }
 
       <div>
         <h3 style={{ lineHeight: '0', fontSize: '2rem', fontWeight: '800' }}>INVOICE TO:</h3>
-        <h4 style={{ lineHeight: '0', fontSize: '1rem' }}>Name Of The Customer:- <span style={{ fontWeight: '200' }}>Mr/Mrs {data.name}</span></h4>
+        <h4 style={{ lineHeight: '0', fontSize: '1rem' }}>Name Of The Customer:- <span style={{ fontWeight: '200' }}>Mr/Mrs {data.name || data.customerName}</span></h4>
         <h4 style={{ lineHeight: '0', fontSize: '1rem' }}>Customer Phone Number:- <span style={{ fontWeight: '200' }}>91+ {data.phone}</span></h4>
         <h4 style={{ lineHeight: '0', fontSize: '1rem' }}>Customer G-Mail ID   :- <span style={{ fontWeight: '200' }}>{data.gmail}</span></h4>
         <h4 style={{ lineHeight: '0', fontSize: '1rem' }}>Invoice Number       :- <span style={{ fontWeight: '200' }}>{data.$id}</span></h4>

@@ -116,7 +116,8 @@ export function PayNewBill({ data }: { data: any }) {
                 status: paymentStatusInput?.value === "PAID", // Store as true or false
                 services: JSON.stringify(formRows),
                 paymentMode: paymentModeInput?.value || "",
-                paidAmount: String(paidAmount) || 0,
+                paidAmount: String(paidAmount) || "0",
+                discount: Math.round(appliedDiscount)
             });
 
             const res2 = await databases.updateDocument(databaseID, customerCollection, data.$id, {
@@ -132,6 +133,8 @@ export function PayNewBill({ data }: { data: any }) {
             setIsLoading(false);
         }
     }
+
+    
 
     const handleStaffChange = (selectedOption: Option | null, index: number) => {
         const updatedFormRows: any = [...formRows];

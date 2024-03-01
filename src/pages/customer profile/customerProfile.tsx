@@ -105,7 +105,7 @@ export function Profile({ data, showBills }: { data: any, showBills?: boolean })
                     [Query.equal("customerID", data.$id)]
                 );
                 const invoiceData = invoiceResponse.documents;
-                setInvoices(invoiceData);
+                setInvoices(invoiceData.reverse());
             } catch (error) {
                 console.error("Error fetching invoices:", error);
                 alert("Error fetching invoices");
@@ -114,6 +114,8 @@ export function Profile({ data, showBills }: { data: any, showBills?: boolean })
             }
         };
         if (showBills) fetchInvoices();
+        else setLoadingInvoices(false);
+
     }, [data.$id, showBills]);
 
     useEffect(() => {
@@ -138,7 +140,7 @@ export function Profile({ data, showBills }: { data: any, showBills?: boolean })
     function openInvoicePage(id: string) {
         const queryParams = `id=${encodeURIComponent(id)}`;
         const url = `/invoicePage?${queryParams}`;
-        window.open(url, '_blank', 'width=800, height=500');
+        window.open(url, '_blank', 'width=700, height=500');
     }
 
     return (
