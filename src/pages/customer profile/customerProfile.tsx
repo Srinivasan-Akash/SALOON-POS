@@ -22,7 +22,6 @@ export default function CustomerProfile() {
         lifeTimeBilling: 0,
         credits: 0,
     });
-    const [invoices, setInvoices] = useState([]);
     const [loading, setLoading] = useState(true); // Added loading state
 
     useEffect(() => {
@@ -40,14 +39,6 @@ export default function CustomerProfile() {
                     lifeTimeBilling: Number(urlParams.get("lifeTimeBilling")),
                     credits: Number(urlParams.get("credits")),
                 });
-
-                const invoiceResponse: any = await databases.listDocuments(
-                    databaseID,
-                    invoiceCollection,
-                    [Query.equal("customerID", String(urlParams.get("$id")))]
-                );
-                const invoiceData = invoiceResponse.documents;
-                setInvoices(invoiceData);
             } catch (error) {
                 console.error("Error fetching data:", error);
                 alert("Error fetching data");
@@ -66,59 +57,84 @@ export default function CustomerProfile() {
         { key: "Pay Pending Bill", label: "Pay Pending Bill" },
     ];
 
-    if (loading === true) {
+    if (loading) {
         return (
             <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, background: '#a075fb', display: 'grid', placeItems: "center" }}>
                 <iframe style={{ width: '50%', height: '50%', border: "none" }} src="https://lottie.host/embed/7b73a424-0826-45e0-a529-f358017c61f6/vSFsr02cuR.json"></iframe>
             </div>
-        )
-    } else {
-        return (
-            <main className="customerProfileWindow">
-                <div className="sidebar">
-                    {tabData.map((tab) => (
-                        <h2
-                            key={tab.key}
-                            onClick={() => setActiveTab(tab.key)}
-                            className={activeTab === tab.key ? "active" : ""}
-                        >
-                            <FaHome size={25} /> {tab.label}
-                        </h2>
-                    ))}
-                </div>
-                <div className="customerProfile">
-                    {activeTab === "Profile Info" && (
-                        <div>
-                            <Profile data={customerData} invoices={invoices} />
-                            <Bills invoices={invoices} />
-                        </div>
-                    )}
-                    {activeTab === "Add New Bill" && <PayNewBill data={customerData} invoices={invoices} />}
-                    <div className="overlay"></div>
-                </div>
-            </main>
         );
     }
+
+    return (
+        <main className="customerProfileWindow">
+            <div className="sidebar">
+                {tabData.map((tab) => (
+                    <h2
+                        key={tab.key}
+                        onClick={() => setActiveTab(tab.key)}
+                        className={activeTab === tab.key ? "active" : ""}
+                    >
+                        <FaHome size={25} /> {tab.label}
+                    </h2>
+                ))}
+            </div>
+            <div className="customerProfile">
+                {activeTab === "Profile Info" && (
+                    <div>
+                        <Profile data={customerData} showBills={true} />
+                    </div>
+                )}
+                {activeTab === "Add New Bill" && <PayNewBill data={customerData} />}
+                <div className="overlay"></div>
+            </div>
+        </main>
+    );
 }
 
-export function Profile({ data, invoices }: { data: any, invoices?: any }) {
+export function Profile({ data, showBills }: { data: any, showBills?: boolean }) {
+    const [invoices, setInvoices] = useState([]);
     const [lifetimeSpent, setLifetimeSpent] = useState<number>(0);
+    const [loadingInvoices, setLoadingInvoices] = useState(true);
+
+    useEffect(() => {
+        const fetchInvoices = async () => {
+            try {
+                const invoiceResponse: any = await databases.listDocuments(
+                    databaseID,
+                    invoiceCollection,
+                    [Query.equal("customerID", data.$id)]
+                );
+                const invoiceData = invoiceResponse.documents;
+                setInvoices(invoiceData);
+            } catch (error) {
+                console.error("Error fetching invoices:", error);
+                alert("Error fetching invoices");
+            } finally {
+                setLoadingInvoices(false);
+            }
+        };
+
+        fetchInvoices();
+    }, [data.$id]);
 
     useEffect(() => {
         if (invoices && invoices.length > 0) {
-            // Filter invoices with status set to false
             const pendingInvoices = invoices.filter((item: any) => item.status === false);
-
-            // Calculate total pending amount for filtered invoices
             const newLifetimeSpent = pendingInvoices.reduce(
                 (acc: number, item: any) => acc + calculateTotalPrice(item.services),
                 0
             );
-
-            // Update lifetime spent state
             setLifetimeSpent(newLifetimeSpent);
         }
     }, [invoices]);
+
+    if (loadingInvoices) {
+        return (
+            <div style={{ width: '100%', zIndex: 999, height: '100%', position: 'absolute', top: 0, left: 0, background: '#a075fb', display: 'grid', placeItems: "center" }}>
+                <iframe style={{ width: '50%', height: '50%', border: "none" }} src="https://lottie.host/embed/7b73a424-0826-45e0-a529-f358017c61f6/vSFsr02cuR.json"></iframe>
+            </div>
+        );
+    }
 
     return (
         <>
@@ -146,28 +162,30 @@ export function Profile({ data, invoices }: { data: any, invoices?: any }) {
                     <p>Pending Amount</p>
                 </div>
             </div>
-        </>
-    );
-}
 
-export function Bills({ invoices }: { invoices: any[] }) {
-    console.log(invoices)
-    return (
-        <div className="tabularDisplay">
-            <div className="head">
-                <div>Status</div>
-                <div>Price</div>
-                <div>Date</div>
-            </div>
-            {invoices.map((item, index) => (
-                <div key={index} className="row">
-                    <div>
-                        <span className={item.status === true ? "green" : "red"}>{item.status === true ? "PAID" : "PENDING"}</span>
-                    </div>
-                    <div>{calculateTotalPrice(item.services)} ₹</div>
-                    <div>{new Date(item.$updatedAt).toLocaleDateString("en-GB")}</div>
-                </div>
-            ))}
-        </div>
+            {
+                showBills ?
+                    (
+                        <div className="tabularDisplay">
+                            <div className="head">
+                                <div>Status</div>
+                                <div>Price</div>
+                                <div>Date</div>
+                            </div>
+                            {invoices.map((item: any, index: number) => (
+                                <div key={index} className="row">
+                                    <div>
+                                        <span className={item.status === true ? "green" : "red"}>{item.status === true ? "PAID" : "PENDING"}</span>
+                                    </div>
+                                    <div>{calculateTotalPrice(item.services)} ₹</div>
+                                    <div>{new Date(item.$updatedAt).toLocaleDateString("en-GB")}</div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : <></>
+            }
+
+
+        </>
     );
 }

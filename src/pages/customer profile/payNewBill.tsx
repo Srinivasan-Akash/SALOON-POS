@@ -19,7 +19,7 @@ interface FormRow {
     price: number; // Add the price property
 }
 
-export function PayNewBill({ data, invoices }: { data: any, invoices: any }) {
+export function PayNewBill({ data }: { data: any }) {
     const options: Option[] = [
         { value: 'Hair Cut', label: 'Hair Cut', price: 40 },
         { value: 'Hair Dye', label: 'Hair Dye', price: 45 },
@@ -55,6 +55,9 @@ export function PayNewBill({ data, invoices }: { data: any, invoices: any }) {
     const discountField = useRef<any>(null)
     const [discount, setDiscount] = useState<string>();
     const [isLoading, setIsLoading] = useState<boolean>(false); // Add loading state
+    const [paymentModeInput, setPaymentModeInput] = useState<Option | null>(null);
+    const [paidAmount, setPaidAmount] = useState<string>("");
+    const [paymentStatusInput, setPaymentStatusInput] = useState<Option | null>(null);
 
     const [formRows, setFormRows] = useState<FormRow[]>([
         { selectedService: null, selectedStaff: null, quantity: 0, price: 0 }
@@ -110,8 +113,10 @@ export function PayNewBill({ data, invoices }: { data: any, invoices: any }) {
                 gmail: data.gmail,
                 phone: data.phone,
                 customerID: data.$id,
-                status: true,
-                services: JSON.stringify(formRows)
+                status: paymentStatusInput?.value === "PAID", // Store as true or false
+                services: JSON.stringify(formRows),
+                paymentMode: paymentModeInput?.value || "",
+                paidAmount: String(paidAmount) || 0,
             });
 
             const res2 = await databases.updateDocument(databaseID, customerCollection, data.$id, {
@@ -200,7 +205,7 @@ export function PayNewBill({ data, invoices }: { data: any, invoices: any }) {
 
     return (
         <div className="window">
-            <Profile data={data} invoices={invoices} />
+            <Profile data={data} />
 
             <div className="form">
                 <div className="headline">
@@ -267,8 +272,8 @@ export function PayNewBill({ data, invoices }: { data: any, invoices: any }) {
                         <Select
                             styles={customStyles}
                             options={paymentMode}
-                            // value={row.selectedStaff}
-                            // onChange={(selectedOption) => handleStaffChange(selectedOption, index)}
+                            value={paymentModeInput}
+                            onChange={(selectedOption) => setPaymentModeInput(selectedOption)}
                             placeholder="Payment Mode"
                             isClearable
                         />
@@ -277,15 +282,19 @@ export function PayNewBill({ data, invoices }: { data: any, invoices: any }) {
                         <Select
                             styles={customStyles}
                             options={paymentStatus}
-                            // value={row.selectedStaff}
-                            // onChange={(selectedOption) => handleStaffChange(selectedOption, index)}
+                            value={paymentStatusInput}
+                            onChange={(selectedOption) => setPaymentStatusInput(selectedOption)}
                             placeholder="Payment Status"
                             isClearable
                         />
                     </div>
-
                     <div>
-                        <input type="text" placeholder="Paid Amount"/>
+                        <input
+                            type="text"
+                            placeholder="Paid Amount"
+                            value={paidAmount}
+                            onChange={(e) => setPaidAmount(e.target.value)}
+                        />
                     </div>
                 </div>
 
