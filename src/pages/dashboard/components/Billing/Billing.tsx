@@ -1,38 +1,13 @@
 import "./billing.scss";
 import { databaseID, databases } from "../../../../appwrite/config";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { Query } from "appwrite";
 import { customerCollection } from "../../../../appwrite/config";
+import { useDataContext } from "../../../../context api/DataContext";
 
 export default function Billing() {
-  interface Customer {
-    name: string;
-    phone: string;
-    gmail: string;
-    $id: string;
-  }
-
-  const [customerData, setCustomerData] = useState<Customer[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const searchField = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response: any = await databases.listDocuments(databaseID, customerCollection);
-        const data: Customer[] = response.documents;
-        console.log(data);
-        setCustomerData(data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching customer data:", error);
-        setIsLoading(false);
-        alert("Error fetching customer data");
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { customers } = useDataContext();
 
   const findUsers = async () => {
     const input: string = searchField.current?.value || '';
@@ -62,7 +37,7 @@ export default function Billing() {
 
       const data: any = response.documents;
       console.log(data, input);
-      setCustomerData(data);
+      // setCustomerData(data);
     } catch (error) {
       console.error("Error searching for customers:", error);
       alert("Error searching for customers");
@@ -95,22 +70,20 @@ export default function Billing() {
           </div>
         </div>
       </div>
-      {!isLoading? (
-        <div className="tabularDisplay">
+      {<div className="tabularDisplay">
           <div className="head">
             <div>Name</div>
             <div>Phone Number</div>
             <div>Gmail</div>
           </div>
-          {customerData.map((customer) => (
+          {customers.map((customer) => (
             <div key={customer.$id} className="row" onClick={() => openPage(customer)}>
               <div>{customer.name}</div>
               <div>{customer.phone}</div>
               <div>{customer.gmail}</div>
             </div>
           ))}
-        </div>
-      ): <h2>LOADING.....</h2>}
+        </div>}
     </div>
   );
 }
