@@ -69,7 +69,7 @@ function useLoading() {
   animation-fill-mode: both;
   width: 50px;
   height: 50px;
-  background: #fff;
+  background: #1b1f29;
   animation: square-spin 3s 0s cubic-bezier(0.09, 0.57, 0.49, 0.9) infinite;
 }
 .app-loading-wrap {
@@ -81,7 +81,7 @@ function useLoading() {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #282c34;
+  background: #a075fb;
   z-index: 9;
 }
     `
@@ -91,7 +91,10 @@ function useLoading() {
   oStyle.id = 'app-loading-style'
   oStyle.innerHTML = styleContent
   oDiv.className = 'app-loading-wrap'
-  oDiv.innerHTML = `<div class="${className}"><div></div></div>`
+  oDiv.innerHTML = `
+  <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #a075fb; display: grid; place-items: center;">
+    <iframe style="width: 50%; border: none;  height: 50%;" src="https://lottie.host/embed/7b73a424-0826-45e0-a529-f358017c61f6/vSFsr02cuR.json"></iframe>
+  </div>`
 
   return {
     appendLoading() {

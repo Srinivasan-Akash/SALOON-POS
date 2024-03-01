@@ -27,6 +27,7 @@ interface DataContextProps {
     customers: Customer[];
     filterCustomers: (searchInput: string) => void;
     reFetch: (dataType: 'customers' | 'invoices') => void;
+    intialLoading: { invoices: boolean; customers: boolean };
 }
 
 const DataContext = createContext<DataContextProps | undefined>(undefined);
@@ -46,35 +47,47 @@ interface DataContextProviderProps {
 export const DataContextProvider: React.FC<DataContextProviderProps> = ({ children }) => {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
     const [customers, setCustomers] = useState<Customer[]>([]);
+    const [intialLoading, setIntialLoading] = useState<{ invoices: boolean; customers: boolean }>({
+        invoices: false,
+        customers: false,
+    });
 
     const fetchInvoicesData = async () => {
         try {
+            setIntialLoading((prevLoading) => ({ ...prevLoading, invoices: true }));
+
             const invoiceResponse: any = await databases.listDocuments(databaseID, invoiceCollection);
             const invoiceData: Invoice[] = invoiceResponse.documents;
+
             setInvoices(invoiceData);
         } catch (error) {
-            console.error('Error fetching data:', error);
-            alert('Error fetching data');
+            console.error('Error fetching invoices data:', error);
+            alert('Error fetching invoices data');
+        } finally {
+            setIntialLoading((prevLoading) => ({ ...prevLoading, invoices: false }));
         }
     };
 
     const fetchCustomerData = async () => {
         try {
+            setIntialLoading((prevLoading) => ({ ...prevLoading, customers: true }));
+
             const customerResponse: any = await databases.listDocuments(databaseID, customerCollection);
             const customerData: Customer[] = customerResponse.documents;
+
             setCustomers(customerData);
         } catch (error) {
-            console.error('Error fetching data:', error);
-            alert('Error fetching data');
+            console.error('Error fetching customer data:', error);
+            alert('Error fetching customer data');
+        } finally {
+            setIntialLoading((prevLoading) => ({ ...prevLoading, customers: false }));
         }
     };
 
-    useEffect(() => {
-        fetchCustomerData()
-    }, []);
 
     useEffect(() => {
         fetchInvoicesData();
+        fetchCustomerData()
     }, [])
 
     const filterCustomers = async (searchInput: string) => {
@@ -126,6 +139,6 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
         }
     };
 
-    return <DataContext.Provider value={{ invoices, customers, filterCustomers, reFetch }}>{children}</DataContext.Provider>;
+    return <DataContext.Provider value={{ invoices, customers, filterCustomers, reFetch, intialLoading }}>{children}</DataContext.Provider>;
 };
 
