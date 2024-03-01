@@ -1,30 +1,11 @@
-import { useEffect, useState } from "react";
 import "./index.scss"
-import { databaseID, databases, invoiceCollection } from "../../../../appwrite/config";
 import calculateTotalPrice from "../../../../utils/utils";
+import { useDataContext } from "../../../../context api/DataContext";
 
 export default function Index() {
 
-  const [invoices, setInvoices] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const invoiceResponse: any = await databases.listDocuments(
-          databaseID,
-          invoiceCollection
-        );
-        const invoiceData = invoiceResponse.documents;
-        setInvoices(invoiceData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        alert("Error fetching data");
-      }
-    };
-
-    fetchData();
-  }, []);
-
+  const { invoices } = useDataContext();
+  
   return (
     <main className="parentContainer">
       <div className="realTimeUpdates">
@@ -68,20 +49,24 @@ export default function Index() {
           <div>Price</div>
           <div>Date</div>
         </div>
-        {
-          invoices.map((item: any, index) => {
-            return (
-              <div key={index} className="row">
-                <div>{item.customerName}</div>
-                <div>                        
-                  <span className={item.status === true ? "green" : "red"}>{item.status === true ? "PAID" : "PENDING"}</span>
-                </div>
-                <div>{calculateTotalPrice(item.services)} ₹</div>
-                <div>{new Date(item.$updatedAt).toLocaleDateString("en-GB")}</div>
-              </div>
-            )
-          })
-        }
+        {invoices.map((item: any, index) => (
+          <div key={index} className="row">
+            <div>{item.customerName}</div>
+            <div>
+              <span className={item.status === true ? "green" : "red"}>
+                {item.status === true ? "PAID" : "PENDING"}
+              </span>
+            </div>
+            <div>{calculateTotalPrice(item.services)} ₹</div>
+            <div>{new Date(item.$updatedAt).toLocaleDateString("en-GB")}</div>
+          </div>
+        ))}
+
+        {/* {products.map((product) => (
+          <li key={product.id}>
+            {product.name} - ${product.price}
+          </li>
+        ))} */}
       </div>
     </main>
   )

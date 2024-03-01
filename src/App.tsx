@@ -3,11 +3,14 @@ import Register from './pages/register/Register';
 import Dashboard from "./pages/dashboard/dashboard"
 import Login from "./pages/login/Login"
 import CustomerProfile from './pages/customer profile/customerProfile';
+import { DataContextProvider } from './context api/DataContext';
 
 import CustomerRegistration from './pages/customer registration/customerRegistration';
 // import CustomerBill from './pages/customer bill/customerBill';
 function App() {
   return (
+    <DataContextProvider>
+
     <BrowserRouter>
       <Routes>
         {/* <Route path="/" element={<Register />} /> */}
@@ -24,6 +27,8 @@ function App() {
         {/* Add more routes for other components */}
       </Routes>
     </BrowserRouter>
+    </DataContextProvider>
+
   )
 }
 
