@@ -27,7 +27,7 @@
             display: flex;
 
             input {
-                width: 80%;
+                width: 100%;
                 height: 100%;
                 padding: 1em;
                 border: none;
@@ -36,7 +36,7 @@
 
             .btns {
                 display: flex;
-                width: 20%;
+                width: fit-content;
                 gap: .25em;
                 padding: .25em;
 
@@ -44,11 +44,17 @@
                     background: #a075fb;
                     border: none;
                     border: 2px solid #1b1f29;
-                    padding: .5em;
                     border-radius: 5px;
-                    font-weigt: 700;
-                    width: 50%;
+                    // font-weight: 700;
+                    width: fit-content;
                     cursor: pointer;
+                    display: grid;
+                    place-items: center;
+
+                    svg {
+                        padding: .5em 1em;
+                        box-sizing: content-box;
+                    }
                 }
     
                 button:hover {

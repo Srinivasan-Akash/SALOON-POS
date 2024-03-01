@@ -39,6 +39,18 @@ export function PayNewBill({ data, invoices }: { data: any, invoices: any }) {
         // ...more options
     ];
 
+    const paymentMode: Option[] = [
+        { value: "Cash", label: "Cash" },
+        { value: "UPI", label: "UPI" },
+        { value: "Card", label: "Card" },
+        { value: "Crypto", label: "Crypto" },
+    ]
+
+    const paymentStatus: Option[] = [
+        { value: "PAID", label: "PAID" },
+        { value: "PENDING", label: "PENDING" }
+    ]
+
     const invoicePreviewRef = useRef<any>(null);
     const discountField = useRef<any>(null)
     const [discount, setDiscount] = useState<string>();
@@ -92,7 +104,7 @@ export function PayNewBill({ data, invoices }: { data: any, invoices: any }) {
 
     const addTransaction = async () => {
         setIsLoading(true)
-        try {          
+        try {
             const res = await databases.createDocument(databaseID, invoiceCollection, uuidv4(), {
                 customerName: data.name,
                 gmail: data.gmail,
@@ -101,7 +113,7 @@ export function PayNewBill({ data, invoices }: { data: any, invoices: any }) {
                 status: true,
                 services: JSON.stringify(formRows)
             });
-    
+
             const res2 = await databases.updateDocument(databaseID, customerCollection, data.$id, {
                 credits: Math.round(total / 100),
                 lifeTimeBilling: data.lifeTimeBilling + 1
@@ -145,7 +157,7 @@ export function PayNewBill({ data, invoices }: { data: any, invoices: any }) {
 
         setFormRows(updatedFormRows);
     };
-    
+
     const customStyles: StylesConfig<Option, false> = {
         container: (provided) => ({
             ...provided,
@@ -170,7 +182,7 @@ export function PayNewBill({ data, invoices }: { data: any, invoices: any }) {
             backgroundColor: '#fff',
             boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
             maxHeight: "150px",
-            overflowY: "scroll",
+            overflowY: "auto",
             border: '2px solid #1b1f29',
             padding: '5px',
             borderRadius: "5px",
@@ -237,10 +249,43 @@ export function PayNewBill({ data, invoices }: { data: any, invoices: any }) {
                     )
                 })}
 
+                <div className="or-container">
+                    <div className="or-line"></div>
+                    <div className="or-text">EXTRA INFORMTION</div>
+                    <div className="or-line"></div>
+                </div>
+
                 <div className="offers">
                     <div className="discount">
                         <input type="text" ref={discountField} placeholder="Enter Desired Discount in % or Rs" />
                         <button onClick={() => setDiscount(discountField.current.value)}>ADD DISCOUNT</button>
+                    </div>
+                </div>
+
+                <div className="detailsToKnow">
+                    <div>
+                        <Select
+                            styles={customStyles}
+                            options={paymentMode}
+                            // value={row.selectedStaff}
+                            // onChange={(selectedOption) => handleStaffChange(selectedOption, index)}
+                            placeholder="Payment Mode"
+                            isClearable
+                        />
+                    </div>
+                    <div>
+                        <Select
+                            styles={customStyles}
+                            options={paymentStatus}
+                            // value={row.selectedStaff}
+                            // onChange={(selectedOption) => handleStaffChange(selectedOption, index)}
+                            placeholder="Payment Status"
+                            isClearable
+                        />
+                    </div>
+
+                    <div>
+                        <input type="text" placeholder="Paid Amount"/>
                     </div>
                 </div>
 
@@ -263,7 +308,7 @@ export function PayNewBill({ data, invoices }: { data: any, invoices: any }) {
                     </div>
                 </div>
                 <div className="preview" ref={invoicePreviewRef}>
-                    <InvoiceTemplate data={data} services={formRows} total={total} GST={GST} discount={appliedDiscount}/>
+                    <InvoiceTemplate data={data} services={formRows} total={total} GST={GST} discount={appliedDiscount} />
                 </div>
             </div>
         </div>

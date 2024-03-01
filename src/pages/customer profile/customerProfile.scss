@@ -2,6 +2,60 @@
   padding-bottom: 0.5em;
 }
 
+.or-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 1em 0 .5em 0;
+}
+
+.or-line {
+  flex: 1;
+  height: 3px;
+  background-color: #333; /* Retro-style line color */
+  margin: 0 10px; /* Adjust the margin for spacing */
+}
+
+.or-text {
+  background-color: #BFA1FF;
+  border: 2px solid #1b1f29;/* Retro-style background color for the text */
+  color: #333; /* Retro-style text color */
+  padding: .5em 1em;
+  font-size: .8rem;
+  font-weight: 700; /* Add some padding for better visibility */
+  border-radius: 5px; /* Rounded corners for a softer look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+}
+
+.detailsToKnow{
+  display: flex;
+  gap: .5em;
+  margin-top: .5em;
+  > div  {
+    width: 50%;
+
+    input {
+      border: 2px solid #1b1f29;
+      border-radius: 5px;
+      padding: .7em;
+      outline: none;
+    }
+  }
+}
+
+.loading {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #a075fb;
+  iframe {
+      width: 100%;
+      height: 100%;
+  }
+}
+
 .preview {
   width: 100%;
   aspect-ratio: 1/1.41;

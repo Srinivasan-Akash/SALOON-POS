@@ -1,6 +1,9 @@
 import "./billing.scss";
 import { useRef, useState } from "react";
 import { useDataContext } from "../../../../context api/DataContext";
+import { FaSearch } from "react-icons/fa";
+import { FaSync } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 
 export default function Billing() {
   const searchField = useRef<HTMLInputElement>(null);
@@ -11,13 +14,18 @@ export default function Billing() {
     const input: string = searchField.current?.value || '';
 
     if (input.trim() === '') {
-      // If the search input is empty, display all customers
       setIsFiltering(false);
-      reFetch('customers'); // Fetch all customers again
     } else {
-      // If there is a search input, filter customers
       setIsFiltering(true);
       filterCustomers(input);
+    }
+  };
+
+  const resetSearch = () => {
+    const input: string = searchField.current?.value || '';
+    if (input.trim() === '') {
+      setIsFiltering(false);
+      reFetch('customers');
     }
   };
 
@@ -25,6 +33,7 @@ export default function Billing() {
     const queryParams = Object.entries(item)
       .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
       .join('&');
+      console.log(queryParams)
 
     const url = `/customerProfile?${queryParams}`;
     window.open(url, '_blank', 'width=800, height=500');
@@ -42,8 +51,9 @@ export default function Billing() {
         <div className="searchBox">
           <input ref={searchField} type="text" placeholder="Enter User gmail, name, or phone number" />
           <div className="btns">
-            <button onClick={findUsers}>FIND</button>
-            <button onClick={openNewUserPage}>NEW</button>
+            <button onClick={findUsers}><FaSearch /></button>
+            <button onClick={resetSearch}><FaSync /></button>
+            <button onClick={openNewUserPage}><FaPlus /></button>
           </div>
         </div>
       </div>

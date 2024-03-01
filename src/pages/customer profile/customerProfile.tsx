@@ -23,6 +23,7 @@ export default function CustomerProfile() {
         credits: 0,
     });
     const [invoices, setInvoices] = useState([]);
+    const [loading, setLoading] = useState(true); // Added loading state
 
     useEffect(() => {
         const fetchData = async () => {
@@ -50,6 +51,8 @@ export default function CustomerProfile() {
             } catch (error) {
                 console.error("Error fetching data:", error);
                 alert("Error fetching data");
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -63,50 +66,58 @@ export default function CustomerProfile() {
         { key: "Pay Pending Bill", label: "Pay Pending Bill" },
     ];
 
-    return (
-        <main className="customerProfileWindow">
-            <div className="sidebar">
-                {tabData.map((tab) => (
-                    <h2
-                        key={tab.key}
-                        onClick={() => setActiveTab(tab.key)}
-                        className={activeTab === tab.key ? "active" : ""}
-                    >
-                        <FaHome size={25} /> {tab.label}
-                    </h2>
-                ))}
+    if (loading === true) {
+        return (
+            <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, background: '#a075fb', display: 'grid', placeItems: "center" }}>
+                <iframe style={{ width: '50%', height: '50%', border: "none" }} src="https://lottie.host/embed/7b73a424-0826-45e0-a529-f358017c61f6/vSFsr02cuR.json"></iframe>
             </div>
-            <div className="customerProfile">
-                {activeTab === "Profile Info" && (
-                    <div>
-                        <Profile data={customerData} invoices={invoices} />
-                        <Bills invoices={invoices} />
-                    </div>
-                )}
-                {activeTab === "Add New Bill" && <PayNewBill data={customerData} invoices={invoices} />}
-                <div className="overlay"></div>
-            </div>
-        </main>
-    );
+        )
+    } else {
+        return (
+            <main className="customerProfileWindow">
+                <div className="sidebar">
+                    {tabData.map((tab) => (
+                        <h2
+                            key={tab.key}
+                            onClick={() => setActiveTab(tab.key)}
+                            className={activeTab === tab.key ? "active" : ""}
+                        >
+                            <FaHome size={25} /> {tab.label}
+                        </h2>
+                    ))}
+                </div>
+                <div className="customerProfile">
+                    {activeTab === "Profile Info" && (
+                        <div>
+                            <Profile data={customerData} invoices={invoices} />
+                            <Bills invoices={invoices} />
+                        </div>
+                    )}
+                    {activeTab === "Add New Bill" && <PayNewBill data={customerData} invoices={invoices} />}
+                    <div className="overlay"></div>
+                </div>
+            </main>
+        );
+    }
 }
 
 export function Profile({ data, invoices }: { data: any, invoices?: any }) {
     const [lifetimeSpent, setLifetimeSpent] = useState<number>(0);
 
     useEffect(() => {
-      if (invoices && invoices.length > 0) {
-        // Filter invoices with status set to false
-        const pendingInvoices = invoices.filter((item: any) => item.status === false);
-  
-        // Calculate total pending amount for filtered invoices
-        const newLifetimeSpent = pendingInvoices.reduce(
-          (acc: number, item: any) => acc + calculateTotalPrice(item.services),
-          0
-        );
-  
-        // Update lifetime spent state
-        setLifetimeSpent(newLifetimeSpent);
-      }
+        if (invoices && invoices.length > 0) {
+            // Filter invoices with status set to false
+            const pendingInvoices = invoices.filter((item: any) => item.status === false);
+
+            // Calculate total pending amount for filtered invoices
+            const newLifetimeSpent = pendingInvoices.reduce(
+                (acc: number, item: any) => acc + calculateTotalPrice(item.services),
+                0
+            );
+
+            // Update lifetime spent state
+            setLifetimeSpent(newLifetimeSpent);
+        }
     }, [invoices]);
 
     return (
