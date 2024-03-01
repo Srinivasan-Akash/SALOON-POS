@@ -113,9 +113,8 @@ export function Profile({ data, showBills }: { data: any, showBills?: boolean })
                 setLoadingInvoices(false);
             }
         };
-
-        fetchInvoices();
-    }, [data.$id]);
+        if (showBills) fetchInvoices();
+    }, [data.$id, showBills]);
 
     useEffect(() => {
         if (invoices && invoices.length > 0) {
@@ -134,6 +133,12 @@ export function Profile({ data, showBills }: { data: any, showBills?: boolean })
                 <iframe style={{ width: '50%', height: '50%', border: "none" }} src="https://lottie.host/embed/7b73a424-0826-45e0-a529-f358017c61f6/vSFsr02cuR.json"></iframe>
             </div>
         );
+    }
+
+    function openInvoicePage(id: string) {
+        const queryParams = `id=${encodeURIComponent(id)}`;
+        const url = `/invoicePage?${queryParams}`;
+        window.open(url, '_blank', 'width=800, height=500');
     }
 
     return (
@@ -173,7 +178,7 @@ export function Profile({ data, showBills }: { data: any, showBills?: boolean })
                                 <div>Date</div>
                             </div>
                             {invoices.map((item: any, index: number) => (
-                                <div key={index} className="row">
+                                <div key={index} className="row" onClick={() => openInvoicePage(item.$id)}>
                                     <div>
                                         <span className={item.status === true ? "green" : "red"}>{item.status === true ? "PAID" : "PENDING"}</span>
                                     </div>

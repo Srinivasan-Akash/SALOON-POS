@@ -29,7 +29,7 @@ export default function Billing() {
     }
   };
 
-  const openPage = (item: Record<string, any>) => {
+  const openCustomerProfile = (item: Record<string, any>) => {
     const queryParams = Object.entries(item)
       .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
       .join('&');
@@ -37,10 +37,6 @@ export default function Billing() {
 
     const url = `/customerProfile?${queryParams}`;
     window.open(url, '_blank', 'width=800, height=500');
-  };
-
-  const openNewUserPage = () => {
-    window.open("/customerRegistration", "_blank", "width=300, height=380");
   };
 
   return (
@@ -53,7 +49,7 @@ export default function Billing() {
           <div className="btns">
             <button onClick={findUsers}><FaSearch /></button>
             <button onClick={resetSearch}><FaSync /></button>
-            <button onClick={openNewUserPage}><FaPlus /></button>
+            <button onClick={() => window.open("/customerRegistration", "_blank", "width=300, height=380")}><FaPlus /></button>
           </div>
         </div>
       </div>
@@ -65,14 +61,14 @@ export default function Billing() {
         </div>
         {isFiltering
           ? customers.map((customer) => (
-            <div key={customer.$id} className="row" onClick={() => openPage(customer)}>
+            <div key={customer.$id} className="row" onClick={() => openCustomerProfile(customer)}>
               <div>{customer.name}</div>
               <div>{customer.phone}</div>
               <div>{customer.gmail}</div>
             </div>
           ))
           : customers.map((customer) => (
-            <div key={customer.$id} className="row" onClick={() => openPage(customer)}>
+            <div key={customer.$id} className="row" onClick={() => openCustomerProfile(customer)}>
               <div>{customer.name}</div>
               <div>{customer.phone}</div>
               <div>{customer.gmail}</div>
