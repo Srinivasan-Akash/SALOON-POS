@@ -42,8 +42,8 @@ export default function InvoicePage() {
         const id = new URLSearchParams(queryString).get('id'); // Extract 'id' from the query string
         console.log(id)
         const invoiceResponse = await databases.getDocument(databaseID, invoiceCollection, String(id));
-        const GST = Math.round(18 / 100 * JSON.parse(invoiceResponse.services).reduce((sum, row) => sum + row.price, 0));
-        const subTotal = JSON.parse(invoiceResponse.services).reduce((sum, row) => sum + row.price, 0) + GST - invoiceResponse.discount;
+        const GST = Math.round(18 / 100 * JSON.parse(invoiceResponse.services).reduce((sum: number, row: any) => sum + row.price, 0));
+        const subTotal = JSON.parse(invoiceResponse.services).reduce((sum: number, row: any) => sum + row.price, 0) + GST - invoiceResponse.discount;
         setTotal(subTotal)
         setInvoice(invoiceResponse);
         console.log(invoiceResponse)
@@ -111,7 +111,7 @@ export default function InvoicePage() {
               <tr>
                 <td style={invoiceStyle.td}>GST</td>
                 <td style={invoiceStyle.td}>18% on flat</td>
-                <td style={invoiceStyle.td}>{Math.round(18 / 100 * JSON.parse(invoice.services).reduce((sum, row) => sum + row.price, 0))} ₹</td>
+                <td style={invoiceStyle.td}>{Math.round(18 / 100 * JSON.parse(invoice.services).reduce((sum:number, row: any) => sum + row.price, 0))} ₹</td>
               </tr>
               <tr>
                 <td style={invoiceStyle.td}></td>
@@ -126,12 +126,12 @@ export default function InvoicePage() {
             </tbody>
           </table>
           <div className='btns'>
-            <h2 className='headline' onClick={() => handleCloseBill(invoice.$id)}>Close The Bill By Paying {total - invoice.paidAmount} ₹</h2>
+            <h2 className='headline' onClick={invoice.status !== true? () => handleCloseBill(invoice.$id): function() {}}>{invoice.status !== true ? `Close The Bill By Paying ${total - invoice.paidAmount} ₹`: "Already Paid & Closed"}</h2>
             <h2 className='headline' onClick={printInvoice}>Print The Final Bill</h2>
           </div>
 
           <div className="preview" ref={invoicePreviewRef}>
-            <InvoiceTemplate data={invoice} services={JSON.parse(invoice.services)} total={total} GST={Math.round(18 / 100 * JSON.parse(invoice.services).reduce((sum, row) => sum + row.price, 0))} discount={invoice.discount} />
+            <InvoiceTemplate data={invoice} services={JSON.parse(invoice.services)} total={total} GST={Math.round(18 / 100 * JSON.parse(invoice.services).reduce((sum: number, row:any) => sum + row.price, 0))} discount={invoice.discount} />
           </div>
         </div>
       ) : (

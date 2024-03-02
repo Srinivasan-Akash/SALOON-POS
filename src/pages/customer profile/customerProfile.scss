@@ -354,8 +354,11 @@
     }
 
     .headline {
+      background: #fff !important;
+      color: #1b1f29 !important;
+      padding: 0 !important;
       .title {
-        font-weight: 700;
+        font-weight: 800;
         font-size: 1.25rem;
       }
 
