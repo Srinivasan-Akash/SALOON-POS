@@ -3,10 +3,13 @@ import { databaseID, databases, invoiceCollection } from '../../appwrite/config'
 import "./invoicePage.scss"
 import { useDataContext } from '../../context api/DataContext';
 import InvoiceTemplate from '../customer profile/invoiceTemplate';
+import { useSearchParams } from 'react-router-dom';
 
 export default function InvoicePage() {
   const [invoice, setInvoice] = useState<any>();
   const [total, setTotal] = useState<any>()
+  const searchParams = useSearchParams()
+
   const { reFetch } = useDataContext();
   const invoicePreviewRef = useRef<any>(null);
 
@@ -38,8 +41,7 @@ export default function InvoicePage() {
   useEffect(() => {
     async function fetchDocument() {
       try {
-        const queryString = window.location.search;
-        const id = new URLSearchParams(queryString).get('id'); // Extract 'id' from the query string
+        const id = String(searchParams[0].get('id')); // Extract 'id' from the query string
         console.log(id)
         const invoiceResponse = await databases.getDocument(databaseID, invoiceCollection, String(id));
         const GST = Math.round(18 / 100 * JSON.parse(invoiceResponse.services).reduce((sum: number, row: any) => sum + row.price, 0));

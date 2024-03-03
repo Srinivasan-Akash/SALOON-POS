@@ -22,9 +22,9 @@
             border: 2px solid #1b1f29;
             border-radius: 5px;
             margin-top: .5em;
-            overflow: hidden;
-            position: relative;
             display: flex;
+            align-items: center;
+            justify-content: center;
 
             input {
                 width: 100%;
@@ -36,8 +36,11 @@
 
             .btns {
                 display: flex;
+                align-items: center;
+                justify-content: center;
                 width: fit-content;
                 gap: .25em;
+                margin: 0;
                 padding: .25em;
 
                 button {

@@ -65,8 +65,7 @@
     }
 
     .content {
-        width: 80%;
-        
+        width: 100%;
         overflow-y: auto;
         position: relative;
         nav {
@@ -115,7 +114,8 @@
         .data {
             position: relative;
             width: 100%;
-            min-height: 80%;
+            min-height: 90vh;
+
             .overlay {
                 background: url('../../assets/pattern.png');
                 position: absolute;

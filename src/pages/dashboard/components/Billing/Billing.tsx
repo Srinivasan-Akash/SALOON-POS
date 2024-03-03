@@ -33,9 +33,12 @@ export default function Billing() {
     const queryParams = Object.entries(item)
       .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
       .join('&');
+      console.log(queryParams)
 
-    const url = `#/${encodeURIComponent('customerProfile')}?${queryParams}`;
+    const url = `#/customerProfile?${queryParams}`;
     window.open(url, '_blank', 'width=800, height=500');
+
+    
   };
 
   return (

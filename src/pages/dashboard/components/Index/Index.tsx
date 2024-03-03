@@ -11,19 +11,19 @@ export default function Index() {
       <div className="realTimeUpdates">
         <div className="card">
           <h2>4.2k</h2>
-          <p>Daily Revenue</p>
+          <p>Today's Total Revenue</p>
         </div>
         <div className="card">
-          <h2>25+</h2>
-          <p>Total Customers</p>
+          <h2>25</h2>
+          <p>Total Customer Data</p>
         </div>
         <div className="card">
           <h2>3.6k</h2>
-          <p>Pending Amount</p>
+          <p>Total Pending Amount</p>
         </div>
         <div className="card">
           <h2>40₹</h2>
-          <p>Total Expenses</p>
+          <p>Monthly Expenses</p>
         </div>
       </div>
       <div className="extras">

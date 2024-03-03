@@ -6,6 +6,7 @@ import { PayNewBill } from "./payNewBill";
 import { databaseID, databases, invoiceCollection } from "../../appwrite/config";
 import { Query } from "appwrite";
 import calculateTotalPrice from "../../utils/utils";
+import { useSearchParams } from 'react-router-dom';
 
 interface TabData {
     key: string;
@@ -14,6 +15,8 @@ interface TabData {
 
 export default function CustomerProfile() {
     const [activeTab, setActiveTab] = useState<string>("Profile Info");
+    const [searchParams] = useSearchParams();
+
     const [customerData, setCustomerData] = useState({
         name: "",
         phone: "",
@@ -27,17 +30,13 @@ export default function CustomerProfile() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const queryString = window.location.search;
-                const urlParams = new URLSearchParams(queryString);
-
-                // Decode and retrieve specific parameters
                 setCustomerData({
-                    name: String(urlParams.get("name")),
-                    gmail: String(urlParams.get("gmail")),
-                    phone: String(urlParams.get("phone")),
-                    $id: String(urlParams.get("$id")),
-                    lifeTimeBilling: Number(urlParams.get("lifeTimeBilling")),
-                    credits: Number(urlParams.get("credits")),
+                    name: String(searchParams.get("name")),
+                    gmail: String(searchParams.get("gmail")),
+                    phone: String(searchParams.get("phone")),
+                    $id: String(searchParams.get("$id")),
+                    lifeTimeBilling: Number(searchParams.get("lifeTimeBilling")),
+                    credits: Number(searchParams.get("credits")),
                 });
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -93,7 +92,7 @@ export default function CustomerProfile() {
 
 export function Profile({ data, showBills }: { data: any, showBills?: boolean }) {
     const [invoices, setInvoices] = useState([]);
-    const [lifetimeSpent, setLifetimeSpent] = useState<number>(0);
+    const [pendingAmount, setPendingAmount] = useState<number>(0);
     const [loadingInvoices, setLoadingInvoices] = useState(true);
 
     useEffect(() => {
@@ -113,19 +112,17 @@ export function Profile({ data, showBills }: { data: any, showBills?: boolean })
                 setLoadingInvoices(false);
             }
         };
-        if (showBills) fetchInvoices();
-        else setLoadingInvoices(false);
-
+        fetchInvoices();
     }, [data.$id, showBills]);
 
     useEffect(() => {
         if (invoices && invoices.length > 0) {
             const pendingInvoices = invoices.filter((item: any) => item.status === false);
-            const newLifetimeSpent = pendingInvoices.reduce(
+            const newPendingAmount = pendingInvoices.reduce(
                 (acc: number, item: any) => acc + calculateTotalPrice(item.services),
                 0
             );
-            setLifetimeSpent(newLifetimeSpent);
+            setPendingAmount(newPendingAmount);
         }
     }, [invoices]);
 
@@ -165,7 +162,7 @@ export function Profile({ data, showBills }: { data: any, showBills?: boolean })
                     <p>Lifetime Credits</p>
                 </div>
                 <div className="card red">
-                    <h2>{lifetimeSpent} ₹</h2>
+                    <h2>{pendingAmount} ₹</h2>
                     <p>Pending Amount</p>
                 </div>
             </div>
