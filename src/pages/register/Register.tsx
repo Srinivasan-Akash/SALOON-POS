@@ -13,10 +13,6 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false); // State to track loading status
 
-  const handleNavigation = (path: string) => {
-    navigate(path);
-  };
-
   const createNewAccount = async (authType: string) => {
     try {
       setIsLoading(true);
@@ -84,7 +80,7 @@ export default function Register() {
           </div>
           <div className='box'>
             <button onClick={() => createNewAccount("google")}>Login Via Google</button>
-            <button onClick={() => handleNavigation("/login")}>
+            <button onClick={() => navigate("/login")}>
               Already Have An Account
             </button>
           </div>

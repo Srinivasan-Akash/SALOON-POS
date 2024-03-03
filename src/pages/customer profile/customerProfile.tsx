@@ -139,7 +139,7 @@ export function Profile({ data, showBills }: { data: any, showBills?: boolean })
 
     function openInvoicePage(id: string) {
         const queryParams = `id=${encodeURIComponent(id)}`;
-        const url = `/invoicePage?${queryParams}`;
+        const url = `#/invoicePage?${queryParams}`;
         window.open(url, '_blank', 'width=700, height=500');
     }
 

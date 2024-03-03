@@ -33,9 +33,8 @@ export default function Billing() {
     const queryParams = Object.entries(item)
       .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
       .join('&');
-      console.log(queryParams)
 
-    const url = `/customerProfile?${queryParams}`;
+    const url = `#/${encodeURIComponent('customerProfile')}?${queryParams}`;
     window.open(url, '_blank', 'width=800, height=500');
   };
 
@@ -49,7 +48,7 @@ export default function Billing() {
           <div className="btns">
             <button onClick={findUsers}><FaSearch /></button>
             <button onClick={resetSearch}><FaSync /></button>
-            <button onClick={() => window.open("/customerRegistration", "_blank", "width=300, height=380")}><FaPlus /></button>
+            <button onClick={() => window.open("#/customerRegistration", "_blank", "width=300, height=380")}><FaPlus /></button>
           </div>
         </div>
       </div>

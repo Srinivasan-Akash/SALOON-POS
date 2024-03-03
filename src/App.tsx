@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import Register from './pages/register/Register';
 import Dashboard from "./pages/dashboard/dashboard"
 import Login from "./pages/login/Login"
@@ -12,23 +12,22 @@ function App() {
   return (
     <DataContextProvider>
 
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/customerRegistration" element={<CustomerRegistration />} />
-        <Route path="/customerProfile" element={<CustomerProfile />} />
-        <Route path="/invoicePage" element={<InvoicePage />} />
-        {/* <Route path="/customerBill" element={<CustomerBill />} /> */}
-        <Route path="/dashboard" element={<Dashboard />} />
+      <HashRouter>
+        <Routes>
+          <Route path="/" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/customerRegistration" element={<CustomerRegistration />} />
+          <Route path="/customerProfile" element={<CustomerProfile />} />
+          <Route path="/invoicePage" element={<InvoicePage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
 
-        {/* TODO: Delete Below Code */}
-        {/* <Route path="/" element={<Dashboard />} /> */}
-        {/* <Route path="/dashboard" element={<Register />} /> */}
+          {/* TODO: Delete Below Code */}
+          {/* <Route path="/" element={<Dashboard />} /> */}
+          {/* <Route path="/dashboard" element={<Register />} /> */}
 
-        {/* Add more routes for other components */}
-      </Routes>
-    </BrowserRouter>
+          {/* Add more routes for other components */}
+        </Routes>
+      </HashRouter>
     </DataContextProvider>
 
   )

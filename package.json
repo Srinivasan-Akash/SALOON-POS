@@ -1,5 +1,6 @@
 {
   "name": "saloon",
+  "author": "Akash Srinivasan",
   "private": true,
   "version": "0.0.0",
   "scripts": {
