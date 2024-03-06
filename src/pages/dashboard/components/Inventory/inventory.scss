@@ -6,7 +6,7 @@
     background: #fff;
     border: 2px solid #000;
     border-radius: 10px;
-    padding: .5em .8em;
+    padding: 0.5em 0.8em;
     overflow: hidden;
 
     .title {
@@ -68,6 +68,115 @@
           background: #a075fb;
           transition: background 0.5s ease;
         }
+      }
+    }
+  }
+
+  .cards {
+    display: grid;
+    gap: 0.5em;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-top: 0.5em;
+    .card {
+      background: #fff;
+      border: 2px solid #000;
+      min-width: 200px;
+      width: 100%;
+      border-radius: 10px;
+      display: flex;
+      align-items: flex-start;
+      // justify-content: space-around;
+
+      .progress {
+        width: 40px;
+        height: 90%;
+        border-radius: 5px;
+        border: 2px solid #1b1f29;
+        display: flex;
+        align-items: flex-end;
+        margin: 0.5em;
+
+        .finished {
+          height: 20%;
+          width: 100%;
+          background: #a075fb;
+          border-radius: 0px 0 2.5px 2.5px;
+          border-top: 2px solid #1b1f29;
+        }
+      }
+
+      .or-container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin: .5em 0 .5em 0;
+      }
+
+      .or-line {
+        flex: 1;
+        height: 3px;
+        background-color: #333; /* Retro-style line color */
+        margin: 0 8px; /* Adjust the margin for spacing */
+      }
+
+      .or-text {
+        background-color: #bfa1ff;
+        border: 2px solid #1b1f29; /* Retro-style background color for the text */
+        color: #333; /* Retro-style text color */
+        padding: 0.5em 1em;
+        font-size: 0.7rem;
+        font-weight: 700; /* Add some padding for better visibility */
+        border-radius: 5px; /* Rounded corners for a softer look */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+      }
+
+      .content {
+        // background: green;
+        padding: 0.5em;
+        border-left: 2px dashed #1b1f29;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25em;
+
+        .boxes {
+          display: flex;
+          gap: 0.25em;
+          .box {
+            width: 33.333%;
+            border: 2px solid #1b1f29;
+            border-radius: 5px;
+            padding: 0.5em;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-align: center;
+          }
+        }
+
+        .productName {
+          font-size: 0.8rem;
+          width: 100%;
+          padding: 0.5em;
+          border-radius: 5px;
+          border: 2px solid #1b1f29;
+        }
+
+        
+          button {
+            width: 100%;
+            padding: 0.25em;
+            border-radius: 5px;
+            border: 2px solid #1b1f29;
+            cursor: pointer;
+          }
+
+          .green {
+            background: #adfb75;
+          }
+          .red {
+            background: #fb7575;
+          }
+        
       }
     }
   }

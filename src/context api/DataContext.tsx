@@ -36,7 +36,7 @@ interface DataContextProps {
     invoices: Invoice[];
     customers: Customer[];
     filterCustomers: (searchInput: string) => void;
-    reFetch: (dataType: 'customers' | 'invoices') => void;
+    reFetch: (dataType: 'customers' | 'invoices' | 'inventory') => void;
     intialLoading: { invoices: boolean; customers: boolean };
     inventory: any
 }
