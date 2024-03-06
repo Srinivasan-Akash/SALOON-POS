@@ -1,143 +1,143 @@
 .billingContainer {
+  width: 100%;
+  height: 100%;
+  padding: 0.5em;
+
+  .searchCard {
     width: 100%;
-    height: 100%;
-    padding: .5em;
+    height: fit-content;
+    background: #fff;
+    border: 2px solid #1b1f29;
+    border-radius: 10px;
+    padding: 0.5em 0.8em;
 
-    .searchCard {
+    .title {
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+
+    .searchBox {
+      width: 100%;
+      background: #fff;
+      border: 2px solid #1b1f29;
+      border-radius: 5px;
+      margin-top: 0.5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      input {
         width: 100%;
-        height: fit-content;
-        background: #fff;
-        border: 2px solid #1b1f29;
+        height: 100%;
+        padding: 1em;
+        border: none;
         border-radius: 10px;
-        padding: .5em .8em;
+        outline: none;
+      }
 
-        .title {
-            font-weight: 800;
-            font-size: 1.25rem;
+      .btns {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+        gap: 0.25em;
+        margin: 0;
+        padding: 0.25em;
+
+        button {
+          background: #a075fb;
+          border: none;
+          border: 2px solid #1b1f29;
+          border-radius: 5px;
+          // font-weight: 700;
+          width: fit-content;
+          cursor: pointer;
+          display: grid;
+          place-items: center;
+
+          svg {
+            padding: 0.5em 1em;
+            box-sizing: content-box;
+          }
         }
 
-        .searchBox{
-            width: 100%;
-            background: #fff;
-            border: 2px solid #1b1f29;
-            border-radius: 5px;
-            margin-top: .5em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            input {
-                width: 100%;
-                height: 100%;
-                padding: 1em;
-                border: none;
-                outline: none;
-            }
-
-            .btns {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: fit-content;
-                gap: .25em;
-                margin: 0;
-                padding: .25em;
-
-                button {
-                    background: #a075fb;
-                    border: none;
-                    border: 2px solid #1b1f29;
-                    border-radius: 5px;
-                    // font-weight: 700;
-                    width: fit-content;
-                    cursor: pointer;
-                    display: grid;
-                    place-items: center;
-
-                    svg {
-                        padding: .5em 1em;
-                        box-sizing: content-box;
-                    }
-                }
-    
-                button:hover {
-                    background: #8755f3;
-                    transition: background .5s ease;
-                }
-    
-                button:not(:hover) {
-                    background: #a075fb;
-                    transition: background .5s ease;
-                }
-            }
+        button:hover {
+          background: #8755f3;
+          transition: background 0.5s ease;
         }
+
+        button:not(:hover) {
+          background: #a075fb;
+          transition: background 0.5s ease;
+        }
+      }
+    }
+  }
+
+  .tabularDisplay {
+    background: #fff;
+    border: 2px solid #1b1f29;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 0.5em;
+
+    .head {
+      display: flex;
+      justify-content: space-around;
+      background: #1b1f29;
+      color: #fff;
+      div {
+        width: 25%;
+        text-align: center;
+        padding: 0.5em;
+      }
     }
 
-    .tabularDisplay {
-        background: #fff;
-        border: 2px solid #1b1f29;
-        border-radius: 10px;
-        overflow: hidden;
-        margin-top: .5em;
+    .row {
+      display: flex;
+      justify-content: space-around;
+      border-bottom: solid 2px #1b1f29;
+      div {
+        width: 33.333%;
+        text-align: center;
+        border-right: 2px solid #1b1f29;
+        padding: 0.5em;
 
-        .head {
-            display: flex;
-            justify-content: space-around;
-            background: #1b1f29;
-            color: #fff;
-            div {
-                width: 25%;
-                text-align: center;
-                padding: .5em;               
-            }
+        .green {
+          background: #adfb75;
+          padding: 0.25em 1em;
+          border: 2px solid #1b1f29;
+          border-radius: 5px;
+          font-size: 0.8rem;
+          font-weight: 800;
         }
 
-        .row {
-            display: flex;
-            justify-content: space-around;
-            border-bottom: solid 2px #1b1f29;
-            div {
-                width: 33.333%;
-                text-align: center;
-                border-right: 2px solid #1b1f29;
-                padding: .5em;
-
-                .green {
-                    background: #adfb75;
-                    padding: .25em 1em;
-                    border: 2px solid #1b1f29;
-                    border-radius: 5px;
-                    font-size: .8rem;
-                    font-weight: 800;
-                }
-
-                .red {
-                    background: #fb7575;
-                    padding: .25em 1em;
-                    border: 2px solid #1b1f29;
-                    border-radius: 5px;
-                    font-size: .8rem;
-                    font-weight: 800;
-                }
-            }
+        .red {
+          background: #fb7575;
+          padding: 0.25em 1em;
+          border: 2px solid #1b1f29;
+          border-radius: 5px;
+          font-size: 0.8rem;
+          font-weight: 800;
         }
-
-        .row:last-child {
-            border-bottom: none;
-        }
-
-        .row:hover {
-            background: rgba(39, 39, 41, 0.422);
-            cursor: pointer;
-            span {
-                color: #1b1f29;
-            }
-            transition: background .2s ease;
-        }
-
-        .row:not(:hover) {
-            background: #fff;
-            
-        }
+      }
     }
+
+    .row:last-child {
+      border-bottom: none;
+    }
+
+    .row:hover {
+      background: rgba(39, 39, 41, 0.422);
+      cursor: pointer;
+      span {
+        color: #1b1f29;
+      }
+      transition: background 0.2s ease;
+    }
+
+    .row:not(:hover) {
+      background: #fff;
+    }
+  }
 }

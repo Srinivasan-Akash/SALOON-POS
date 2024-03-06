@@ -51,7 +51,7 @@ export default function Billing() {
           <div className="btns">
             <button onClick={findUsers}><FaSearch /></button>
             <button onClick={resetSearch}><FaSync /></button>
-            <button onClick={() => window.open("#/customerRegistration", "_blank", "width=300, height=380")}><FaPlus /></button>
+            <button onClick={() => window.open("#/customerRegistration", "_blank", "width=300, height=400")}><FaPlus /></button>
           </div>
         </div>
       </div>

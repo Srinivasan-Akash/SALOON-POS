@@ -18,7 +18,6 @@ export default function Dashboard() {
   const tabData = [
     { key: "Dashboard", label: "Dashboard", component: <Index /> },
     { key: "Billing", label: "Quick Billing", component: <Billing /> },
-    { key: "Customer Data", label: "Customer Data", component: <CustomerData /> },
     { key: "Employee Data", label: "Employee Data", component: <EmployeeData /> },
     { key: "Our Campaigns", label: "Our Campaigns", component: <Campaigns /> },
     { key: "All Reports", label: "All Reports", component: <Reports /> },

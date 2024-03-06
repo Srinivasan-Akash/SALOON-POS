@@ -1,6 +1,6 @@
 // DataContext.tsx
 import React, { createContext, useContext, ReactNode, useEffect, useState } from 'react';
-import { customerCollection, databaseID, databases, invoiceCollection } from '../appwrite/config';
+import { customerCollection, databaseID, databases, inventoryCollection, invoiceCollection } from '../appwrite/config';
 import { Query } from 'appwrite';
 
 interface Invoice {
@@ -22,12 +22,23 @@ interface Customer {
     credits: number;
 }
 
+interface Inventory {
+    id: string;
+    name: string;
+    gmail: string;
+    phone: string;
+    $id: string;
+    lifeTimeBilling: number;
+    credits: number;
+}
+
 interface DataContextProps {
     invoices: Invoice[];
     customers: Customer[];
     filterCustomers: (searchInput: string) => void;
     reFetch: (dataType: 'customers' | 'invoices') => void;
     intialLoading: { invoices: boolean; customers: boolean };
+    inventory: any
 }
 
 const DataContext = createContext<DataContextProps | undefined>(undefined);
@@ -47,9 +58,13 @@ interface DataContextProviderProps {
 export const DataContextProvider: React.FC<DataContextProviderProps> = ({ children }) => {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
     const [customers, setCustomers] = useState<Customer[]>([]);
-    const [intialLoading, setIntialLoading] = useState<{ invoices: boolean; customers: boolean }>({
+    const [inventory, setInventory] = useState<Inventory []>()
+
+
+    const [intialLoading, setIntialLoading] = useState<{ invoices: boolean; customers: boolean, inventory: boolean }>({
         invoices: false,
         customers: false,
+        inventory: false
     });
 
     const fetchInvoicesData = async () => {
@@ -84,10 +99,27 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
         }
     };
 
+    const fetchInventoryData = async () => {
+        try {
+            setIntialLoading((prevLoading) => ({ ...prevLoading, inventory: true }));
+
+            const inventoryResponse: any = await databases.listDocuments(databaseID, inventoryCollection);
+            const inventoryData: Customer[] = inventoryResponse.documents;
+            console.log(inventoryResponse, inventoryData)
+            setInventory(inventoryData);
+        } catch (error) {
+            console.error('Error fetching inventory data:', error);
+            alert('Error fetching inventory data');
+        } finally {
+            setIntialLoading((prevLoading) => ({ ...prevLoading, customers: false }));
+        }
+    };
+
 
     useEffect(() => {
         fetchInvoicesData();
-        fetchCustomerData()
+        fetchCustomerData();
+        fetchInventoryData();
     }, [])
 
     const filterCustomers = async (searchInput: string) => {
@@ -124,12 +156,15 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
         }
     };
 
-    const reFetch = (dataType: 'customers' | 'invoices') => {
+    const reFetch = (dataType: 'customers' | 'invoices' | 'inventory') => {
         switch (dataType) {
             case 'customers':
                 fetchCustomerData();
                 break;
             case 'invoices':
+                fetchInvoicesData();
+                break;
+            case 'inventory':
                 fetchInvoicesData();
                 break;
             // Add more cases for other data types if needed
@@ -139,6 +174,6 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
         }
     };
 
-    return <DataContext.Provider value={{ invoices, customers, filterCustomers, reFetch, intialLoading }}>{children}</DataContext.Provider>;
+    return <DataContext.Provider value={{ invoices, customers, inventory, filterCustomers, reFetch, intialLoading }}>{children}</DataContext.Provider>;
 };
 
