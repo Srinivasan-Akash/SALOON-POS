@@ -28,6 +28,7 @@ export default function ProductRegistration() {
       quantity: quantity,
       liquid: liquid, // Updated from 'ml' to 'liquid'
       price: price,
+      remainingLiquid: liquid
     });
 
     promise

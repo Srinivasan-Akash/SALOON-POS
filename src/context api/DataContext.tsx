@@ -165,9 +165,8 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
                 fetchInvoicesData();
                 break;
             case 'inventory':
-                fetchInvoicesData();
+                fetchInventoryData();
                 break;
-            // Add more cases for other data types if needed
             default:
                 console.error('Invalid data type for reFetch');
                 break;

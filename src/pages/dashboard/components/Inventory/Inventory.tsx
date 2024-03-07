@@ -5,6 +5,10 @@ import { useDataContext } from "../../../../context api/DataContext";
 export default function Inventory() {
   const { inventory, reFetch } = useDataContext();
 
+  async function searchProduct() {
+    
+  }
+
   return (
     <main className="inventoryContainer">
       <div className="addItems">
@@ -13,7 +17,7 @@ export default function Inventory() {
         <div className="searchBox">
           <input type="text" placeholder="Enter the product name over here..." />
           <div className="btns">
-            <button><FaSearch /></button>
+            <button onClick={searchProduct}><FaSearch /></button>
             <button onClick={() => reFetch("inventory")}><FaSync /></button>
             <button onClick={() => window.open("#/productRegistration", "_blank", "width=500, height=400")}><FaPlus /></button>
           </div>
@@ -33,22 +37,24 @@ export default function Inventory() {
           <>
             <div className="card">
               <div className="progress">
-                <div className="finished"></div>
+                <div className="finished" style={{
+                  height: `${(Number(product.remainingLiquid.replace("ml", "").replace("g", "")) /
+                      Number(product.liquid.replace("ml", "").replace("g", ""))) *
+                    100
+                    }%`
+                }}></div>
               </div>
               <div className="content">
                 <h2 className="productName">{product.name}</h2>
                 <div className="boxes">
-                  <p className="box">80/100 ml</p>
-                  <p className="box">120.0 ₹</p>
-                  <p className="box">80 bottles</p>
+                  <p className="box">{product.remainingLiquid}/{product.liquid}</p>
+                  <p className="box">{product.price} ₹</p>
+                  <p className="box">{product.quantity} bottles</p>
                 </div>
-                {/* <div className="or-container">
-                    <div className="or-line"></div>
-                    <div className="or-text">ACTIONS</div>
-                    <div className="or-line"></div>
-                </div> */}
+                <div className="btns">
                   <button className="green">ADD</button>
                   <button className="red">REMOVE</button>
+                </div>
                 <button>SELL</button>
               </div>
             </div>
