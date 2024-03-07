@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Profile } from "./customerProfile";
 import { FaMinus, FaPlus, FaSpinner } from "react-icons/fa";
-import Select, { StylesConfig } from "react-select";
+import Select from "react-select";
 import InvoiceTemplate from "./invoiceTemplate";
 import { customerCollection, databaseID, databases, invoiceCollection } from "../../appwrite/config";
 import { v4 as uuidv4 } from 'uuid';

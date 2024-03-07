@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
-import { FaHome } from "react-icons/fa";
+import { FaHome, FaMinus, FaPlus, FaSpinner } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 import profile from "../../assets/profile.webp"
 import "./productInformation.scss"
+import { databaseID, databases, inventoryCollection } from "../../appwrite/config";
+import { useDataContext } from "../../context api/DataContext";
 
 export default function ProductInformation() {
     const [searchParams] = useSearchParams();
+    const { reFetch } = useDataContext();
+
     interface TabData {
         key: string;
         label: string;
@@ -20,9 +24,50 @@ export default function ProductInformation() {
         remainingLiquid: "",
         $updatedAt: ""
     });
+    
     const [loading, setLoading] = useState(true); // Added loading state
     const [activeTab, setActiveTab] = useState<string>("Profile Info");
+    const handleUpdate = (field: string, action: string) => {
+        const currentFieldValue = productData[field];
+        const numericValue = parseFloat(currentFieldValue);
 
+        if (!isNaN(numericValue)) {
+            let updatedValue = numericValue;
+
+            if (action === "increment") {
+                // Check if increasing will exceed the total liquid quantity
+                if (updatedValue < parseFloat(productData.liquid)) {
+                    updatedValue += 1;
+                }
+            } else if (action === "decrement" && updatedValue > 0) {
+                updatedValue -= 1;
+            }
+
+            // Extract the unit (e.g., 'ml' or 'g') from the current field value
+            const unitMatch = currentFieldValue.match(/[a-zA-Z]+/);
+            const unit = unitMatch ? unitMatch[0] : '';
+
+            // Append the unit back to the updated value
+            setProductData((prevData) => ({
+                ...prevData,
+                [field]: `${updatedValue}${unit}`,
+            }));
+        }
+    };
+
+    const updateProductValue = async (documentId: string) => {
+        try {
+            setLoading(true);
+            await databases.updateDocument(databaseID, inventoryCollection, documentId, productData);
+            reFetch("inventory")
+            alert("Product details updated successfully");
+        } catch (error) {
+            alert("Error updating product details. Please try again.");
+            console.error("Error updating product details:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -52,14 +97,6 @@ export default function ProductInformation() {
         { key: "Pay Advance Bill", label: "Advance Bill" },
         { key: "Pay Pending Bill", label: "Pay Pending Bill" },
     ];
-
-    if (loading) {
-        return (
-            <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, background: '#a075fb', display: 'grid', placeItems: "center" }}>
-                <iframe style={{ width: '50%', height: '50%', border: "none" }} src="https://lottie.host/embed/7b73a424-0826-45e0-a529-f358017c61f6/vSFsr02cuR.json"></iframe>
-            </div>
-        );
-    }
 
     return (
         <main className="customerProfileWindow">
@@ -91,47 +128,62 @@ export default function ProductInformation() {
                                     hour: 'numeric',
                                     minute: 'numeric',
                                     hour12: true,
-                                }).format(new Date(productData.$updatedAt))}</p>
+                                }).format(new Date(String(searchParams.get("$updatedAt"))))}</p>
                             </div>
                         </div>
 
                         <div className="cards">
                             <div className="card">
-                                <h2>6</h2>
-                                <p>Lifetime Billing</p>
+                                <h2>{productData.price} ₹</h2>
+                                <p>Unit Product Cost</p>
                             </div>
                             <div className="card">
-                                <h2>52</h2>
-                                <p>Lifetime Credits</p>
+                                <h2>{productData.quantity}</h2>
+                                <p>Bottles In Stock</p>
                             </div>
                             <div className="card red">
-                                <h2>128 ₹</h2>
-                                <p>Pending Amount</p>
+                                <h2>{productData.liquid}</h2>
+                                <p>Quantity In 1 Bottle</p>
                             </div>
                         </div>
 
-                        <div className="productCard">
-                            <div className="progress">
-                                <div
-                                    className="finished"
-                                    style={{
-                                        height: `${(Number(productData.remainingLiquid.replace("ml", "").replace("g", "")) /
-                                            Number(productData.liquid.replace("ml", "").replace("g", ""))) *
-                                            100
-                                            }%`,
-                                    }}
-                                ></div>
+                        <div className="form">
+                            <div className="headline">
+                                <h2 className="title">Update Product Information</h2>
                             </div>
-                            <div className="content">
-                                <h2 className="productName">{productData.name}</h2>
-                                <div className="boxes">
-                                    <p className="box">{productData.remainingLiquid}/{productData.liquid}</p>
-                                    <p className="box">{productData.price} ₹</p>
-                                    <p className="box">{productData.quantity} bottles</p>
+                            <div className="formRow" >
+                                <div className="liquidUpdates">
+                                    <button onClick={() => handleUpdate("remainingLiquid", "decrement")} style={{ borderRight: "2px solid #1b1f29" }}>
+                                        <FaMinus size={12} />
+                                    </button>
+                                    <input type="text" value={productData.remainingLiquid + "/" + productData.liquid} />
+                                    <button onClick={() => handleUpdate("remainingLiquid", "increment")} style={{ borderLeft: "2px solid #1b1f29" }}>
+                                        <FaPlus size={12} />
+                                    </button>
                                 </div>
-                                <button onClick={() => openProductInfo(productData)}>ADJUST PRODUCT QUANTITY</button>
-                                <button>SELL PRODUCT COMMERCIALLY</button>
+
+                                <div className="liquidUpdates">
+                                    <button onClick={() => handleUpdate("price", "decrement")} style={{ borderRight: "2px solid #1b1f29" }}>
+                                        <FaMinus size={12} />
+                                    </button>
+                                    <input type="text" value={productData.price + " ₹"} />
+                                    <button onClick={() => handleUpdate("price", "increment")} style={{ borderLeft: "2px solid #1b1f29" }}>
+                                        <FaPlus size={12} />
+                                    </button>
+                                </div>
+                                <div className="liquidUpdates">
+                                    <button onClick={() => handleUpdate("quantity", "decrement")} style={{ borderRight: "2px solid #1b1f29" }}>
+                                        <FaMinus size={12} />
+                                    </button>
+                                    <input type="text" value={productData.quantity + " bottles"} />
+                                    <button onClick={() => handleUpdate("quantity", "increment")} style={{ borderLeft: "2px solid #1b1f29" }}>
+                                        <FaPlus size={12} />
+                                    </button>
+                                </div>
                             </div>
+                            <button className="update" onClick={() => updateProductValue(productData.$id)} disabled={loading}>
+                                {loading && <FaSpinner className="spinner" />} Update Product Details
+                            </button>
                         </div>
                     </>
                 )}

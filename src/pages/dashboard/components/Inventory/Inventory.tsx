@@ -2,7 +2,6 @@ import { FaPlus, FaSearch, FaSync } from "react-icons/fa";
 import "./inventory.scss";
 import { useDataContext } from "../../../../context api/DataContext";
 import { useState } from "react";
-import { databaseID, databases, inventoryCollection } from "../../../../appwrite/config";
 
 export default function Inventory() {
   const { inventory, reFetch, filterInventory } = useDataContext();
@@ -82,7 +81,7 @@ export default function Inventory() {
                 <p className="box">{product.quantity} bottles</p>
               </div>
               <button onClick={() => openProductInfo(product)}>ADJUST PRODUCT QUANTITY</button>
-              <button>SELL PRODUCT COMMERCIALLY</button>
+              {/* <button>SELL PRODUCT COMMERCIALLY</button> */}
             </div>
           </div>
         ))}
