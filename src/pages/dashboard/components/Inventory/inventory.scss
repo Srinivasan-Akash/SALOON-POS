@@ -1,5 +1,12 @@
 .inventoryContainer {
   padding: 0.5em;
+  position: relative;
+
+  .overlay {
+    
+    opacity: .3 !important;
+    // background: url("../../../../assets/pattern-dark.png") !important;
+  }
   .addItems {
     width: 100%;
     height: fit-content;
@@ -43,7 +50,6 @@
         padding: 0.25em;
 
         button {
-          background: #a075fb;
           border: none;
           // margin: 0;
           border: 2px solid #1b1f29;
@@ -75,7 +81,7 @@
 
   .cards {
     display: grid;
-    gap: .5em;
+    gap: 1em;
     grid-template-columns: 1fr 1fr;
     margin-top: 0.5em;
     .card {
@@ -105,33 +111,6 @@
           border-top: 2px solid #1b1f29;
         }
       }
-
-      .or-container {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        scale: .8;
-        margin: 0;
-      }
-
-      .or-line {
-        flex: 1;
-        height: 3px;
-        background-color: #333; /* Retro-style line color */
-        margin: 0 8px; /* Adjust the margin for spacing */
-      }
-
-      .or-text {
-        background-color: #bfa1ff;
-        border: 2px solid #1b1f29; /* Retro-style background color for the text */
-        color: #333; /* Retro-style text color */
-        padding: 0.5em 1em;
-        font-size: 0.7rem;
-        font-weight: 700; /* Add some padding for better visibility */
-        border-radius: 5px; /* Rounded corners for a softer look */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
-      }
-
 
       .content {
         // background: green;
@@ -164,26 +143,33 @@
           border: 2px solid #1b1f29;
         }
 
-        .btns {
-          margin: 0;
-          gap: .25em;
+        button {
+          width: 100%;
+          padding: 0.5em;
+          border-radius: 5px;
+          font-weight: 500;
+          border: 2px solid #1b1f29;
+          cursor: pointer;
+          background: #1b1f29;
+          color: #fff;
         }
-        
-          button {
-            width: 100%;
-            padding: 0.25em;
-            border-radius: 5px;
-            border: 2px solid #1b1f29;
-            cursor: pointer;
-          }
 
-          .green {
-            background: #adfb75;
-          }
-          .red {
-            background: #fb7575;
-          }
-        
+        button:hover {
+          transition: all 0.5s ease;
+          background: #a075fb;
+          color: #000;
+        }
+
+        button:not(:hover) {
+          transition: all 0.5s ease;
+          background: #1b1f29;
+        }
+        .green {
+          background: #adfb75;
+        }
+        .red {
+          background: #fb7575;
+        }
       }
     }
   }

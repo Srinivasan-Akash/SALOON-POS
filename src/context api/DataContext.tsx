@@ -36,6 +36,7 @@ interface DataContextProps {
     invoices: Invoice[];
     customers: Customer[];
     filterCustomers: (searchInput: string) => void;
+    filterInventory: (searchInput: string) => void;
     reFetch: (dataType: 'customers' | 'invoices' | 'inventory') => void;
     intialLoading: { invoices: boolean; customers: boolean };
     inventory: any
@@ -156,6 +157,23 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
         }
     };
 
+    const filterInventory = async (searchInput: string) => {
+        try {
+            const response = await databases.listDocuments(
+                databaseID,
+                inventoryCollection,
+                [Query.search("name", searchInput)]
+            );
+
+            const data: any = response.documents;
+            console.log(data, searchInput);
+            setInventory(data);
+        } catch (error) {
+            console.error('Error searching for customers:', error);
+            alert('Error searching for customers');
+        }
+    };
+
     const reFetch = (dataType: 'customers' | 'invoices' | 'inventory') => {
         switch (dataType) {
             case 'customers':
@@ -173,6 +191,6 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
         }
     };
 
-    return <DataContext.Provider value={{ invoices, customers, inventory, filterCustomers, reFetch, intialLoading }}>{children}</DataContext.Provider>;
+    return <DataContext.Provider value={{ invoices, customers, inventory, filterCustomers, reFetch, intialLoading, filterInventory }}>{children}</DataContext.Provider>;
 };
 

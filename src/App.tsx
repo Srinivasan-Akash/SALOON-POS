@@ -7,6 +7,7 @@ import { DataContextProvider } from './context api/DataContext';
 import InvoicePage from './pages/invoice page/invoicePage';
 import ProductRegistration from './pages/product registration/productRegistration';
 import CustomerRegistration from './pages/customer registration/customerRegistration';
+import ProductInformation from './pages/product information/productInformation';
 // import CustomerBill from './pages/customer bill/customerBill';
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/invoicePage" element={<InvoicePage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/productRegistration" element={<ProductRegistration />} />
+          <Route path="/productInformation" element={<ProductInformation />} />
           
           {/* TODO: Delete Below Code */}
           {/* <Route path="/" element={<Dashboard />} /> */}
