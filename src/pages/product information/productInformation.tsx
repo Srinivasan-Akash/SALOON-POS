@@ -24,34 +24,45 @@ export default function ProductInformation() {
         remainingLiquid: "",
         $updatedAt: ""
     });
-    
+
     const [loading, setLoading] = useState(true); // Added loading state
-    const [activeTab, setActiveTab] = useState<string>("Profile Info");
+    const [activeTab, setActiveTab] = useState<string>("Adujust Product");
     const handleUpdate = (field: string, action: string) => {
         const currentFieldValue = productData[field];
         const numericValue = parseFloat(currentFieldValue);
-
+    
         if (!isNaN(numericValue)) {
             let updatedValue = numericValue;
-
+    
             if (action === "increment") {
                 // Check if increasing will exceed the total liquid quantity
                 if (updatedValue < parseFloat(productData.liquid)) {
                     updatedValue += 1;
                 }
-            } else if (action === "decrement" && updatedValue > 0) {
-                updatedValue -= 1;
+            } else if (action === "decrement") {
+                if (updatedValue > 0) {
+                    updatedValue -= 1;
+                }
             }
-
-            // Extract the unit (e.g., 'ml' or 'g') from the current field value
-            const unitMatch = currentFieldValue.match(/[a-zA-Z]+/);
-            const unit = unitMatch ? unitMatch[0] : '';
-
-            // Append the unit back to the updated value
-            setProductData((prevData) => ({
-                ...prevData,
-                [field]: `${updatedValue}${unit}`,
-            }));
+    
+            // If remainingLiquid is 0, set quantity to decrement by 1 and remainingLiquid to liquid
+            if (field === "remainingLiquid" && updatedValue === 0) {
+                setProductData((prevData) => ({
+                    ...prevData,
+                    quantity: prevData.quantity - 1,
+                    remainingLiquid: prevData.liquid,
+                }));
+            } else {
+                // Extract the unit (e.g., 'ml' or 'g') from the current field value
+                const unitMatch = currentFieldValue.match(/[a-zA-Z]+/);
+                const unit = unitMatch ? unitMatch[0] : '';
+    
+                // Append the unit back to the updated value
+                setProductData((prevData) => ({
+                    ...prevData,
+                    [field]: `${updatedValue}${unit}`,
+                }));
+            }
         }
     };
 
@@ -68,6 +79,7 @@ export default function ProductInformation() {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -92,10 +104,8 @@ export default function ProductInformation() {
     }, []);
 
     const tabData: TabData[] = [
-        { key: "Profile Info", label: "Profile Info" },
-        { key: "Add New Bill", label: "Add New Bill" },
-        { key: "Pay Advance Bill", label: "Advance Bill" },
-        { key: "Pay Pending Bill", label: "Pay Pending Bill" },
+        { key: "Adujust Product", label: "Adujust Product" },
+        { key: "Delete Product", label: "Delete Product" }
     ];
 
     return (
@@ -112,41 +122,40 @@ export default function ProductInformation() {
                 ))}
             </div>
             <div className="customerProfile">
-                {activeTab === "Profile Info" && (
+                <div className="profileCard">
+                    <div>
+                        <img src={profile} width={60} alt="Profile" />
+                    </div>
+                    <div>
+                        <h2>{productData.name}</h2>
+                        <p>{new Intl.DateTimeFormat('en-US', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: true,
+                        }).format(new Date(String(searchParams.get("$updatedAt"))))}</p>
+                    </div>
+                </div>
+
+                <div className="cards">
+                    <div className="card">
+                        <h2>{productData.price} ₹</h2>
+                        <p>Unit Product Cost</p>
+                    </div>
+                    <div className="card">
+                        <h2>{productData.quantity}</h2>
+                        <p>Bottles In Stock</p>
+                    </div>
+                    <div className="card red">
+                        <h2>{productData.liquid}</h2>
+                        <p>Quantity In 1 Bottle</p>
+                    </div>
+                </div>
+                {activeTab === "Adujust Product" && (
                     <>
-                        <div className="profileCard">
-                            <div>
-                                <img src={profile} width={60} alt="Profile" />
-                            </div>
-                            <div>
-                                <h2>{productData.name}</h2>
-                                <p>{new Intl.DateTimeFormat('en-US', {
-                                    weekday: 'long',
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric',
-                                    hour: 'numeric',
-                                    minute: 'numeric',
-                                    hour12: true,
-                                }).format(new Date(String(searchParams.get("$updatedAt"))))}</p>
-                            </div>
-                        </div>
-
-                        <div className="cards">
-                            <div className="card">
-                                <h2>{productData.price} ₹</h2>
-                                <p>Unit Product Cost</p>
-                            </div>
-                            <div className="card">
-                                <h2>{productData.quantity}</h2>
-                                <p>Bottles In Stock</p>
-                            </div>
-                            <div className="card red">
-                                <h2>{productData.liquid}</h2>
-                                <p>Quantity In 1 Bottle</p>
-                            </div>
-                        </div>
-
                         <div className="form">
                             <div className="headline">
                                 <h2 className="title">Update Product Information</h2>
@@ -185,11 +194,52 @@ export default function ProductInformation() {
                                 {loading && <FaSpinner className="spinner" />} Update Product Details
                             </button>
                         </div>
+
+                        
                     </>
                 )}
-                {activeTab === "Add New Bill" && <div></div>}
+                
                 <div className="overlay"></div>
             </div>
         </main>
     )
 }
+
+{/* {activeTab === "Sell Product" && <div className="form">
+                    <div className="headline">
+                        <h2 className="title">Update Product Information</h2>
+                    </div>
+                    <div className="formRow" >
+                        <div className="liquidUpdates">
+                            <button onClick={() => handleUpdate("remainingLiquid", "decrement")} style={{ borderRight: "2px solid #1b1f29" }}>
+                                <FaMinus size={12} />
+                            </button>
+                            <input type="text" value={productData.remainingLiquid + "/" + productData.liquid} />
+                            <button onClick={() => handleUpdate("remainingLiquid", "increment")} style={{ borderLeft: "2px solid #1b1f29" }}>
+                                <FaPlus size={12} />
+                            </button>
+                        </div>
+
+                        <div className="liquidUpdates">
+                            <button onClick={() => handleUpdate("price", "decrement")} style={{ borderRight: "2px solid #1b1f29" }}>
+                                <FaMinus size={12} />
+                            </button>
+                            <input type="text" value={productData.price + " ₹"} />
+                            <button onClick={() => handleUpdate("price", "increment")} style={{ borderLeft: "2px solid #1b1f29" }}>
+                                <FaPlus size={12} />
+                            </button>
+                        </div>
+                        <div className="liquidUpdates">
+                            <button onClick={() => handleUpdate("quantity", "decrement")} style={{ borderRight: "2px solid #1b1f29" }}>
+                                <FaMinus size={12} />
+                            </button>
+                            <input type="text" value={productData.quantity + " bottles"} />
+                            <button onClick={() => handleUpdate("quantity", "increment")} style={{ borderLeft: "2px solid #1b1f29" }}>
+                                <FaPlus size={12} />
+                            </button>
+                        </div>
+                    </div>
+                    <button className="update" onClick={() => updateProductValue(productData.$id)} disabled={loading}>
+                        {loading && <FaSpinner className="spinner" />} Update Product Details
+                    </button>
+                </div>} */}

@@ -15,28 +15,7 @@ export default function Inventory() {
 
     const url = `#/productInformation?${queryParams}`;
     window.open(url, '_blank', 'width=800, height=500');
-
-
   };
-  // const incrementQuantity = (documentId: string) => {
-  //   const currentProduct = inventory.find((product) => product.$id === documentId);
-
-  //   if (currentProduct) {
-  //     const newQuantity = currentProduct.quantity + 1;
-
-  //     databases
-  //       .updateDocument(databaseID, inventoryCollection, documentId, {
-  //         quantity: newQuantity,
-  //       })
-  //       .then(() => {
-  //         console.log(`Quantity incremented for ${currentProduct.name} to ${newQuantity}`);
-  //         reFetch("inventory"); // Refresh inventory after the update
-  //       })
-  //       .catch((error) => {
-  //         console.error('Error updating document:', error);
-  //       });
-  //   }
-  // };
 
   return (
     <main className="inventoryContainer">
