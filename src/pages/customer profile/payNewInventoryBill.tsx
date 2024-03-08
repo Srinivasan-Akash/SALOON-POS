@@ -3,9 +3,10 @@ import { Profile } from "./customerProfile";
 import { FaMinus, FaPlus, FaSpinner } from "react-icons/fa";
 import Select from "react-select";
 import InvoiceTemplate from "./invoiceTemplate";
-import { customerCollection, databaseID, databases, invoiceCollection } from "../../appwrite/config";
+import { customerCollection, databaseID, databases, inventoryCollection, invoiceCollection } from "../../appwrite/config";
 import { v4 as uuidv4 } from 'uuid';
 import { customStyles } from "../../utils/utils";
+import { useDataContext } from "../../context api/DataContext";
 
 interface Option {
     value: string;
@@ -20,25 +21,15 @@ interface FormRow {
     price: number; // Add the price property
 }
 
-export function PayNewBill({ data }: { data: any }) {
-    const options: Option[] = [
-        { value: 'Hair Cut', label: 'Hair Cut', price: 40 },
-        { value: 'Hair Dye', label: 'Hair Dye', price: 45 },
-        { value: 'Hair Wash', label: 'Hair Wash', price: 45 },
-        { value: 'Hair Cut', label: 'Hair Cut', price: 405 },
-        { value: 'Hair Dye', label: 'Hair Dye', price: 405 },
-        { value: 'Hair Wash', label: 'Hair Wash', price: 406 },
-    ];
-
-    const staff: Option[] = [
-        { value: 'Akash', label: 'Akash' },
-        { value: 'Indratej', label: 'Indratej' },
-        { value: 'Ram', label: 'Ram' },
-        { value: 'Sham', label: 'Sham' },
-        { value: 'Harvindhar', label: 'Harvindhar' },
-        { value: 'Tanjiro', label: 'Tanjiro' },
-        // ...more options
-    ];
+export default function PayNewInventoryBill({ data }: { data: any }) {
+    const { inventory } = useDataContext();
+    const formattedInventory = inventory.map((item: any) => ({
+        value: item.name,
+        label: item.name,
+        price: item.price,
+        id: item.$id,
+        quantity: item.quantity
+    }));
 
     const paymentMode: Option[] = [
         { value: "Cash", label: "Cash" },
@@ -91,7 +82,7 @@ export function PayNewBill({ data }: { data: any }) {
 
     const handleServiceChange = (selectedOption: Option | null, index: number, field: string) => {
         const updatedFormRows: any = [...formRows];
-        const selectedService = options.find((option) => option.value === selectedOption?.value);
+        const selectedService = formattedInventory.find((option: any) => option.value === selectedOption?.value);
         updatedFormRows[index][field] = selectedOption;
 
         // Set the price based on the selected service
@@ -108,7 +99,35 @@ export function PayNewBill({ data }: { data: any }) {
 
     const addTransaction = async () => {
         setIsLoading(true)
+
         try {
+            let res3
+
+            for (const formRow of formRows) {
+                const selectedServiceName = formRow.selectedService?.value;
+    
+                if (selectedServiceName) {
+                    // Find the inventory item with the matching name
+                    const inventoryItem = inventory.find(item => item.name === selectedServiceName);
+    
+                    if (inventoryItem) {
+                        // Calculate the new quantity after the transaction
+                        const newQuantity = inventoryItem.quantity - formRow.quantity;
+                        if (newQuantity < 0) {
+                            alert(`Product "${selectedServiceName}" is not available in sufficient quantity.`);
+                            setIsLoading(false);
+                            return; // Stop further processing
+                        }
+                        res3 = await databases.updateDocument(databaseID, inventoryCollection, inventoryItem.$id, {
+                            quantity: newQuantity
+                        });
+                        console.log(newQuantity, inventoryItem);
+                    } else {
+                        console.error(`Inventory item with name ${selectedServiceName} not found`);
+                    }
+                }
+            }
+            
             const res = await databases.createDocument(databaseID, invoiceCollection, uuidv4(), {
                 customerName: data.name,
                 gmail: data.gmail,
@@ -118,7 +137,8 @@ export function PayNewBill({ data }: { data: any }) {
                 services: JSON.stringify(formRows),
                 paymentMode: paymentModeInput?.value || "",
                 paidAmount: String(paidAmount) || "0",
-                discount: Math.round(appliedDiscount)
+                discount: Math.round(appliedDiscount),
+                paidFor: "product"
             });
 
             const res2 = await databases.updateDocument(databaseID, customerCollection, data.$id, {
@@ -126,7 +146,7 @@ export function PayNewBill({ data }: { data: any }) {
                 lifeTimeBilling: data.lifeTimeBilling + 1
             });
 
-            console.log(res, res2)
+            console.log(res, res2, res3)
             alert("Invoice Registered Successfully");
         } catch (error) {
             alert(error);
@@ -134,14 +154,6 @@ export function PayNewBill({ data }: { data: any }) {
             setIsLoading(false);
         }
     }
-
-    
-
-    const handleStaffChange = (selectedOption: Option | null, index: number) => {
-        const updatedFormRows: any = [...formRows];
-        updatedFormRows[index].selectedStaff = selectedOption;
-        setFormRows(updatedFormRows);
-    };
 
     const GST = Math.round(18 / 100 * formRows.reduce((sum, row) => sum + row.price, 0));
     const subTotal = formRows.reduce((sum, row) => sum + row.price, 0) + GST;
@@ -167,32 +179,29 @@ export function PayNewBill({ data }: { data: any }) {
         setFormRows(updatedFormRows);
     };
 
-    
-
     return (
         <div className="window">
             <Profile data={data} />
 
             <div className="form">
                 <div className="headline">
-                    <h2 className="title">Enter Billing Details</h2>
+                    <h2 className="title">Enter Product Billing Details</h2>
                     <div style={{ "display": "flex", "gap": ".5em" }}>
                         <div onClick={removeFormRow}><FaMinus size={12} /></div>
                         <div onClick={addNewFormRow}><FaPlus size={12} /></div>
                     </div>
                 </div>
                 {formRows.map((row, index) => {
-                    console.log(row)
                     return (
 
                         <div className="formRow" key={index}>
                             <div className="dropdown">
                                 <Select
                                     styles={customStyles}
-                                    options={options}
+                                    options={formattedInventory}
                                     value={row.selectedService}
                                     onChange={(selectedOption) => handleServiceChange(selectedOption, index, 'selectedService')}
-                                    placeholder="Select Services"
+                                    placeholder="Select Products"
                                     isClearable
                                 />
                             </div>
@@ -205,17 +214,6 @@ export function PayNewBill({ data }: { data: any }) {
                             />
 
                             <input type="number" value={row.price !== 0 ? row.price : ""} placeholder="Price" onChange={(e) => handlePriceChange(e, index)} />
-
-                            <div className="dropdown">
-                                <Select
-                                    styles={customStyles}
-                                    options={staff}
-                                    value={row.selectedStaff}
-                                    onChange={(selectedOption) => handleStaffChange(selectedOption, index)}
-                                    placeholder="Select Staff"
-                                    isClearable
-                                />
-                            </div>
                         </div>
                     )
                 })}
@@ -283,7 +281,7 @@ export function PayNewBill({ data }: { data: any }) {
                     </div>
                 </div>
                 <div className="preview" ref={invoicePreviewRef}>
-                <InvoiceTemplate data={data} services={formRows} total={total} GST={GST} discount={Math.round(appliedDiscount)} />
+                    <InvoiceTemplate data={data} services={formRows} total={total} GST={GST} discount={Math.round(appliedDiscount)} />
                 </div>
             </div>
         </div>

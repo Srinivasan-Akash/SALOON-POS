@@ -7,6 +7,7 @@ import { databaseID, databases, invoiceCollection } from "../../appwrite/config"
 import { Query } from "appwrite";
 import calculateTotalPrice from "../../utils/utils";
 import { useSearchParams } from 'react-router-dom';
+import PayNewInventoryBill from "./payNewInventoryBill";
 
 interface TabData {
     key: string;
@@ -52,8 +53,7 @@ export default function CustomerProfile() {
     const tabData: TabData[] = [
         { key: "Profile Info", label: "Profile Info" },
         { key: "Add New Bill", label: "Add New Bill" },
-        { key: "Pay Advance Bill", label: "Advance Bill" },
-        { key: "Pay Pending Bill", label: "Pay Pending Bill" },
+        { key: "Inventory Bill", label: "Inventory Bill" },
     ];
 
     if (loading) {
@@ -84,6 +84,7 @@ export default function CustomerProfile() {
                     </div>
                 )}
                 {activeTab === "Add New Bill" && <PayNewBill data={customerData} />}
+                {activeTab === "Inventory Bill" && <PayNewInventoryBill  data={customerData} />}
                 <div className="overlay"></div>
             </div>
         </main>
