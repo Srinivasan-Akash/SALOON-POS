@@ -1,5 +1,9 @@
 import { app, BrowserWindow, Menu, screen } from 'electron'
 import path from 'node:path'
+// const client = require('twilio')(accountSid, authToken);
+// import client from "twilio"
+// const client = require('twilio')(accountSid, authToken);
+
 // The built directory structure
 //
 // ├─┬─┬ dist
@@ -24,6 +28,8 @@ function createWindow() {
     icon: path.join(process.env.VITE_PUBLIC, 'akash.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      contextIsolation: true,
     },
   })
 
