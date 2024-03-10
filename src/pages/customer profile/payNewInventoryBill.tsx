@@ -3,7 +3,7 @@ import { Profile } from "./customerProfile";
 import { FaMinus, FaPlus, FaSpinner } from "react-icons/fa";
 import Select from "react-select";
 import InvoiceTemplate from "./invoiceTemplate";
-import { customerCollection, databaseID, databases, inventoryCollection, invoiceCollection, invoicesBucket, storage } from "../../appwrite/config";
+import { customerCollection, databaseID, databases, inventoryCollection, invoiceCollection, invoicesBucket, projectId, storage } from "../../appwrite/config";
 import { v4 as uuidv4 } from 'uuid';
 import { customStyles, dataURLtoBlob } from "../../utils/utils";
 import { useDataContext } from "../../context api/DataContext";
@@ -70,7 +70,7 @@ export default function PayNewInventoryBill({ data }: { data: any }) {
 
     const printInvoice = async () => {
         const printWindow = window.open("", "_blank");
-    
+
         if (printWindow) {
             try {
                 console.log(data)
@@ -80,36 +80,42 @@ export default function PayNewInventoryBill({ data }: { data: any }) {
                 printWindow.document.write("</body></html>");
                 printWindow.document.close();
                 printWindow.print();
-    
+
                 // Capture the content of the print window as an image
-                const canvas = await html2canvas(printWindow.document.querySelector("body"));
-                const imageData = canvas.toDataURL("image/png");
+                const body: any = printWindow.document.querySelector("body")
+                const canvas = await html2canvas(body); const imageData = canvas.toDataURL("image/png");
                 const blobData = dataURLtoBlob(imageData);
                 const id = uuidv4();
-    
+
                 // Create a File from the image data
                 const file = new File([blobData], 'invoice.png', { type: 'image/png' });
-    
+
                 // Use promises for asynchronous file creation
-                const response = await new Promise((resolve, reject) => {
+                const response: {$id: string} = await new Promise((resolve, reject) => {
                     storage.createFile(invoicesBucket, id, file)
                         .then(resolve)
                         .catch(reject);
                 });
-    
+
                 // Construct the URL for the message
-                const fileId = response.$id;
-                const url = `Here Is Your Bill:- https://cloud.appwrite.io/v1/storage/buckets/${invoicesBucket}/files/${fileId}/view?project=${projectId}&mode=admin`;
-    
+                const fileId = response?.$id;
+                const url = `
+                👋 Hello ${data.name}!
+                
+                Here Is Your Bill: 
+                📎 [View Bill](https://cloud.appwrite.io/v1/storage/buckets/${invoicesBucket}/files/${fileId}/view?project=${projectId}&mode=admin)
+                
+                Thank you for choosing our products! If you have any questions, feel free to reach out. 😊`;
                 console.log('File URL:', url);
-    
+
                 // Send a message using promises
-                const messageResponse = await fetch(`https://whatsapp-api-6d8q.onrender.com/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
+                const messageResponse = await fetch(`http://localhost:3000/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
+                // const messageResponse = await fetch(`https://whatsapp-api-6d8q.onrender.com/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
                 const result = await messageResponse.text();
-    
+
                 alert(result); // Output the server response
                 // Handle the response as needed
-    
+
                 // Handle the response from the external endpoint if needed
                 console.log('External endpoint response:', messageResponse);
             } catch (error) {
@@ -146,11 +152,11 @@ export default function PayNewInventoryBill({ data }: { data: any }) {
 
             for (const formRow of formRows) {
                 const selectedServiceName = formRow.selectedService?.value;
-    
+
                 if (selectedServiceName) {
                     // Find the inventory item with the matching name
-                    const inventoryItem = inventory.find(item => item.name === selectedServiceName);
-    
+                    const inventoryItem = inventory.find((item: any) => item.name === selectedServiceName);
+
                     if (inventoryItem) {
                         // Calculate the new quantity after the transaction
                         const newQuantity = inventoryItem.quantity - formRow.quantity;
@@ -168,7 +174,7 @@ export default function PayNewInventoryBill({ data }: { data: any }) {
                     }
                 }
             }
-            
+
             const res = await databases.createDocument(databaseID, invoiceCollection, uuidv4(), {
                 customerName: data.name,
                 gmail: data.gmail,

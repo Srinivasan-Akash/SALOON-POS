@@ -15,7 +15,7 @@ export default function ProductInformation() {
         label: string;
     }
 
-    const [productData, setProductData] = useState({
+    const [productData, setProductData] = useState<any>({
         name: "",
         price: "",
         quantity: "",
@@ -47,7 +47,7 @@ export default function ProductInformation() {
     
             // If remainingLiquid is 0, set quantity to decrement by 1 and remainingLiquid to liquid
             if (field === "remainingLiquid" && updatedValue === 0) {
-                setProductData((prevData) => ({
+                setProductData((prevData: any) => ({
                     ...prevData,
                     quantity: prevData.quantity - 1,
                     remainingLiquid: prevData.liquid,
@@ -58,7 +58,7 @@ export default function ProductInformation() {
                 const unit = unitMatch ? unitMatch[0] : '';
     
                 // Append the unit back to the updated value
-                setProductData((prevData) => ({
+                setProductData((prevData: any) => ({
                     ...prevData,
                     [field]: `${updatedValue}${unit}`,
                 }));
@@ -204,42 +204,3 @@ export default function ProductInformation() {
         </main>
     )
 }
-
-{/* {activeTab === "Sell Product" && <div className="form">
-                    <div className="headline">
-                        <h2 className="title">Update Product Information</h2>
-                    </div>
-                    <div className="formRow" >
-                        <div className="liquidUpdates">
-                            <button onClick={() => handleUpdate("remainingLiquid", "decrement")} style={{ borderRight: "2px solid #1b1f29" }}>
-                                <FaMinus size={12} />
-                            </button>
-                            <input type="text" value={productData.remainingLiquid + "/" + productData.liquid} />
-                            <button onClick={() => handleUpdate("remainingLiquid", "increment")} style={{ borderLeft: "2px solid #1b1f29" }}>
-                                <FaPlus size={12} />
-                            </button>
-                        </div>
-
-                        <div className="liquidUpdates">
-                            <button onClick={() => handleUpdate("price", "decrement")} style={{ borderRight: "2px solid #1b1f29" }}>
-                                <FaMinus size={12} />
-                            </button>
-                            <input type="text" value={productData.price + " ₹"} />
-                            <button onClick={() => handleUpdate("price", "increment")} style={{ borderLeft: "2px solid #1b1f29" }}>
-                                <FaPlus size={12} />
-                            </button>
-                        </div>
-                        <div className="liquidUpdates">
-                            <button onClick={() => handleUpdate("quantity", "decrement")} style={{ borderRight: "2px solid #1b1f29" }}>
-                                <FaMinus size={12} />
-                            </button>
-                            <input type="text" value={productData.quantity + " bottles"} />
-                            <button onClick={() => handleUpdate("quantity", "increment")} style={{ borderLeft: "2px solid #1b1f29" }}>
-                                <FaPlus size={12} />
-                            </button>
-                        </div>
-                    </div>
-                    <button className="update" onClick={() => updateProductValue(productData.$id)} disabled={loading}>
-                        {loading && <FaSpinner className="spinner" />} Update Product Details
-                    </button>
-                </div>} */}

@@ -7,7 +7,6 @@ import { customerCollection, databaseID, databases, invoiceCollection, invoicesB
 import { v4 as uuidv4 } from 'uuid';
 import { customStyles, dataURLtoBlob } from "../../utils/utils";
 import html2canvas from "html2canvas";
-import { ID } from "appwrite";
 
 interface Option {
     value: string;
@@ -92,7 +91,8 @@ export function PayNewBill({ data }: { data: any }) {
                 printWindow.print();
     
                 // Capture the content of the print window as an image
-                const canvas = await html2canvas(printWindow.document.querySelector("body"));
+                const body: any = printWindow.document.querySelector("body")
+                const canvas = await html2canvas(body);
                 const imageData = canvas.toDataURL("image/png");
                 const blobData = dataURLtoBlob(imageData);
                 const id = uuidv4();
@@ -101,20 +101,28 @@ export function PayNewBill({ data }: { data: any }) {
                 const file = new File([blobData], 'invoice.png', { type: 'image/png' });
     
                 // Use promises for asynchronous file creation
-                const response = await new Promise((resolve, reject) => {
+                const response: {$id: string} = await new Promise((resolve, reject) => {
                     storage.createFile(invoicesBucket, id, file)
                         .then(resolve)
                         .catch(reject);
                 });
     
                 // Construct the URL for the message
-                const fileId = response.$id;
-                const url = `Here Is Your Bill:- https://cloud.appwrite.io/v1/storage/buckets/${invoicesBucket}/files/${fileId}/view?project=${projectId}&mode=admin`;
-    
+
+                const fileId = response?.$id;
+                const url = `
+👋 Hello ${data.name}!
+                
+Here Is Your Bill: 
+📎 https://cloud.appwrite.io/v1/storage/buckets/${invoicesBucket}/files/${fileId}/view?project=${projectId}&mode=admin
+                
+Thank you for choosing our services! If you have any questions, feel free to reach out. 😊`;    
+                console.log('File URL:', url);    
                 console.log('File URL:', url);
     
                 // Send a message using promises
-                const messageResponse = await fetch(`https://whatsapp-api-6d8q.onrender.com/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
+                // const messageResponse = await fetch(`https://whatsapp-api-6d8q.onrender.com/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
+                const messageResponse = await fetch(`http://localhost:3000/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
                 const result = await messageResponse.text();
     
                 alert(result); // Output the server response

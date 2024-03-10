@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Menu, screen, session } from 'electron'
+import { app, BrowserWindow, Menu, screen } from 'electron'
 // const { Client, LocalAuth } = require("whatsapp-web.js")
 import path from 'node:path'
 // The built directory structure
@@ -43,7 +43,7 @@ function createWindow() {
   }
 }
 
-// Menu.setApplicationMenu(null)
+Menu.setApplicationMenu(null)
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
@@ -56,14 +56,5 @@ app.on('activate', () => {
     createWindow()
   }
 })
-
-ipcMain.handle('getListeningData', async (_, args) => {
-  const whatsapp_qr_code = await fetchQrCodeID(args);
-  return whatsapp_qr_code;
-});
-
-async function fetchQrCodeID(args: any) {
-  return ['Song 1', 'Song 2', 'Song 3'];
-}
 
 app.whenReady().then(createWindow)
