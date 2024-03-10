@@ -2,6 +2,7 @@
   "name": "saloon",
   "author": "Akash Srinivasan",
   "private": true,
+  "proxy": "https://whatsapp-api-6d8q.onrender.com",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",

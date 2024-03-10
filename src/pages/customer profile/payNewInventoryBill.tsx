@@ -104,7 +104,7 @@ export default function PayNewInventoryBill({ data }: { data: any }) {
                 console.log('File URL:', url);
     
                 // Send a message using promises
-                const messageResponse = await fetch(`http://localhost:3000/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
+                const messageResponse = await fetch(`https://whatsapp-api-6d8q.onrender.com/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
                 const result = await messageResponse.text();
     
                 alert(result); // Output the server response
