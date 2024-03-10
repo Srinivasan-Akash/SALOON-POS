@@ -3,7 +3,7 @@ import { Profile } from "./customerProfile";
 import { FaMinus, FaPlus, FaSpinner } from "react-icons/fa";
 import Select from "react-select";
 import InvoiceTemplate from "./invoiceTemplate";
-import { customerCollection, databaseID, databases, inventoryCollection, invoiceCollection, invoicesBucket, projectId, storage } from "../../appwrite/config";
+import { customerCollection, databaseID, databases, inventoryCollection, invoiceCollection, invoicesBucket, projectId, storage, whatsapp_endpoint } from "../../appwrite/config";
 import { v4 as uuidv4 } from 'uuid';
 import { customStyles, dataURLtoBlob } from "../../utils/utils";
 import { useDataContext } from "../../context api/DataContext";
@@ -109,7 +109,7 @@ export default function PayNewInventoryBill({ data }: { data: any }) {
                 console.log('File URL:', url);
 
                 // Send a message using promises
-                const messageResponse = await fetch(`http://localhost:3000/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
+                const messageResponse = await fetch(`${whatsapp_endpoint}/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
                 // const messageResponse = await fetch(`https://whatsapp-api-6d8q.onrender.com/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
                 const result = await messageResponse.text();
 

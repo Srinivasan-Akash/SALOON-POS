@@ -15,3 +15,6 @@ export const customerCollection = "65e051ecdbe1c4094d09"
 export const invoiceCollection = "65e043578f69e288f5d5"
 export const inventoryCollection = "65e479f4a71fe05211f3"
 export const invoicesBucket = "65ed39277c0abb68df7a"
+
+export const whatsapp_endpoint = "http://localhost:3000"
+export const whatsapp_endpoint_production = "https://whatsapp-api-6d8q.onrender.com/"

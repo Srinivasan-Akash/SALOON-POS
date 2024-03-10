@@ -1,0 +1,77 @@
+.campaignsWindow {
+  padding: 0.5em;
+  .card {
+    width: 100%;
+    padding: 1em;
+    height: fit-content;
+    border: 2px solid #000;
+    background: #fff;
+    border-radius: 10px;
+    padding: 0.5em 0.8em;
+
+    .title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: .25em 0 .25em 0;
+        
+        button {
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5em;
+            width: 20%;
+            // margin: 0;
+            border: 2px solid #1b1f29;
+            border-radius: 5px;
+            padding: .5em 2em;
+            font-weight: 700;
+            // font-weight: 700;
+            width: fit-content;
+            cursor: pointer;
+            // display: grid;
+            // place-items: center;
+
+            @keyframes rotateForever {
+                0% {
+                  transform: rotate(0deg);
+                }
+                100% {
+                  transform: rotate(360deg);
+                }
+              }
+              
+              svg {
+                animation: rotateForever 1s linear infinite; /* Adjust duration and timing function as needed */
+              }
+          }
+  
+          button:hover {
+            background: #8755f3;
+            transition: background 0.5s ease;
+          }
+  
+          button:not(:hover) {
+            background: #a075fb;
+            transition: background 0.5s ease;
+          }
+    }
+    h2 {
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+
+    textarea {
+      width: 100%;
+      resize: vertical;
+      border: 2px solid #000;
+      border-radius: 5px;
+      margin-top: 0.5em;
+      padding: .5em;
+      border: 2px solid #000;
+      outline: none;
+      height: 15vh;
+    }
+  }
+}
