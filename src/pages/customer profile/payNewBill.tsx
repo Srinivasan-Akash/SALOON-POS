@@ -3,9 +3,11 @@ import { Profile } from "./customerProfile";
 import { FaMinus, FaPlus, FaSpinner } from "react-icons/fa";
 import Select from "react-select";
 import InvoiceTemplate from "./invoiceTemplate";
-import { customerCollection, databaseID, databases, invoiceCollection } from "../../appwrite/config";
+import { customerCollection, databaseID, databases, invoiceCollection, invoicesBucket, projectId, storage } from "../../appwrite/config";
 import { v4 as uuidv4 } from 'uuid';
-import { customStyles } from "../../utils/utils";
+import { customStyles, dataURLtoBlob } from "../../utils/utils";
+import html2canvas from "html2canvas";
+import { ID } from "appwrite";
 
 interface Option {
     value: string;
@@ -76,19 +78,60 @@ export function PayNewBill({ data }: { data: any }) {
         }
     };
 
-    const printInvoice = () => {
+    const printInvoice = async () => {
         const printWindow = window.open("", "_blank");
+    
         if (printWindow) {
-            printWindow.document.write("<html><head><title>Invoice Preview</title></head><body>");
-            printWindow.document.write(invoicePreviewRef.current.innerHTML);
-            printWindow.document.write("</body></html>");
-            printWindow.document.close();
-            printWindow.print();
+            try {
+                console.log(data)
+                // Generate the HTML content for the invoice preview
+                printWindow.document.write("<html><head><title>Invoice Preview</title></head><body>");
+                printWindow.document.write(invoicePreviewRef.current.innerHTML);
+                printWindow.document.write("</body></html>");
+                printWindow.document.close();
+                printWindow.print();
+    
+                // Capture the content of the print window as an image
+                const canvas = await html2canvas(printWindow.document.querySelector("body"));
+                const imageData = canvas.toDataURL("image/png");
+                const blobData = dataURLtoBlob(imageData);
+                const id = uuidv4();
+    
+                // Create a File from the image data
+                const file = new File([blobData], 'invoice.png', { type: 'image/png' });
+    
+                // Use promises for asynchronous file creation
+                const response = await new Promise((resolve, reject) => {
+                    storage.createFile(invoicesBucket, id, file)
+                        .then(resolve)
+                        .catch(reject);
+                });
+    
+                // Construct the URL for the message
+                const fileId = response.$id;
+                const url = `Here Is Your Bill:- https://cloud.appwrite.io/v1/storage/buckets/${invoicesBucket}/files/${fileId}/view?project=${projectId}&mode=admin`;
+    
+                console.log('File URL:', url);
+    
+                // Send a message using promises
+                const messageResponse = await fetch(`http://localhost:3000/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
+                const result = await messageResponse.text();
+    
+                alert(result); // Output the server response
+                // Handle the response as needed
+    
+                // Handle the response from the external endpoint if needed
+                console.log('External endpoint response:', messageResponse);
+            } catch (error) {
+                console.error("Error:", error);
+                // Handle the error as needed
+            }
         } else {
             console.error("Unable to open print window");
         }
     };
-
+    
+    
     const handleServiceChange = (selectedOption: Option | null, index: number, field: string) => {
         const updatedFormRows: any = [...formRows];
         const selectedService = options.find((option) => option.value === selectedOption?.value);
@@ -135,7 +178,7 @@ export function PayNewBill({ data }: { data: any }) {
         }
     }
 
-    
+
 
     const handleStaffChange = (selectedOption: Option | null, index: number) => {
         const updatedFormRows: any = [...formRows];
@@ -167,7 +210,7 @@ export function PayNewBill({ data }: { data: any }) {
         setFormRows(updatedFormRows);
     };
 
-    
+
 
     return (
         <div className="window">
@@ -283,7 +326,7 @@ export function PayNewBill({ data }: { data: any }) {
                     </div>
                 </div>
                 <div className="preview" ref={invoicePreviewRef}>
-                <InvoiceTemplate data={data} services={formRows} total={total} GST={GST} discount={Math.round(appliedDiscount)} />
+                    <InvoiceTemplate data={data} services={formRows} total={total} GST={GST} discount={Math.round(appliedDiscount)} />
                 </div>
             </div>
         </div>

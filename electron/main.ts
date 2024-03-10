@@ -1,9 +1,6 @@
-import { app, BrowserWindow, Menu, screen } from 'electron'
+import { app, BrowserWindow, ipcMain, Menu, screen, session } from 'electron'
+// const { Client, LocalAuth } = require("whatsapp-web.js")
 import path from 'node:path'
-// const client = require('twilio')(accountSid, authToken);
-// import client from "twilio"
-// const client = require('twilio')(accountSid, authToken);
-
 // The built directory structure
 //
 // ├─┬─┬ dist
@@ -30,6 +27,7 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
       contextIsolation: true,
+      webSecurity: false
     },
   })
 
@@ -45,9 +43,6 @@ function createWindow() {
   }
 }
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
 // Menu.setApplicationMenu(null)
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -57,11 +52,18 @@ app.on('window-all-closed', () => {
 })
 
 app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow()
   }
 })
+
+ipcMain.handle('getListeningData', async (_, args) => {
+  const whatsapp_qr_code = await fetchQrCodeID(args);
+  return whatsapp_qr_code;
+});
+
+async function fetchQrCodeID(args: any) {
+  return ['Song 1', 'Song 2', 'Song 3'];
+}
 
 app.whenReady().then(createWindow)

@@ -92,3 +92,27 @@ export const customStylesV2: StylesConfig<Option, false> = {
         cursor: 'pointer',
     }),
 };
+
+export function dataURLtoBlob(dataURL: string) {
+    console.log(dataURL)
+    const parts = dataURL.split(';base64,');
+    const contentType = parts[0].split(':')[1];
+
+    try {
+        const base64String = parts[1];
+        console.log("Base64 String:", base64String);
+
+        const decodedData = atob(base64String);
+        const rawLength = decodedData.length;
+        const uInt8Array = new Uint8Array(rawLength);
+
+        for (let i = 0; i < rawLength; ++i) {
+            uInt8Array[i] = decodedData.charCodeAt(i);
+        }
+
+        return new Blob([uInt8Array], { type: contentType });
+    } catch (error) {
+        console.error("Error decoding base64 string:", error);
+        throw new Error("Failed to decode base64 string");
+    }
+}
