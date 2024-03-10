@@ -168,7 +168,7 @@ Thank you for choosing our services! If you have any questions, feel free to rea
                 status: paymentStatusInput?.value === "PAID", // Store as true or false
                 services: JSON.stringify(formRows),
                 paymentMode: paymentModeInput?.value || "",
-                paidAmount: String(paidAmount) || "0",
+                paidAmount: String(paidAmount) || String(total),
                 discount: Math.round(appliedDiscount)
             });
 
@@ -194,11 +194,16 @@ Thank you for choosing our services! If you have any questions, feel free to rea
         setFormRows(updatedFormRows);
     };
 
-    const GST = Math.round(18 / 100 * formRows.reduce((sum, row) => sum + row.price, 0));
-    const subTotal = formRows.reduce((sum, row) => sum + row.price, 0) + GST;
-    const appliedDiscount: number = !discount ? 0 : discount.includes('%') ? subTotal * (parseFloat(discount.replace('%', '')) / 100) : parseFloat(discount);
-
-    const total = Math.round(subTotal - appliedDiscount);
+    const subTotal = formRows.reduce((sum, row) => sum + row.price, 0);
+    const GST = Math.round((18 / 100) * subTotal);
+    
+    const appliedDiscount: number = !discount
+      ? 0
+      : discount.includes('%')
+      ? subTotal * (parseFloat(discount.replace('%', '')) / 100)
+      : parseFloat(discount);
+    
+    const total = Math.round(subTotal + GST - appliedDiscount);
 
     const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const updatedFormRows = [...formRows];

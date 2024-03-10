@@ -1,0 +1,82 @@
+.reportsWindow {
+  padding: 0.5em;
+
+  .parent {
+    width: 100%;
+    height: fit-content;
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 10px;
+    padding: 0.5em 0.8em;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    margin-top: .5em;
+    button {
+      background: #a075fb;
+      padding: 0.7em 1.5em;
+      font-weight: 700;
+      cursor: pointer;
+      border: 2px solid #000;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background: #8755f3;
+      transition: background 0.5s ease;
+    }
+
+    button:not(:hover) {
+      background: #a075fb;
+      transition: background 0.5s ease;
+    }
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      span {
+        font-weight: 500;
+        margin-left: 1em;
+        font-size: 1rem;
+        color: #0000005d;
+      }
+    }
+  }
+
+  .or-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 1em 0 1em 0;
+
+    .or-line {
+      flex: 1;
+      height: 3px;
+      background-color: #333; /* Retro-style line color */
+      margin: 0 10px; /* Adjust the margin for spacing */
+    }
+
+    .or-text {
+      background-color: #bfa1ff;
+      border: 2px solid #1b1f29; /* Retro-style background color for the text */
+      color: #333; /* Retro-style text color */
+      padding: 0.5em 1em;
+      font-weight: 700; /* Add some padding for better visibility */
+      border-radius: 8px; /* Rounded corners for a softer look */
+      font-size: 1rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+    }
+  }
+
+  .parent:first-child {
+    margin: 0;
+  }
+}
+
