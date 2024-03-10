@@ -1,0 +1,98 @@
+.settingsWindow {
+  margin: 0.5em;
+  .card {
+    background: #fff;
+    border: 2px solid #1b1f29;
+    border-radius: 10px;
+    margin-top: 0.5em;
+
+    .headline {
+      background: #9f75fbbe !important;
+      color: #1b1f29 !important;
+      padding: 0.7em !important;
+      border-bottom: 2px solid #1b1f29;
+      border-radius: 10px 10px 0 0 !important;
+      .title {
+        font-weight: 800;
+        font-size: 1.25rem;
+      }
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      svg,
+      button {
+        cursor: pointer;
+        background: #a075fb;
+        border-radius: 100%;
+        padding: 0.5em;
+        border: 2px solid #1b1f29;
+        box-sizing: content-box;
+      }
+
+      button {
+        border-radius: 5px;
+        font-weight: 700;
+        padding: 0.5em 1em;
+      }
+    }
+
+    .rows {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.5em;
+      padding: 0.7em;
+      .row {
+        border: 2px solid #1b1f29;
+        background: #fff;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+
+        .title {
+          padding: .5em;
+        }
+        .options {
+          display: flex;
+          border-top-right-radius: 2.5px;
+          border-bottom-right-radius: 2.5px;
+          overflow: hidden;
+          span,
+          p {
+            padding: 0.5em;
+          }
+
+          span {
+            background: #a075fb;
+            border-left: 2px solid #1b1f29;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+          }
+        }
+      }
+    }
+
+    .form {
+      display: flex;
+      width: 45%;
+      gap: 0.25em;
+      .serviceInput,
+      .priceInput {
+        border: 2px solid #1b1f29;
+        border-radius: 5px;
+        padding: 0.5em;
+        // font-size: .8rem;
+        outline: none;
+        width: 60%;
+      }
+
+      .priceInput {
+        width: 40%;
+      }
+    }
+  }
+}

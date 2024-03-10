@@ -7,6 +7,7 @@ import { customerCollection, databaseID, databases, invoiceCollection, invoicesB
 import { v4 as uuidv4 } from 'uuid';
 import { customStyles, dataURLtoBlob } from "../../utils/utils";
 import html2canvas from "html2canvas";
+import { useDataContext } from "../../context api/DataContext";
 
 interface Option {
     value: string;
@@ -22,15 +23,14 @@ interface FormRow {
 }
 
 export function PayNewBill({ data }: { data: any }) {
-    const options: Option[] = [
-        { value: 'Hair Cut', label: 'Hair Cut', price: 40 },
-        { value: 'Hair Dye', label: 'Hair Dye', price: 45 },
-        { value: 'Hair Wash', label: 'Hair Wash', price: 45 },
-        { value: 'Hair Cut', label: 'Hair Cut', price: 405 },
-        { value: 'Hair Dye', label: 'Hair Dye', price: 405 },
-        { value: 'Hair Wash', label: 'Hair Wash', price: 406 },
-    ];
+    const { services } = useDataContext()
+    const serviceOptions: Option[] = services.map((service: any) => ({
+        value: service.serviceName,
+        label: service.serviceName,
+        price: service.price,
+    }));
 
+    console.log(serviceOptions, services, "HJKL")
     const staff: Option[] = [
         { value: 'Akash', label: 'Akash' },
         { value: 'Indratej', label: 'Indratej' },
@@ -79,7 +79,7 @@ export function PayNewBill({ data }: { data: any }) {
 
     const printInvoice = async () => {
         const printWindow = window.open("", "_blank");
-    
+
         if (printWindow) {
             try {
                 console.log(data)
@@ -89,24 +89,24 @@ export function PayNewBill({ data }: { data: any }) {
                 printWindow.document.write("</body></html>");
                 printWindow.document.close();
                 printWindow.print();
-    
+
                 // Capture the content of the print window as an image
                 const body: any = printWindow.document.querySelector("body")
                 const canvas = await html2canvas(body);
                 const imageData = canvas.toDataURL("image/png");
                 const blobData = dataURLtoBlob(imageData);
                 const id = uuidv4();
-    
+
                 // Create a File from the image data
                 const file = new File([blobData], 'invoice.png', { type: 'image/png' });
-    
+
                 // Use promises for asynchronous file creation
-                const response: {$id: string} = await new Promise((resolve, reject) => {
+                const response: { $id: string } = await new Promise((resolve, reject) => {
                     storage.createFile(invoicesBucket, id, file)
                         .then(resolve)
                         .catch(reject);
                 });
-    
+
                 // Construct the URL for the message
 
                 const fileId = response?.$id;
@@ -116,16 +116,16 @@ export function PayNewBill({ data }: { data: any }) {
 Here Is Your Bill: 
 📎 https://cloud.appwrite.io/v1/storage/buckets/${invoicesBucket}/files/${fileId}/view?project=${projectId}&mode=admin
                 
-Thank you for choosing our services! If you have any questions, feel free to reach out. 😊`;    
-    
+Thank you for choosing our services! If you have any questions, feel free to reach out. 😊`;
+
                 // Send a message using promises
                 // const messageResponse = await fetch(`https://whatsapp-api-6d8q.onrender.com/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
                 const messageResponse = await fetch(`${whatsapp_endpoint}/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
                 const result = await messageResponse.text();
-    
+
                 alert(result); // Output the server response
                 // Handle the response as needed
-    
+
                 // Handle the response from the external endpoint if needed
                 console.log('External endpoint response:', messageResponse);
             } catch (error) {
@@ -136,11 +136,11 @@ Thank you for choosing our services! If you have any questions, feel free to rea
             console.error("Unable to open print window");
         }
     };
-    
-    
+
+
     const handleServiceChange = (selectedOption: Option | null, index: number, field: string) => {
         const updatedFormRows: any = [...formRows];
-        const selectedService = options.find((option) => option.value === selectedOption?.value);
+        const selectedService = serviceOptions.find((option) => option.value === selectedOption?.value);
         updatedFormRows[index][field] = selectedOption;
 
         // Set the price based on the selected service
@@ -194,13 +194,13 @@ Thank you for choosing our services! If you have any questions, feel free to rea
 
     const subTotal = formRows.reduce((sum, row) => sum + row.price, 0);
     const GST = Math.round((18 / 100) * subTotal);
-    
+
     const appliedDiscount: number = !discount
-      ? 0
-      : discount.includes('%')
-      ? subTotal * (parseFloat(discount.replace('%', '')) / 100)
-      : parseFloat(discount);
-    
+        ? 0
+        : discount.includes('%')
+            ? subTotal * (parseFloat(discount.replace('%', '')) / 100)
+            : parseFloat(discount);
+
     const total = Math.round(subTotal + GST - appliedDiscount);
 
     const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
@@ -243,7 +243,7 @@ Thank you for choosing our services! If you have any questions, feel free to rea
                             <div className="dropdown">
                                 <Select
                                     styles={customStyles}
-                                    options={options}
+                                    options={serviceOptions}
                                     value={row.selectedService}
                                     onChange={(selectedOption) => handleServiceChange(selectedOption, index, 'selectedService')}
                                     placeholder="Select Services"

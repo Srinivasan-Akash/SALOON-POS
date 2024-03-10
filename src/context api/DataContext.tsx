@@ -1,6 +1,6 @@
 // DataContext.tsx
 import React, { createContext, useContext, ReactNode, useEffect, useState } from 'react';
-import { customerCollection, databaseID, databases, inventoryCollection, invoiceCollection } from '../appwrite/config';
+import { customerCollection, databaseID, databases, inventoryCollection, invoiceCollection, servicesCollection } from '../appwrite/config';
 import { Query } from 'appwrite';
 
 interface Invoice {
@@ -37,9 +37,10 @@ interface DataContextProps {
     customers: Customer[];
     filterCustomers: (searchInput: string) => void;
     filterInventory: (searchInput: string) => void;
-    reFetch: (dataType: 'customers' | 'invoices' | 'inventory') => void;
+    reFetch: (dataType: 'customers' | 'invoices' | 'inventory' | 'services') => void;
     intialLoading: { invoices: boolean; customers: boolean };
     inventory: any;
+    services: any;
     replenishedInventory: any;
 }
 
@@ -60,15 +61,17 @@ interface DataContextProviderProps {
 export const DataContextProvider: React.FC<DataContextProviderProps> = ({ children }) => {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
     const [customers, setCustomers] = useState<Customer[]>([]);
-    const [inventory, setInventory] = useState<Inventory []>()
-    const [replenishedInventory, setReplenishedInventory] = useState<Inventory []>()
+    const [inventory, setInventory] = useState<Inventory []>();
+    const [services, setServices] = useState<Inventory []>();
+    const [replenishedInventory, setReplenishedInventory] = useState<Inventory []>();
     //   const filteredInventory = inventory.filter((product: any) => product.quantity < 5);
 
 
-    const [intialLoading, setIntialLoading] = useState<{ invoices: boolean; customers: boolean, inventory: boolean }>({
+    const [intialLoading, setIntialLoading] = useState<{ invoices: boolean; customers: boolean, inventory: boolean, services: boolean }>({
         invoices: false,
         customers: false,
-        inventory: false
+        inventory: false,
+        services: false,
     });
 
     const fetchInvoicesData = async () => {
@@ -116,15 +119,31 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
             console.error('Error fetching inventory data:', error);
             alert('Error fetching inventory data');
         } finally {
-            setIntialLoading((prevLoading) => ({ ...prevLoading, customers: false }));
+            setIntialLoading((prevLoading) => ({ ...prevLoading, inventory: false }));  // Corrected line
         }
     };
 
+    const fetchServicesData = async () => {
+        try {
+            setIntialLoading((prevLoading) => ({ ...prevLoading, services: true }));
+    
+            const servicesResponse: any = await databases.listDocuments(databaseID, servicesCollection);
+            const servicesData: any[] = servicesResponse.documents;
+            console.log(servicesResponse, servicesData);
+            setServices(servicesData);  // Corrected line
+        } catch (error) {
+            console.error('Error fetching services data:', error);
+            alert('Error fetching services data');
+        } finally {
+            setIntialLoading((prevLoading) => ({ ...prevLoading, services: false }));
+        }
+    };
 
     useEffect(() => {
         fetchInvoicesData();
         fetchCustomerData();
         fetchInventoryData();
+        fetchServicesData();
     }, [])
 
     const filterCustomers = async (searchInput: string) => {
@@ -178,7 +197,7 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
         }
     };
 
-    const reFetch = (dataType: 'customers' | 'invoices' | 'inventory') => {
+    const reFetch = (dataType: 'customers' | 'invoices' | 'inventory' | 'services') => {
         switch (dataType) {
             case 'customers':
                 fetchCustomerData();
@@ -189,12 +208,15 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
             case 'inventory':
                 fetchInventoryData();
                 break;
+            case 'services':
+                fetchServicesData();
+                break;
             default:
                 console.error('Invalid data type for reFetch');
                 break;
         }
     };
 
-    return <DataContext.Provider value={{ invoices, customers, inventory, filterCustomers, replenishedInventory, reFetch, intialLoading, filterInventory }}>{children}</DataContext.Provider>;
+    return <DataContext.Provider value={{ invoices, customers, inventory, filterCustomers, replenishedInventory, reFetch, intialLoading, filterInventory, services }}>{children}</DataContext.Provider>;
 };
 
