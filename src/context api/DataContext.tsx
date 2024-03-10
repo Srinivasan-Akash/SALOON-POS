@@ -39,7 +39,8 @@ interface DataContextProps {
     filterInventory: (searchInput: string) => void;
     reFetch: (dataType: 'customers' | 'invoices' | 'inventory') => void;
     intialLoading: { invoices: boolean; customers: boolean };
-    inventory: any
+    inventory: any;
+    replenishedInventory: any;
 }
 
 const DataContext = createContext<DataContextProps | undefined>(undefined);
@@ -60,6 +61,8 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
     const [invoices, setInvoices] = useState<Invoice[]>([]);
     const [customers, setCustomers] = useState<Customer[]>([]);
     const [inventory, setInventory] = useState<Inventory []>()
+    const [replenishedInventory, setReplenishedInventory] = useState<Inventory []>()
+    //   const filteredInventory = inventory.filter((product: any) => product.quantity < 5);
 
 
     const [intialLoading, setIntialLoading] = useState<{ invoices: boolean; customers: boolean, inventory: boolean }>({
@@ -108,6 +111,7 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
             const inventoryData: Customer[] = inventoryResponse.documents;
             console.log(inventoryResponse, inventoryData)
             setInventory(inventoryData);
+            setReplenishedInventory(inventoryData.filter((product: any) => product.quantity < 5));
         } catch (error) {
             console.error('Error fetching inventory data:', error);
             alert('Error fetching inventory data');
@@ -191,6 +195,6 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
         }
     };
 
-    return <DataContext.Provider value={{ invoices, customers, inventory, filterCustomers, reFetch, intialLoading, filterInventory }}>{children}</DataContext.Provider>;
+    return <DataContext.Provider value={{ invoices, customers, inventory, filterCustomers, replenishedInventory, reFetch, intialLoading, filterInventory }}>{children}</DataContext.Provider>;
 };
 

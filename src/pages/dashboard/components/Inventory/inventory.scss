@@ -2,6 +2,104 @@
   padding: 0.5em;
   position: relative;
 
+  .swiper{
+    display: flex;
+    gap: 2em;
+    margin-bottom: .5em;
+    .cardContainer {
+      background: #fb7575be;
+      max-width: 50%;
+      border: 2px solid #1b1f29;
+      border-radius: 10px;
+      margin-right: 1em;
+      .remainingCard {
+        min-width: 200px;
+        width: 100%;
+        border-radius: 10px;
+        display: flex;
+        align-items: flex-start;
+  
+        .progress {
+          width: 40px;
+          height: 120px;
+          border-radius: 5px;
+          border: 2px solid #1b1f29;
+          display: flex;
+          align-items: flex-end;
+          margin: 0.5em;
+  
+          .finished {
+            height: 20%;
+            width: 100%;
+            background: #a075fb;
+            border-radius: 0px 0 2.5px 2.5px;
+            border-top: 2px solid #1b1f29;
+          }
+        }
+  
+        .content {
+          // background: green;
+          padding: 0.5em;
+          border-left: 2px dashed #1b1f29;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 0.25em;
+  
+          .boxes {
+            display: flex;
+            gap: 0.25em;
+            .box {
+              width: 33.333%;
+              border: 2px solid #1b1f29;
+              border-radius: 5px;
+              padding: 0.5em;
+              font-size: 0.8rem;
+              font-weight: 800;
+              text-align: center;
+            }
+          }
+  
+          .productName {
+            font-size: 1rem;
+            width: 100%;
+            padding: 0.5em;
+            border-radius: 5px;
+            border: 2px solid #1b1f29;
+          }
+  
+          button {
+            width: 100%;
+            padding: 0.5em;
+            border-radius: 5px;
+            font-weight: 500;
+            border: 2px solid #1b1f29;
+            cursor: pointer;
+            background: #1b1f29;
+            color: #fff;
+          }
+  
+          button:hover {
+            transition: all 0.5s ease;
+            background: #a075fb;
+            color: #000;
+          }
+  
+          button:not(:hover) {
+            transition: all 0.5s ease;
+            background: #1b1f29;
+          }
+          .green {
+            background: #adfb75;
+          }
+          .red {
+            background: #fb7575;
+          }
+        }
+      }
+    }
+  }
+
   .overlay {
     
     opacity: .3 !important;
@@ -10,7 +108,8 @@
   .addItems {
     width: 100%;
     height: fit-content;
-    background: #fff;
+    background: #9f75fbbe;
+    color: #1b1f29;
     border: 2px solid #000;
     border-radius: 10px;
     padding: 0.5em 0.8em;

@@ -3,8 +3,6 @@ import { FaHome } from "react-icons/fa";
 import Index from "./components/Index/Index";
 import { useState } from "react";
 import Billing from "./components/Billing/Billing";
-import CustomerData from "./components/Customer Data/CustomerData";
-import EmployeeData from "./components/Employee Data/EmployeeData";
 import Campaigns from "./components/Campaigns/Campaigns";
 import Reports from "./components/Reports/Reports";
 import Inventory from "./components/Inventory/Inventory";
@@ -57,8 +55,6 @@ export default function Dashboard() {
           <div className="data">
             {activeTab === "Dashboard" && <Index />}
             {activeTab === "Billing" && <Billing />}
-            {activeTab === "Customer Data" && <CustomerData />}
-            {activeTab === "Employee Data" && <EmployeeData />}
             {activeTab === "Our Campaigns" && <Campaigns />}
             {activeTab === "All Reports" && <Reports />}
             {activeTab === "Store Inventory" && <Inventory />}
