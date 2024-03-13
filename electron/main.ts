@@ -1,4 +1,6 @@
-import { app, BrowserWindow, Menu, screen } from 'electron'
+import { app, BrowserWindow, 
+  // Menu,
+   screen } from 'electron'
 // const { Client, LocalAuth } = require("whatsapp-web.js")
 import path from 'node:path'
 // The built directory structure
