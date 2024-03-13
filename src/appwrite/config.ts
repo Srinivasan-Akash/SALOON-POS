@@ -18,5 +18,5 @@ export const expensesCollection = "65ede5db9add54dc0881"
 export const inventoryCollection = "65e479f4a71fe05211f3"
 export const invoicesBucket = "65ed39277c0abb68df7a"
 
-export const whatsapp_endpoint = "http://localhost:3000"
-export const whatsapp_endpoint_production = "https://whatsapp-api-6d8q.onrender.com/"
+// export const whatsapp_endpoint = "http://localhost:3000"
+export const whatsapp_endpoint = "https://cooperative-volleyball-production.up.railway.app"

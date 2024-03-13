@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import "./settings.scss";
 import { MdDelete } from "react-icons/md";

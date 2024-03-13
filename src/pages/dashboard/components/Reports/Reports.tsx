@@ -38,7 +38,7 @@ export default function Reports() {
       const timestamp = item.$createdAt;
       const date = new Date(timestamp);
 
-      const options = {
+      const options: any = {
         year: "numeric",
         month: "numeric",
         day: "numeric",

@@ -81,46 +81,32 @@ export default function PayNewInventoryBill({ data }: { data: any }) {
                 printWindow.document.close();
                 printWindow.print();
 
-                // Capture the content of the print window as an image
                 const body: any = printWindow.document.querySelector("body")
                 const canvas = await html2canvas(body); const imageData = canvas.toDataURL("image/png");
                 const blobData = dataURLtoBlob(imageData);
                 const id = uuidv4();
 
-                // Create a File from the image data
                 const file = new File([blobData], 'invoice.png', { type: 'image/png' });
 
-                // Use promises for asynchronous file creation
                 const response: {$id: string} = await new Promise((resolve, reject) => {
                     storage.createFile(invoicesBucket, id, file)
                         .then(resolve)
                         .catch(reject);
                 });
 
-                // Construct the URL for the message
                 const fileId = response?.$id;
-                const url = `
-                👋 Hello ${data.name}!
+                const url = `👋 Hello ${data.name}!
                 
-                Here Is Your Bill: 
-                📎 [View Bill](https://cloud.appwrite.io/v1/storage/buckets/${invoicesBucket}/files/${fileId}/view?project=${projectId}&mode=admin)
+Here Is Your Bill: 
+📎 https://cloud.appwrite.io/v1/storage/buckets/${invoicesBucket}/files/${fileId}/view?project=${projectId}&mode=admin
                 
-                Thank you for choosing our products! If you have any questions, feel free to reach out. 😊`;
-                console.log('File URL:', url);
-
-                // Send a message using promises
-                const messageResponse = await fetch(`${whatsapp_endpoint}/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
-                // const messageResponse = await fetch(`https://whatsapp-api-6d8q.onrender.com/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
+Thank you for choosing our products! If you have any questions, feel free to reach out. 😊`;
+                const messageResponse = await fetch(`${whatsapp_endpoint}/send-message?number=${data.phone}&message=${encodeURIComponent(url)}`);
                 const result = await messageResponse.text();
-
-                alert(result); // Output the server response
-                // Handle the response as needed
-
-                // Handle the response from the external endpoint if needed
+                alert(result);
                 console.log('External endpoint response:', messageResponse);
             } catch (error) {
                 console.error("Error:", error);
-                // Handle the error as needed
             }
         } else {
             console.error("Unable to open print window");

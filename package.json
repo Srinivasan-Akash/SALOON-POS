@@ -2,7 +2,7 @@
   "name": "saloon",
   "author": "Akash Srinivasan",
   "private": true,
-  "proxy": "https://whatsapp-api-6d8q.onrender.com",
+  "proxy": "https://cooperative-volleyball-production.up.railway.app/",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
@@ -17,10 +17,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
-    "react-qr-code": "^2.0.12",
     "react-router-dom": "^6.22.1",
     "react-select": "^5.8.0",
-    "socket.io-client": "^4.7.4",
     "swiper": "^11.0.7",
     "uuid": "^9.0.1",
     "xlsx": "^0.18.5"

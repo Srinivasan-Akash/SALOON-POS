@@ -112,8 +112,7 @@ export function PayNewBill({ data }: { data: any }) {
                 // Construct the URL for the message
 
                 const fileId = response?.$id;
-                const url = `
-👋 Hello ${data.name}!
+                const url = `👋 Hello ${data.name}!
                 
 Here Is Your Bill: 
 📎 https://cloud.appwrite.io/v1/storage/buckets/${invoicesBucket}/files/${fileId}/view?project=${projectId}&mode=admin
@@ -122,10 +121,15 @@ Thank you for choosing our services! If you have any questions, feel free to rea
 
                 // Send a message using promises
                 // const messageResponse = await fetch(`https://whatsapp-api-6d8q.onrender.com/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
-                const messageResponse = await fetch(`${whatsapp_endpoint}/message?phoneNumber=${"91" + data.phone}&message=${encodeURIComponent(url)}`);
+                const messageResponse = await fetch(`${whatsapp_endpoint}/send-message?number=${data.phone}&message=${encodeURIComponent(url)}`);
                 const result = await messageResponse.text();
 
-                alert(result); // Output the server response
+                if (JSON.parse(result).status === true) {
+                    alert("Message Sent Successfully !!")
+                } else {
+                    alert("Failed To Send Message !!")
+                }
+                 // Output the server response
                 // Handle the response as needed
 
                 // Handle the response from the external endpoint if needed

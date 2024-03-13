@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./campaign.scss";
 import { whatsapp_endpoint } from "../../../../appwrite/config";
 import { useDataContext } from "../../../../context api/DataContext";

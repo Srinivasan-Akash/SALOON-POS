@@ -7,7 +7,7 @@ export default function Index() {
   const { invoices, customers } = useDataContext();
   console.log(invoices)
 
-  const isSameDay = (date1, date2) => {
+  const isSameDay = (date1: any, date2: any) => {
     return (
       date1.getFullYear() === date2.getFullYear() &&
       date1.getMonth() === date2.getMonth() &&
@@ -22,9 +22,9 @@ export default function Index() {
   const weeklyInvoices = invoices.filter((item) => new Date(item.$updatedAt) >= oneWeekAgo && new Date(item.$updatedAt) <= today);
   const monthlyInvoices = invoices.filter((item) => new Date(item.$updatedAt) >= oneMonthAgo && new Date(item.$updatedAt) <= today);
 
-  const dailyRevenue = dailyInvoices.reduce((total, invoice) => total + Number(invoice.paidAmount), 0)
-  const weeklyRevenue = weeklyInvoices.reduce((total, invoice) => total + Number(invoice.paidAmount), 0)
-  const monthlyRevenue = monthlyInvoices.reduce((total, invoice) => total + Number(invoice.paidAmount), 0)
+  const dailyRevenue = dailyInvoices.reduce((total, invoice: any) => total + Number(invoice.paidAmount), 0)
+  const weeklyRevenue = weeklyInvoices.reduce((total, invoice: any) => total + Number(invoice.paidAmount), 0)
+  const monthlyRevenue = monthlyInvoices.reduce((total, invoice: any) => total + Number(invoice.paidAmount), 0)
 
   const pendingInvoices = invoices.filter((item: any) => item.status === false);
   const newPendingAmount = pendingInvoices.reduce(
