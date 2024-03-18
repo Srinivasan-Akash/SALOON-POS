@@ -15,18 +15,18 @@ function App() {
 
       <HashRouter>
         <Routes>
-          {/* <Route path="/" element={<Register />} /> */}
+          <Route path="/" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/customerRegistration" element={<CustomerRegistration />} />
           <Route path="/customerProfile" element={<CustomerProfile />} />
           <Route path="/invoicePage" element={<InvoicePage />} />
-          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/productRegistration" element={<ProductRegistration />} />
           <Route path="/productInformation" element={<ProductInformation />} />
           
           {/* TODO: Delete Below Code */}
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/dashboard" element={<Register />} />
+          {/* <Route path="/" element={<Dashboard />} /> */}
+          {/* <Route path="/dashboard" element={<Register />} /> */}
 
           {/* Add more routes for other components */}
         </Routes>

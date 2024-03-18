@@ -15,14 +15,16 @@ export default function Campaigns() {
       alert("Please enter a promo message before sending.");
       return;
     }
-
+ 
     // Toggle loading state to true before sending messages
     setLoading(true);
 
     // Iterate through customers and send the promoMessage to each customer's phone
     for (const customer of customers) {
-      const phoneNumber = "91" + customer.phone; // Assuming phone is a property of the customer object
-      const url = `${whatsapp_endpoint}/message?phoneNumber=${phoneNumber}&message=${encodeURIComponent(promoMessage)}`;
+      const phoneNumber = customer.phone;
+      console.log(phoneNumber)
+      // Assuming phone is a property of the customer object
+      const url = `${whatsapp_endpoint}/send-message?phoneNumber=${phoneNumber}&message=${encodeURIComponent(promoMessage)}`;
 
       try {
         const messageResponse = await fetch(url);
