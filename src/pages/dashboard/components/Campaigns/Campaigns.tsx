@@ -24,7 +24,7 @@ export default function Campaigns() {
       const phoneNumber = customer.phone;
       console.log(phoneNumber)
       // Assuming phone is a property of the customer object
-      const url = `${whatsapp_endpoint}/send-message?phoneNumber=${phoneNumber}&message=${encodeURIComponent(promoMessage)}`;
+      const url = `${whatsapp_endpoint}/send-message?number=${phoneNumber}&message=${encodeURIComponent(promoMessage)}`;
 
       try {
         const messageResponse = await fetch(url);

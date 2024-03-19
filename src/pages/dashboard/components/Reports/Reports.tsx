@@ -31,11 +31,13 @@ export default function Reports() {
       });
   };
 
+  console.log(filterInvoices("Revenue", "Monthly"), "FGHJK")
 
   const handleDownload = (category: string, frequency: string) => {
     const filteredInvoices = filterInvoices(category, frequency);
     const processedData = filteredInvoices.map((item: any) => {
       const timestamp = item.$createdAt;
+      console.log(timestamp)
       const date = new Date(timestamp);
 
       const options: any = {

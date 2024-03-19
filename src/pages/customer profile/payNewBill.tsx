@@ -173,7 +173,8 @@ Thank you for choosing our services! If you have any questions, feel free to rea
                 services: JSON.stringify(formRows),
                 paymentMode: paymentModeInput?.value || "",
                 paidAmount: String(paidAmount) || String(total),
-                discount: Math.round(appliedDiscount)
+                discount: Math.round(appliedDiscount),
+                paidFor: "service"
             });
 
             const res2 = await databases.updateDocument(databaseID, customerCollection, data.$id, {
