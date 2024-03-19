@@ -85,7 +85,7 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
         try {
             setIntialLoading((prevLoading) => ({ ...prevLoading, invoices: true }));
 
-            const invoiceResponse: any = await databases.listDocuments(databaseID, invoiceCollection);
+            const invoiceResponse: any = await databases.listDocuments(databaseID, invoiceCollection, [Query.limit(72000)]);
             const invoiceData: Invoice[] = invoiceResponse.documents;
 
             setInvoices(invoiceData);
@@ -101,7 +101,7 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
         try {
             setIntialLoading((prevLoading) => ({ ...prevLoading, customers: true }));
 
-            const customerResponse: any = await databases.listDocuments(databaseID, customerCollection);
+            const customerResponse: any = await databases.listDocuments(databaseID, customerCollection, [Query.limit(72000)]);
             const customerData: Customer[] = customerResponse.documents;
 
             setCustomers(customerData);
@@ -117,7 +117,7 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
         try {
             setIntialLoading((prevLoading) => ({ ...prevLoading, inventory: true }));
 
-            const inventoryResponse: any = await databases.listDocuments(databaseID, inventoryCollection);
+            const inventoryResponse: any = await databases.listDocuments(databaseID, inventoryCollection, [Query.limit(72000)]);
             const inventoryData: Customer[] = inventoryResponse.documents;
             console.log(inventoryResponse, inventoryData)
             setInventory(inventoryData);
@@ -134,7 +134,7 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
         try {
             setIntialLoading((prevLoading) => ({ ...prevLoading, services: true }));
 
-            const servicesResponse: any = await databases.listDocuments(databaseID, servicesCollection);
+            const servicesResponse: any = await databases.listDocuments(databaseID, servicesCollection, [Query.limit(1000)]);
             const servicesData: any[] = servicesResponse.documents;
             console.log(servicesResponse, servicesData);
             setServices(servicesData);  // Corrected line
@@ -191,7 +191,7 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
             const response = await databases.listDocuments(
                 databaseID,
                 customerCollection,
-                [Query.search(searchIndex, searchInput)]
+                [Query.search(searchIndex, searchInput), Query.limit(500)]
             );
 
             const data: any = response.documents;
@@ -208,7 +208,7 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
             const response = await databases.listDocuments(
                 databaseID,
                 inventoryCollection,
-                [Query.search("name", searchInput)]
+                [Query.search("name", searchInput), Query.limit(500)]
             );
 
             const data: any = response.documents;

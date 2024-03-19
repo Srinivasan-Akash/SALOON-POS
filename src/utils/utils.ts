@@ -32,13 +32,12 @@ export const customStyles: StylesConfig<Option, false> = {
         top: '90%',
         left: '50%',
         transform: "translate(-50%, 0)",
-        width: '120%',
+        width: '150%',
         backgroundColor: '#fff',
         boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
         maxHeight: "150px",
-        overflowY: "auto",
+        overflowY: "hidden",
         border: '2px solid #1b1f29',
-        padding: '5px',
         borderRadius: "5px",
     }),
     option: (provided, { isSelected }: { isSelected: boolean }) => ({
@@ -48,6 +47,7 @@ export const customStyles: StylesConfig<Option, false> = {
         border: '2px solid #1b1f29',
         borderRadius: '5px',
         marginTop: '.25em',
+        marginRight: '.25em',
         cursor: 'pointer',
     }),
 };

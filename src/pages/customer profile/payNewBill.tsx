@@ -17,7 +17,7 @@ interface Option {
 
 interface FormRow {
     selectedService: Option | null;
-    // selectedStaff: Option | null;
+    selectedStaff: Option | null;
     quantity: number;
     price: number; // Add the price property
 }
@@ -31,15 +31,15 @@ export function PayNewBill({ data }: { data: any }) {
     }));
 
     console.log(serviceOptions, services, "HJKL")
-    // const staff: Option[] = [
-    //     { value: 'Akash', label: 'Akash' },
-    //     { value: 'Indratej', label: 'Indratej' },
-    //     { value: 'Ram', label: 'Ram' },
-    //     { value: 'Sham', label: 'Sham' },
-    //     { value: 'Harvindhar', label: 'Harvindhar' },
-    //     { value: 'Tanjiro', label: 'Tanjiro' },
-    //     // ...more options
-    // ];
+    const staff: Option[] = [
+        { value: 'Akash', label: 'Akash' },
+        { value: 'Indratej', label: 'Indratej' },
+        { value: 'Ram', label: 'Ram' },
+        { value: 'Sham', label: 'Sham' },
+        { value: 'Harvindhar', label: 'Harvindhar' },
+        { value: 'Tanjiro', label: 'Tanjiro' },
+        // ...more options
+    ];
 
     const paymentMode: Option[] = [
         { value: "Cash", label: "Cash" },
@@ -62,13 +62,13 @@ export function PayNewBill({ data }: { data: any }) {
     const [paymentStatusInput, setPaymentStatusInput] = useState<Option | null>(null);
 
     const [formRows, setFormRows] = useState<FormRow[]>([
-        // { selectedService: null, selectedStaff: null, quantity: 0, price: 0 }
-        { selectedService: null, quantity: 0, price: 0 }
+        { selectedService: null, selectedStaff: null, quantity: 0, price: 0 }
+        // { selectedService: null, quantity: 0, price: 0 }
     ]);
 
     const addNewFormRow = () => {
-        // setFormRows([...formRows, { selectedService: null, selectedStaff: null, quantity: 0, price: 0 }]);
-        setFormRows([...formRows, { selectedService: null, quantity: 0, price: 0 }]);
+        setFormRows([...formRows, { selectedService: null, selectedStaff: null, quantity: 0, price: 0 }]);
+        // setFormRows([...formRows, { selectedService: null, quantity: 0, price: 0 }]);
     };
 
     const removeFormRow = () => {
@@ -191,11 +191,11 @@ Thank you for choosing our services! If you have any questions, feel free to rea
         }
     }
 
-    // const handleStaffChange = (selectedOption: Option | null, index: number) => {
-    //     const updatedFormRows: any = [...formRows];
-    //     updatedFormRows[index].selectedStaff = selectedOption;
-    //     setFormRows(updatedFormRows);
-    // };
+    const handleStaffChange = (selectedOption: Option | null, index: number) => {
+        const updatedFormRows: any = [...formRows];
+        updatedFormRows[index].selectedStaff = selectedOption;
+        setFormRows(updatedFormRows);
+    };
 
     const subTotal = formRows.reduce((sum, row) => sum + row.price, 0);
 
@@ -266,7 +266,7 @@ Thank you for choosing our services! If you have any questions, feel free to rea
 
                             <input type="number" value={row.price !== 0 ? row.price : ""} placeholder="Price" onChange={(e) => handlePriceChange(e, index)} />
 
-                            {/* <div className="dropdown">
+                            <div className="dropdown">
                                 <Select
                                     styles={customStyles}
                                     options={staff}
@@ -275,7 +275,7 @@ Thank you for choosing our services! If you have any questions, feel free to rea
                                     placeholder="Select Staff"
                                     isClearable
                                 />
-                            </div> */}
+                            </div>
                         </div>
                     )
                 })}
