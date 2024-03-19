@@ -35,9 +35,9 @@ export const customStyles: StylesConfig<Option, false> = {
         width: '150%',
         backgroundColor: '#fff',
         boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-        maxHeight: "150px",
         overflowY: "hidden",
         border: '2px solid #1b1f29',
+        padding: '5px',
         borderRadius: "5px",
     }),
     option: (provided, { isSelected }: { isSelected: boolean }) => ({
@@ -47,8 +47,8 @@ export const customStyles: StylesConfig<Option, false> = {
         border: '2px solid #1b1f29',
         borderRadius: '5px',
         marginTop: '.25em',
-        marginRight: '.25em',
         cursor: 'pointer',
+        maxWidth: '97%'
     }),
 };
 
@@ -76,8 +76,7 @@ export const customStylesV2: StylesConfig<Option, false> = {
         width: '100%',
         backgroundColor: '#fff',
         boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-        maxHeight: "150px",
-        overflowY: "auto",
+        overflowY: "hidden",
         border: '2px solid #1b1f29',
         padding: '5px',
         borderRadius: "5px",
@@ -90,6 +89,47 @@ export const customStylesV2: StylesConfig<Option, false> = {
         borderRadius: '5px',
         marginTop: '.25em',
         cursor: 'pointer',
+        maxWidth: '97%'
+    }),
+};
+
+export const customStylesV3: StylesConfig<Option, false> = {
+    container: (provided) => ({
+        ...provided,
+        position: 'relative',
+        border: '2px solid #1b1f29',
+        borderRadius: '5px',
+        outline: 'none',
+        fontSize: ".8rem",
+    }),
+    control: () => ({
+        display: "flex",
+        borderRadius: '5px',
+        outline: 'none',
+    }),
+    menu: (provided) => ({
+        ...provided,
+        position: 'absolute',
+        top: '90%',
+        left: '50%',
+        transform: "translate(-50%, 0)",
+        width: '125%',
+        backgroundColor: '#fff',
+        boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+        overflowY: "hidden",
+        border: '2px solid #1b1f29',
+        padding: '5px',
+        borderRadius: "5px",
+    }),
+    option: (provided, { isSelected }: { isSelected: boolean }) => ({
+        ...provided,
+        color: isSelected ? '#fff' : '#1b1f29',
+        backgroundColor: isSelected ? '#1b1f29' : '#fff',
+        border: '2px solid #1b1f29',
+        borderRadius: '5px',
+        marginTop: '.25em',
+        cursor: 'pointer',
+        maxWidth: '97%'
     }),
 };
 

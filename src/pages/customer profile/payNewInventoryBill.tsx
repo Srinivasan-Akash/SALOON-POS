@@ -5,7 +5,7 @@ import Select from "react-select";
 import InvoiceTemplate from "./invoiceTemplate";
 import { customerCollection, databaseID, databases, inventoryCollection, invoiceCollection, invoicesBucket, projectId, storage, whatsapp_endpoint } from "../../appwrite/config";
 import { v4 as uuidv4 } from 'uuid';
-import { customStyles, dataURLtoBlob } from "../../utils/utils";
+import { customStyles, customStylesV2, customStylesV3, dataURLtoBlob } from "../../utils/utils";
 import { useDataContext } from "../../context api/DataContext";
 import html2canvas from "html2canvas";
 
@@ -235,12 +235,14 @@ Thank you for choosing our products! If you have any questions, feel free to rea
                         <div className="formRow" key={index}>
                             <div className="dropdown">
                                 <Select
-                                    styles={customStyles}
+                                    styles={customStylesV2}
                                     options={formattedInventory}
                                     value={row.selectedService}
                                     onChange={(selectedOption) => handleServiceChange(selectedOption, index, 'selectedService')}
                                     placeholder="Select Products"
                                     isClearable
+                                    maxMenuHeight={200}
+
                                 />
                             </div>
 
@@ -272,7 +274,7 @@ Thank you for choosing our products! If you have any questions, feel free to rea
                 <div className="detailsToKnow">
                     <div>
                         <Select
-                            styles={customStyles}
+                            styles={customStylesV3}
                             options={paymentMode}
                             value={paymentModeInput}
                             onChange={(selectedOption) => setPaymentModeInput(selectedOption)}
@@ -282,7 +284,7 @@ Thank you for choosing our products! If you have any questions, feel free to rea
                     </div>
                     <div>
                         <Select
-                            styles={customStyles}
+                            styles={customStylesV3}
                             options={paymentStatus}
                             value={paymentStatusInput}
                             onChange={(selectedOption) => setPaymentStatusInput(selectedOption)}

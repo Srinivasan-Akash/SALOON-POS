@@ -254,6 +254,7 @@ Thank you for choosing our services! If you have any questions, feel free to rea
                                     onChange={(selectedOption) => handleServiceChange(selectedOption, index, 'selectedService')}
                                     placeholder="Select Services"
                                     isClearable
+                                maxMenuHeight={200}
                                 />
                             </div>
 
