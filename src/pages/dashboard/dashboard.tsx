@@ -8,6 +8,7 @@ import Reports from "./components/Reports/Reports";
 import Inventory from "./components/Inventory/Inventory";
 import Settings from "./components/Settings/Settings";
 import { useDataContext } from "../../context api/DataContext";
+import Calender from "./components/Calender/Calender";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<string>("Dashboard")
@@ -20,6 +21,7 @@ export default function Dashboard() {
     { key: "All Reports", label: "All Reports", component: <Reports /> },
     { key: "Store Inventory", label: "Store Inventory", component: <Inventory /> },
     { key: "Settings", label: "Settings", component: <Settings /> },
+    { key: "Calender", label: "Calender", component: <Calender /> },
   ];
 
   if (intialLoading.customers || intialLoading.invoices) {
@@ -59,6 +61,7 @@ export default function Dashboard() {
             {activeTab === "All Reports" && <Reports />}
             {activeTab === "Store Inventory" && <Inventory />}
             {activeTab === "Settings" && <Settings />}
+            {activeTab === "Calender" && <Calender />}
 
             <div className="overlay"></div>
           </div>

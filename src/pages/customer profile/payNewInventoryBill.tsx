@@ -5,7 +5,7 @@ import Select from "react-select";
 import InvoiceTemplate from "./invoiceTemplate";
 import { customerCollection, databaseID, databases, inventoryCollection, invoiceCollection, invoicesBucket, projectId, storage, whatsapp_endpoint } from "../../appwrite/config";
 import { v4 as uuidv4 } from 'uuid';
-import { customStyles, customStylesV2, customStylesV3, dataURLtoBlob } from "../../utils/utils";
+import { customStylesV2, customStylesV3, dataURLtoBlob } from "../../utils/utils";
 import { useDataContext } from "../../context api/DataContext";
 import html2canvas from "html2canvas";
 
