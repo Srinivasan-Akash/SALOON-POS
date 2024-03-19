@@ -12,10 +12,10 @@ export default function CustomerRegistration() {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleFormSubmit = () => {
-        if (!customerName || !customerEmail || !customerPhoneNumber) {
-            alert("Please fill in all the fields");
-            return;
-        }
+        // if (!customerName || !customerEmail || !customerPhoneNumber) {
+        //     alert("Please fill in all the fields");
+        //     return;
+        // }
 
         // Set loading state to true
         setIsLoading(true);

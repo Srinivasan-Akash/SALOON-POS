@@ -188,16 +188,17 @@ Thank you for choosing our products! If you have any questions, feel free to rea
         }
     }
     const subTotal = formRows.reduce((sum, row) => sum + row.price, 0);
-    const GST = Math.round((18 / 100) * subTotal);
-    
-    const appliedDiscount: number = !discount
-      ? 0
-      : discount.includes('%')
-      ? subTotal * (parseFloat(discount.replace('%', '')) / 100)
-      : parseFloat(discount);
-    
-    const total = Math.round(subTotal + GST - appliedDiscount);
 
+    const appliedDiscount: number = !discount
+        ? 0
+        : discount.includes('%')
+            ? (subTotal) * (parseFloat(discount.replace('%', '')) / 100)
+            : parseFloat(discount);
+    
+    const GST = Math.round((18 / 100) * (subTotal - appliedDiscount));
+
+    const total = Math.round(subTotal + GST - appliedDiscount);
+    
     const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const updatedFormRows = [...formRows];
         updatedFormRows[index].price = parseFloat(e.target.value) || 0;

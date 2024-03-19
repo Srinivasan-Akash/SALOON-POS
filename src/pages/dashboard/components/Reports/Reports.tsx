@@ -10,7 +10,7 @@ export default function Reports() {
       const currentMonth = new Date().getMonth() + 1;
       const currentYear = new Date().getFullYear();
       const currentQuarter = Math.floor((currentMonth - 1) / 3) + 1;
-
+// id, paid amount, gst amount
       if (category === "Revenue" && invoice.paidFor === "service") {
         if (frequency === "Yearly") {
           return invoiceDate.getFullYear() === currentYear;
