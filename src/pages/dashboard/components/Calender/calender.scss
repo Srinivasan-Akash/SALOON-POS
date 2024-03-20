@@ -1,3 +1,42 @@
+
 .calenderWindow {
     padding: 0.5em;
+    // overflow-y: hidden;
+    // overflow-x: scroll;
+    scrollbar-width: none; /* For Firefox */
+    overflow-x: scroll;
+
+
+    .scheduler {
+        border: 2px solid #000;
+        border-radius: 15px;
+
+        // .e-table-container {
+        //     max-width: 60vw;
+        // }
+        
+    }
+
+    .one {
+        background: #c7bae3 !important;
+    }
+
+    .two {
+        background: #bed4e6 !important;
+    }
+}
+
+.e-schedule .e-work-cells,
+.e-schedule .e-header-cells, .e-schedule .e-resource-cells {
+    // width: 300px !important;
+    // min-width: 200px !important; /* Adjust the width as needed */
+    // height: 100px !important; /* Adjust the height as needed */
+}
+
+// td {
+//     background: red !important;
+// }
+
+.e-work-cells.e-alternate-cells.e-work-hours.one {
+    // background: green;
 }

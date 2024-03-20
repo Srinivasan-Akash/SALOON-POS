@@ -46,7 +46,7 @@ export default function Dashboard() {
           ))}
         </div>
 
-        <div className="content">
+        <div className={activeTab === "Calender" ? "content content-calender" : "content"}>
           <nav>
             <h2>{activeTab}</h2>
             <button className="logout">
