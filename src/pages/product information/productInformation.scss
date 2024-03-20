@@ -2,6 +2,7 @@
   margin-top: .5em !important;
 }
 
+
 .formRow .liquidUpdates {
   width: 35%;
   margin-top: .5em;
@@ -11,10 +12,14 @@
   border: 2px solid #1b1f29;
   border-radius: 5px;
   overflow: hidden;
+
+  
+  
   input {
-    width: 100% !important;
+    width: 100%;
     text-align: center;
-    padding: 0.7em !important;
+    padding: 0.7em;
+    background: none;
     margin: 0 !important;
     border: none !important;
   }
@@ -23,6 +28,36 @@
     padding: 0.7em;
     border: none;
     cursor: pointer;
+  }
+}
+
+
+.INPUT_BOX {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: .5em;
+
+  .text {
+    font-size: .85rem;
+    width: 50% !important;
+    width: fit-content;
+  }
+
+  .text2 {
+    margin-left: .25em;
+  }
+
+  .text3 {
+    width: 80% !important;
+  }
+
+  input {
+    width: 50% !important;
+    display: inline;
+    // background: red !important;
+    text-align: right !important;
+    padding: 0 !important;
   }
 }
 

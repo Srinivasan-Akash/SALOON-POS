@@ -13,6 +13,7 @@
   "dependencies": {
     "@bitnoi.se/react-scheduler": "^0.1.5",
     "@emotion/react": "^11.11.4",
+    "@microsoft/signalr": "^8.0.0",
     "@syncfusion/ej2-react-schedule": "^25.1.35",
     "appwrite": "^13.0.2",
     "html2canvas": "^1.4.1",

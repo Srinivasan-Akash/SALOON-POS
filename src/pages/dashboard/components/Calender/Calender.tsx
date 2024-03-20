@@ -5,6 +5,7 @@ import { addClass } from '@syncfusion/ej2-base';
 import { Inject, ScheduleComponent, Day, Week, Month, ResourceDirective, ResourcesDirective, ViewDirective, ViewsDirective, DragAndDrop, Resize, TimelineViews, TimelineMonth } from "@syncfusion/ej2-react-schedule"
 export default function Calender() {
 
+
     useEffect(() => {
         const popup = document.querySelector('[style*="z-index: 999999999;"]');
         const popup2 = document.querySelector('[style*="z-index: 99999;"]');
@@ -20,9 +21,16 @@ export default function Calender() {
             popup2.parentNode.removeChild(popup2);
             console.log("Element with z-index 999999999 deleted.");
         }
-
-
     }, [])
+
+    const data = [{
+        Id: 1,
+        EndTime:  new Date(2024, 2, 20, 12, 30, 0),
+        StartTime:  new Date(2024, 2, 20, 10, 30, 0),
+        Subject: "HAIR CUT",
+        IsAllDay: false,
+        
+    }]
 
     const resourceData: Record<string, any>[] = [
         { text: 'Will Smith', id: 1, color: '#ea7a57', ResourceId: 1, workDays: [0, 1, 2, 3, 4, 5, 6] },
@@ -56,12 +64,10 @@ export default function Calender() {
         }
     }
 
-
-
     return (
         <div className={'calenderWindow'}>
             <ScheduleComponent
-                renderCell={onRenderCell}
+                renderCell={onRenderCell} eventSettings={{dataSource: data}} selectedDate={new Date(2024, 2, 20, 10, 30, 0)}
                 height={'540px'} className="scheduler" group={groupData}>
                 <ResourcesDirective>
                     <ResourceDirective field='DoctorId' title='Doctor Name' name='Doctors' dataSource={resourceData} textField='text' idField='id' groupIDField='groupId' colorField='color' workDaysField='workDays' startHourField='startHour' endHourField='endHour' />

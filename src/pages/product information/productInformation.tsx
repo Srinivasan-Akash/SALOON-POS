@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaHome, FaMinus, FaPlus, FaSpinner } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 import profile from "../../assets/profile.webp"
@@ -27,50 +27,18 @@ export default function ProductInformation() {
 
     const [loading, setLoading] = useState(true); // Added loading state
     const [activeTab, setActiveTab] = useState<string>("Adujust Product");
-    const handleUpdate = (field: string, action: string) => {
-        const currentFieldValue = productData[field];
-        const numericValue = parseFloat(currentFieldValue);
-    
-        if (!isNaN(numericValue)) {
-            let updatedValue = numericValue;
-    
-            if (action === "increment") {
-                // Check if increasing will exceed the total liquid quantity
-                if (updatedValue < parseFloat(productData.liquid)) {
-                    updatedValue += 1;
-                }
-            } else if (action === "decrement") {
-                if (updatedValue > 0) {
-                    updatedValue -= 1;
-                }
-            }
-    
-            // If remainingLiquid is 0, set quantity to decrement by 1 and remainingLiquid to liquid
-            if (field === "remainingLiquid" && updatedValue === 0) {
-                setProductData((prevData: any) => ({
-                    ...prevData,
-                    quantity: prevData.quantity - 1,
-                    remainingLiquid: prevData.liquid,
-                }));
-            } else {
-                // Extract the unit (e.g., 'ml' or 'g') from the current field value
-                const unitMatch = currentFieldValue.match(/[a-zA-Z]+/);
-                const unit = unitMatch ? unitMatch[0] : '';
-    
-                // Append the unit back to the updated value
-                setProductData((prevData: any) => ({
-                    ...prevData,
-                    [field]: `${updatedValue}${unit}`,
-                }));
-            }
-        }
+    const handleUpdate = (field: string, value: string) => {
+        setProductData((prevData: any) => ({
+            ...prevData,
+            [field]: value
+        }));
     };
 
     const updateProductValue = async (documentId: string) => {
         try {
             setLoading(true);
             await databases.updateDocument(databaseID, inventoryCollection, documentId, productData);
-            reFetch("inventory")
+            reFetch("inventory");
             alert("Product details updated successfully");
         } catch (error) {
             alert("Error updating product details. Please try again.");
@@ -160,32 +128,41 @@ export default function ProductInformation() {
                             <div className="headline">
                                 <h2 className="title">Update Product Information</h2>
                             </div>
-                            <div className="formRow" >
+                            <div className="formRow">
                                 <div className="liquidUpdates">
-                                    <button onClick={() => handleUpdate("remainingLiquid", "decrement")} style={{ borderRight: "2px solid #1b1f29" }}>
+                                    <button onClick={() => handleUpdate("remainingLiquid", String(parseFloat(productData.remainingLiquid) - 1))} style={{ borderRight: "2px solid #1b1f29" }}>
                                         <FaMinus size={12} />
                                     </button>
-                                    <input type="text" value={productData.remainingLiquid + "/" + productData.liquid} />
-                                    <button onClick={() => handleUpdate("remainingLiquid", "increment")} style={{ borderLeft: "2px solid #1b1f29" }}>
+                                    <div className="INPUT_BOX">
+                                        <input type="text" onChange={(e) => handleUpdate("remainingLiquid", e.target.value)} value={productData.remainingLiquid} />
+                                        <span className="text"> {"/" + productData.liquid}</span>
+                                    </div>
+                                    <button onClick={() => handleUpdate("remainingLiquid", String(parseFloat(productData.remainingLiquid) + 1))} style={{ borderLeft: "2px solid #1b1f29" }}>
                                         <FaPlus size={12} />
                                     </button>
                                 </div>
 
                                 <div className="liquidUpdates">
-                                    <button onClick={() => handleUpdate("price", "decrement")} style={{ borderRight: "2px solid #1b1f29" }}>
+                                    <button onClick={() => handleUpdate("price", String(parseFloat(productData.price) - 1))} style={{ borderRight: "2px solid #1b1f29" }}>
                                         <FaMinus size={12} />
                                     </button>
-                                    <input type="text" value={productData.price + " ₹"} />
-                                    <button onClick={() => handleUpdate("price", "increment")} style={{ borderLeft: "2px solid #1b1f29" }}>
+                                    <div className="INPUT_BOX">
+                                        <input type="text" onChange={(e) => handleUpdate("price", e.target.value)} value={productData.price} />
+                                        <span className="text text2"> {" Rs."}</span>
+                                    </div>
+                                    <button onClick={() => handleUpdate("price", String(parseFloat(productData.price) + 1))} style={{ borderLeft: "2px solid #1b1f29" }}>
                                         <FaPlus size={12} />
                                     </button>
                                 </div>
                                 <div className="liquidUpdates">
-                                    <button onClick={() => handleUpdate("quantity", "decrement")} style={{ borderRight: "2px solid #1b1f29" }}>
+                                    <button onClick={() => handleUpdate("quantity", String(parseFloat(productData.quantity) - 1))} style={{ borderRight: "2px solid #1b1f29" }}>
                                         <FaMinus size={12} />
                                     </button>
-                                    <input type="text" value={productData.quantity + " bottles"} />
-                                    <button onClick={() => handleUpdate("quantity", "increment")} style={{ borderLeft: "2px solid #1b1f29" }}>
+                                    <div className="INPUT_BOX">
+                                    <input type="text" onChange={(e) => handleUpdate("quantity", e.target.value)} value={productData.quantity} />
+                                        <span className="text text2 text3"> {"bottles"}</span>
+                                    </div>
+                                    <button onClick={() => handleUpdate("quantity", String(parseFloat(productData.quantity) + 1))} style={{ borderLeft: "2px solid #1b1f29" }}>
                                         <FaPlus size={12} />
                                     </button>
                                 </div>
@@ -194,11 +171,8 @@ export default function ProductInformation() {
                                 {loading && <FaSpinner className="spinner" />} Update Product Details
                             </button>
                         </div>
-
-                        
                     </>
                 )}
-                
                 <div className="overlay"></div>
             </div>
         </main>
