@@ -1,5 +1,5 @@
 .inventoryContainer {
-  padding: 0.5em;
+  padding: 0 0.5em 0.5em 0.5em;
   position: relative;
 
   .swiper{
@@ -191,8 +191,9 @@
       border-radius: 10px;
       display: flex;
       align-items: flex-start;
-      // justify-content: space-around;
-
+      position: relative;
+      overflow: hidden;
+      
       .progress {
         width: 40px;
         height: 90%;
@@ -236,10 +237,41 @@
 
         .productName {
           font-size: 1rem;
+          display: flex;
+          align-items: center;
           width: 100%;
           padding: 0.5em;
           border-radius: 5px;
           border: 2px solid #1b1f29;
+          position: relative;
+
+          .delete {
+            background: #fb7575;
+            position: absolute;
+            right: 2px;
+            width: 35px;
+            height: 90%;
+            border: 2px solid #1b1f29;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+
+            svg {
+              padding: 0;
+              margin: 0;
+            }
+          }
+    
+          .delete:hover {
+            background: #f83333;
+            transition: background .5s ease;
+          }
+          .delete:not(:hover) {
+            background: #fb7575;
+            transition: background .5s ease;
+          }
         }
 
         button {
