@@ -1,43 +1,151 @@
+.schedule-cell-dimension.e-schedule
+  .e-vertical-view
+  .e-date-header-wrap
+  table
+  col,
+.schedule-cell-dimension.e-schedule .e-vertical-view .e-content-wrap table col {
+  width: 100px;
+}
+
+.schedule-cell-dimension.e-schedule
+  .e-vertical-view
+  .e-time-cells-wrap
+  table
+  td,
+.schedule-cell-dimension.e-schedule .e-vertical-view .e-work-cells {
+  height: 50px;
+}
+
+.schedule-cell-dimension.e-schedule .e-month-view .e-work-cells,
+.schedule-cell-dimension.e-schedule
+  .e-month-view
+  .e-date-header-wrap
+  table
+  col {
+  width: 100px;
+}
+
+.schedule-cell-dimension.e-schedule .e-month-view .e-work-cells {
+  height: 50px;
+}
 
 .calenderWindow {
-    padding: 0.5em;
-    // overflow-y: hidden;
-    // overflow-x: scroll;
-    scrollbar-width: none; /* For Firefox */
-    overflow-x: scroll;
+  padding: 0.5em;
+  overflow-y: scroll;
+  padding-bottom: 1.5em;
+  max-height: 90vh;
 
+  .card {
+    background: #fff;
+    border: 2px solid #1b1f29;
+    border-radius: 10px;
+    margin-top: 0.5em;
 
-    .scheduler {
-        border: 2px solid #000;
-        border-radius: 15px;
+    .headline {
+      background: #9f75fbbe !important;
+      color: #1b1f29 !important;
+      padding: 0.7em !important;
+      border-bottom: 2px solid #1b1f29;
+      border-radius: 10px 10px 0 0 !important;
+      .title {
+        font-weight: 800;
+        font-size: 1.25rem;
+      }
 
-        // .e-table-container {
-        //     max-width: 60vw;
-        // }
-        
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      svg,
+      button {
+        cursor: pointer;
+        background: #a075fb;
+        border-radius: 100%;
+        padding: 0.5em;
+        border: 2px solid #1b1f29;
+        box-sizing: content-box;
+      }
+
+      button {
+        border-radius: 5px;
+        font-weight: 700;
+        padding: 0.5em 1em;
+      }
     }
 
-    .one {
-        background: #c7bae3 !important;
+    .rows {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5em;
+      padding: 0.7em;
+      .row {
+        border: 2px solid #1b1f29;
+        background: #fff;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+
+        .title {
+          padding: 0.5em;
+        }
+        .options {
+          display: flex;
+          border-top-right-radius: 2.5px;
+          border-bottom-right-radius: 2.5px;
+          overflow: hidden;
+          span,
+          p {
+            padding: 0.5em;
+          }
+
+          span {
+            background: #a075fb;
+            border-left: 2px solid #1b1f29;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+          }
+        }
+      }
     }
 
-    .two {
-        background: #bed4e6 !important;
+    .form {
+      display: flex;
+      width: 45%;
+      gap: 0.25em;
+      .serviceInput,
+      .priceInput {
+        border: 2px solid #1b1f29;
+        border-radius: 5px;
+        padding: 0.5em;
+        // font-size: .8rem;
+        outline: none;
+        width: 60%;
+      }
+
+      .priceInput {
+        width: 40%;
+      }
     }
-}
+  }
 
-.e-schedule .e-work-cells,
-.e-schedule .e-header-cells, .e-schedule .e-resource-cells {
-    // width: 3px !important;
-    // background: green !important;
-    // min-width: 200px !important; /* Adjust the width as needed */
-    // height: 100px !important; /* Adjust the height as needed */
-}
+  .calender {
+    height: 100vh;
+    margin-top: 0.5em;
+  }
 
-// td {
-//     background: red !important;
-// }
+  .scheduler {
+    border: 2px solid #000;
+    border-radius: 15px;
+  }
 
-.e-work-cells.e-alternate-cells.e-work-hours.one {
-    // background: green;
+  .one {
+    background: #c7bae3 !important;
+  }
+
+  .two {
+    background: #bed4e6 !important;
+  }
 }
