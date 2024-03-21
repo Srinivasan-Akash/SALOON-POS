@@ -16,6 +16,8 @@ export const invoiceCollection = "65e043578f69e288f5d5"
 export const servicesCollection = "65e01b67e07c4ebcbe3a"
 export const expensesCollection = "65ede5db9add54dc0881"
 export const inventoryCollection = "65e479f4a71fe05211f3"
+export const appointmentsCollection = "65fc3288d45af6e51834"
+export const appointmentsDocument = "65fc33d4ac3c2cbaff65"
 export const invoicesBucket = "65ed39277c0abb68df7a"
 
 // export const whatsapp_endpoint = "http://localhost:3000"

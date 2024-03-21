@@ -117,8 +117,8 @@ export default function Settings() {
                 {item.serviceName} - {item.price} ₹
               </p>
               <div className="options">
-                <span><FaEdit onClick={() => editItem(item.$id)} /></span>
-                <span><MdDelete onClick={() => deleteItem(item.$id)} /></span>
+                <span onClick={() => editItem(item.$id)}><FaEdit/></span>
+                <span onClick={() => deleteItem(item.$id)}><MdDelete/></span>
               </div>
             </div>
           ))}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaHome, FaMinus, FaPlus, FaSpinner } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 import profile from "../../assets/profile.webp"
