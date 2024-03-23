@@ -22,10 +22,21 @@ import {
   appointmentsDocument,
   databaseID,
   databases,
+  employeesCollection,
 } from "../../../../appwrite/config";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { useDataContext } from "../../../../context api/DataContext";
+import { v4 as uuidv4 } from "uuid";
+
 export default function Calender() {
+  const [scheduleData, setScheduleData] = useState([]);
+  const [employeeName, setEmployeeName] = useState("");
+  const [jobRole, setJobRole] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState("");
+  const { employees, reFetch } = useDataContext();
+
   useEffect(() => {
     const popup = document.querySelector('[style*="z-index: 999999999;"]');
     const popup2 = document.querySelector('[style*="z-index: 99999;"]');
@@ -40,11 +51,7 @@ export default function Calender() {
       popup2.parentNode.removeChild(popup2);
       console.log("Element with z-index 999999999 deleted.");
     }
-  }, []);
 
-  const [scheduleData, setScheduleData] = useState([]);
-
-  useEffect(() => {
     databases
       .getDocument(databaseID, appointmentsCollection, appointmentsDocument)
       .then((response) => {
@@ -76,120 +83,15 @@ export default function Calender() {
     }
   }, [scheduleData]);
 
-  const resourceData: Record<string, any>[] = [
-    {
-      text: "Will Smith",
-      id: 1,
+  const resourceData: Record<string, any>[] = employees.map((item: any, index: number) => {
+    return {
+      text: item.employeeName,
+      id: index,
       color: "#ea7a57",
-      ResourceId: 1,
+      ResourceId: index,
       workDays: [0, 1, 2, 3, 4, 5, 6],
-    },
-    {
-      text: "Alice",
-      id: 2,
-      color: "rgb(53, 124, 210)",
-      ResourceId: 2,
-      workDays: [0, 1, 2, 3, 4, 5, 6],
-    },
-    {
-      text: "Robson",
-      id: 3,
-      color: "#7fa900",
-      ResourceId: 3,
-      workDays: [0, 1, 2, 3, 4, 5, 6],
-    },
-    {
-      text: "Akash",
-      id: 4,
-      color: "#7fa900",
-      ResourceId: 4,
-      workDays: [0, 1, 2, 3, 4, 5, 6],
-    },
-    {
-      text: "Ram",
-      id: 5,
-      color: "#ea7a57",
-      ResourceId: 5,
-      workDays: [0, 1, 2, 3, 4, 5, 6],
-    },
-    {
-      text: "BOB",
-      id: 6,
-      color: "rgb(53, 124, 210)",
-      ResourceId: 6,
-      workDays: [0, 1, 2, 3, 4, 5, 6],
-    },
-    {
-      text: "RAVAN",
-      id: 7,
-      color: "#7fa900",
-      ResourceId: 7,
-      workDays: [0, 1, 2, 3, 4, 5, 6],
-    },
-    {
-      text: "GAJAN",
-      id: 8,
-      color: "#7fa900",
-      ResourceId: 8,
-      workDays: [0, 1, 2, 3, 4, 5, 6],
-    },
-    {
-      text: "VALI",
-      id: 9,
-      color: "#ea7a57",
-      ResourceId: 9,
-      workDays: [0, 1, 2, 3, 4, 5, 6],
-    },
-    {
-      text: "SUGREEV",
-      id: 10,
-      color: "rgb(53, 124, 210)",
-      ResourceId: 10,
-      workDays: [0, 1, 2, 3, 4, 5, 6],
-    },
-    {
-      text: "BODHI",
-      id: 11,
-      color: "#7fa900",
-      ResourceId: 11,
-      workDays: [0, 1, 2, 3, 4, 5, 6],
-    },
-    {
-      text: "RoJKn",
-      id: 12,
-      color: "#7fa900",
-      ResourceId: 12,
-      workDays: [0, 1, 2, 3, 4, 5, 6],
-    },
-    {
-      text: "Winjmkl Smith",
-      id: 13,
-      color: "#ea7a57",
-      ResourceId: 13,
-      workDays: [0, 1, 2, 3, 4, 5, 6],
-    },
-    {
-      text: "Alicn m",
-      id: 14,
-      color: "rgb(53, 124, 210)",
-      ResourceId: 14,
-      workDays: [0, 1, 2, 3, 4, 5, 6],
-    },
-    {
-      text: "Robsofjkn",
-      id: 15,
-      color: "#7fa900",
-      ResourceId: 15,
-      workDays: [0, 1, 2, 3, 4, 5, 6],
-    },
-    {
-      text: "Robsodjkld;lkjhbn",
-      id: 16,
-      color: "#7fa900",
-      ResourceId: 16,
-      workDays: [0, 1, 2, 3, 4, 5, 6],
-    },
-  ];
+    }
+  })
 
   const groupData = {
     resources: ["Doctors"],
@@ -213,7 +115,70 @@ export default function Calender() {
       }
     }
   };
-const services = [0, 1, 0, 0]
+  const handleAction = async () => {
+    setLoading(true);
+
+    try {
+      if (!employeeName.trim() || !jobRole.trim()) {
+        // Check if either field is empty
+        throw new Error("Please enter both service name and price.");
+      }
+
+      const collection = employeesCollection;
+
+      if (selectedItemId) {
+        // Editing existing item
+        await databases.updateDocument(databaseID, collection, selectedItemId, {
+          employeeName: employeeName,
+          jobRole: jobRole,
+        });
+        setSelectedItemId("");
+      } else {
+        // Adding new item
+        await databases.createDocument(databaseID, collection, uuidv4(), {
+          employeeName: employeeName,
+          jobRole: jobRole,
+        });
+      }
+
+      reFetch("employees");
+      setEmployeeName("");
+      setJobRole("");
+    } catch (error) {
+      console.error("Error performing action:", error);
+      alert(
+        `Failed to ${selectedItemId ? "edit" : "add"} item. Please try again.`
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  async function editEmployee(documentId: string) {
+    try {
+      const items = employees;
+      const item = items.find((item: any) => item.$id === documentId);
+      console.log(documentId, items, item);
+      if (item) {
+        setEmployeeName(item.employeeName);
+        setJobRole(item.jobRole);
+        setSelectedItemId(documentId);
+      }
+    } catch (error) {
+      console.error("Error editing item:", error);
+      alert("Failed to fetch item data. Please try again.");
+    }
+  }
+
+  async function deleteEmployee(documentId: string) {
+    try {
+      await databases.deleteDocument(databaseID, employeesCollection, documentId);
+      reFetch("employees");
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      alert("Failed to delete item. Please try again.");
+    }
+  }
   return (
     <div className={"calenderWindow"}>
       <div className="card">
@@ -224,50 +189,39 @@ const services = [0, 1, 0, 0]
               className="serviceInput"
               type="text"
               placeholder="Enter Employee Name"
-              // value={serviceForm.serviceName}
-              // onChange={(e) =>
-              //   setServiceForm({ ...serviceForm, serviceName: e.target.value })
-              // }
+              value={employeeName}
+              onChange={(e) => setEmployeeName(e.target.value)}
             />
             <input
               className="priceInput"
-              type="number"
+              type="text"
               placeholder="Job Role"
-              // value={serviceForm.price}
-              // onChange={(e) =>
-              //   setServiceForm({ ...serviceForm, price: e.target.value })
-              // }
+              value={jobRole}
+              onChange={(e) => setJobRole(e.target.value)}
             />
-            <button 
-            // onClick={handleAction} disabled={loading}
-            >
-              {/* {loading
+            <button onClick={handleAction} disabled={loading}>
+              {loading
                 ? selectedItemId
                   ? "Editing..."
                   : "Adding..."
                 : selectedItemId
                 ? "EDIT"
-                : "ADD"} */}
-                ADD
+                : "ADD"}
             </button>
           </div>
         </div>
 
         <div className="rows">
-          {services.map((item: any, index: number) => (
+          {employees.map((item: any, index: number) => (
             <div className="row" key={index}>
               <p className="title">
-                {item.serviceName} - {item.price} ₹
+                {item.employeeName} - {item.jobRole}
               </p>
               <div className="options">
-                <span 
-                // onClick={() => editItem(item.$id)}
-                >
+                <span onClick={() => editEmployee(item.$id)}>
                   <FaEdit />
                 </span>
-                <span 
-                // onClick={() => deleteItem(item.$id)}
-                >
+                <span onClick={() => deleteEmployee(item.$id)}>
                   <MdDelete />
                 </span>
               </div>
