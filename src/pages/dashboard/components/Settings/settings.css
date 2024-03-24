@@ -1,0 +1,88 @@
+.settingsWindow {
+  margin: 0.5em;
+}
+.settingsWindow .card {
+  background: #fff;
+  border: 2px solid #1b1f29;
+  border-radius: 10px;
+  margin-top: 0.5em;
+}
+.settingsWindow .card .headline {
+  background: rgba(159, 117, 251, 0.7450980392) !important;
+  color: #1b1f29 !important;
+  padding: 0.7em !important;
+  border-bottom: 2px solid #1b1f29;
+  border-radius: 10px 10px 0 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.settingsWindow .card .headline .title {
+  font-weight: 800;
+  font-size: 1.25rem;
+}
+.settingsWindow .card .headline svg,
+.settingsWindow .card .headline button {
+  cursor: pointer;
+  background: #a075fb;
+  border-radius: 100%;
+  padding: 0.5em;
+  border: 2px solid #1b1f29;
+  box-sizing: content-box;
+}
+.settingsWindow .card .headline button {
+  border-radius: 5px;
+  font-weight: 700;
+  padding: 0.5em 1em;
+}
+.settingsWindow .card .rows {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5em;
+  padding: 0.7em;
+}
+.settingsWindow .card .rows .row {
+  border: 2px solid #1b1f29;
+  background: #fff;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+.settingsWindow .card .rows .row .title {
+  padding: 0.5em;
+}
+.settingsWindow .card .rows .row .options {
+  display: flex;
+  border-top-right-radius: 2.5px;
+  border-bottom-right-radius: 2.5px;
+  overflow: hidden;
+}
+.settingsWindow .card .rows .row .options span,
+.settingsWindow .card .rows .row .options p {
+  padding: 0.5em;
+}
+.settingsWindow .card .rows .row .options span {
+  background: #a075fb;
+  border-left: 2px solid #1b1f29;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.settingsWindow .card .form {
+  display: flex;
+  width: 45%;
+  gap: 0.25em;
+}
+.settingsWindow .card .form .serviceInput,
+.settingsWindow .card .form .priceInput {
+  border: 2px solid #1b1f29;
+  border-radius: 5px;
+  padding: 0.5em;
+  outline: none;
+  width: 60%;
+}
+.settingsWindow .card .form .priceInput {
+  width: 40%;
+}/*# sourceMappingURL=settings.css.map */

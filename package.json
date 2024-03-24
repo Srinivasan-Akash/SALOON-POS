@@ -12,6 +12,9 @@
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
+    "@syncfusion/ej2-react-calendars": "^25.1.35",
+    "@syncfusion/ej2-react-dropdowns": "^25.1.35",
+    "@syncfusion/ej2-react-navigations": "^25.1.35",
     "@syncfusion/ej2-react-schedule": "^25.1.35",
     "appwrite": "^13.0.2",
     "html2canvas": "^1.4.1",

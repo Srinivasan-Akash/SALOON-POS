@@ -1,0 +1,117 @@
+.loginScreen {
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  place-items: center;
+}
+.loginScreen .bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.4;
+  background: url("../../assets/pattern.png") #fffaf1;
+}
+.loginScreen .loginContainer {
+  width: 80%;
+  max-width: 900px;
+  max-height: 500px;
+  height: 80%;
+  background: #fff;
+  display: flex;
+  border-radius: 1rem;
+  border: 5px solid #1b1f29;
+}
+.loginScreen .loginContainer .left {
+  width: 50%;
+  height: 100%;
+  background: #BFA1FF;
+  border-radius: 10px;
+  display: flex;
+}
+.loginScreen .loginContainer .left img {
+  width: 100%;
+}
+.loginScreen .loginContainer .right {
+  width: 50%;
+  border-radius: 10px;
+  padding: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.loginScreen .loginContainer .right h1 {
+  font-size: 1.5rem;
+  text-align: center;
+}
+.loginScreen .loginContainer .right .or-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 1em 0 0.5em 0;
+}
+.loginScreen .loginContainer .right .or-line {
+  flex: 1;
+  height: 3px;
+  background-color: #333; /* Retro-style line color */
+  margin: 0 10px; /* Adjust the margin for spacing */
+}
+.loginScreen .loginContainer .right .or-text {
+  background-color: #BFA1FF;
+  border: 2px solid #1b1f29; /* Retro-style background color for the text */
+  color: #333; /* Retro-style text color */
+  padding: 0.5em 1em;
+  font-weight: 700; /* Add some padding for better visibility */
+  border-radius: 8px; /* Rounded corners for a softer look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+}
+.loginScreen .loginContainer .right .box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  margin-top: 0.5em;
+  width: 100%;
+}
+.loginScreen .loginContainer .right .box input {
+  padding: 0.5em;
+  font-size: 1rem;
+  outline: none;
+  background: #FFFAF1;
+  border: 2px solid #1b1f29;
+  border-radius: 5px;
+}
+.loginScreen .loginContainer .right .box button {
+  font-size: 1rem;
+  padding: 0.5em;
+  box-shadow: 3px 4px 0px rgb(0, 0, 0);
+  border-radius: 5px;
+  border: 2px solid #1b1f29;
+  background: #BFA1FF;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+.loginScreen .loginContainer .right .box .spinner-icon {
+  animation: rotate 1s linear infinite; /* You can adjust the duration and timing function as needed */
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.loginScreen .loginContainer .right .box button:hover {
+  background: #a075fb;
+  transition: background 0.5s ease;
+}
+.loginScreen .loginContainer .right .box button:not(:hover) {
+  background: #BFA1FF;
+  transition: background 0.5s ease;
+}/*# sourceMappingURL=register.css.map */

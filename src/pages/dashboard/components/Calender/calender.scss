@@ -1,3 +1,21 @@
+.desc {
+  .copyBtn{
+    border-radius: 100px;
+
+    background: red;
+    position: absolute;
+    top: 12px;
+svg {
+  fill: #fff;
+}
+    right: 100px;
+    border: none;
+    background: none;
+  }
+
+}
+
+
 .schedule-cell-dimension.e-schedule
   .e-vertical-view
   .e-date-header-wrap

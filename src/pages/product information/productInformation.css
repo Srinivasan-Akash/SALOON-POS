@@ -1,0 +1,73 @@
+.productInfoName {
+  margin-top: 0.5em !important;
+}
+
+.formRow .liquidUpdates {
+  width: 35%;
+  margin-top: 0.5em;
+  display: flex;
+  align-items: center;
+  position: relative;
+  border: 2px solid #1b1f29;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.formRow .liquidUpdates input {
+  width: 100%;
+  text-align: center;
+  padding: 0.7em;
+  background: none;
+  margin: 0 !important;
+  border: none !important;
+}
+.formRow .liquidUpdates button {
+  padding: 0.7em;
+  border: none;
+  cursor: pointer;
+}
+
+.INPUT_BOX {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 0.5em;
+}
+.INPUT_BOX .text {
+  font-size: 0.85rem;
+  width: 50% !important;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+.INPUT_BOX .text2 {
+  margin-left: 0.25em;
+}
+.INPUT_BOX .text3 {
+  width: 80% !important;
+}
+.INPUT_BOX input {
+  width: 50% !important;
+  display: inline;
+  text-align: right !important;
+  padding: 0 !important;
+}
+
+.update {
+  width: 100%;
+  border: 2px solid #1b1f29;
+  border-radius: 5px;
+  padding: 0.7em;
+  margin-top: 0.5em;
+  background: #a075fb;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.update:hover {
+  background: #7a43f1;
+  transition: all 0.5s ease;
+}
+
+.update:not(:hover) {
+  background: #a075fb;
+  transition: all 0.5s ease;
+}/*# sourceMappingURL=productInformation.css.map */

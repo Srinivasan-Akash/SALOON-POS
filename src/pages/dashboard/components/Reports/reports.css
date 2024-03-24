@@ -1,0 +1,73 @@
+.reportsWindow {
+  padding: 0.5em;
+}
+.reportsWindow .parent {
+  width: 100%;
+  height: -moz-fit-content;
+  height: fit-content;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 10px;
+  padding: 0.5em 0.8em;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  margin-top: 0.5em;
+}
+.reportsWindow .parent button {
+  background: #a075fb;
+  padding: 0.7em 1.5em;
+  font-weight: 700;
+  cursor: pointer;
+  border: 2px solid #000;
+  border-radius: 5px;
+}
+.reportsWindow .parent button:hover {
+  background: #8755f3;
+  transition: background 0.5s ease;
+}
+.reportsWindow .parent button:not(:hover) {
+  background: #a075fb;
+  transition: background 0.5s ease;
+}
+.reportsWindow .parent div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.reportsWindow .parent div h2 {
+  font-size: 1.2rem;
+}
+.reportsWindow .parent div span {
+  font-weight: 500;
+  margin-left: 1em;
+  font-size: 1rem;
+  color: rgba(0, 0, 0, 0.3647058824);
+}
+.reportsWindow .or-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 1em 0 1em 0;
+}
+.reportsWindow .or-container .or-line {
+  flex: 1;
+  height: 3px;
+  background-color: #333; /* Retro-style line color */
+  margin: 0 10px; /* Adjust the margin for spacing */
+}
+.reportsWindow .or-container .or-text {
+  background-color: #bfa1ff;
+  border: 2px solid #1b1f29; /* Retro-style background color for the text */
+  color: #333; /* Retro-style text color */
+  padding: 0.5em 1em;
+  font-weight: 700; /* Add some padding for better visibility */
+  border-radius: 8px; /* Rounded corners for a softer look */
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+}
+.reportsWindow .parent:first-child {
+  margin: 0;
+}/*# sourceMappingURL=reports.css.map */
