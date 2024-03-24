@@ -30,9 +30,6 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { useDataContext } from "../../../../context api/DataContext";
 import { v4 as uuidv4 } from "uuid";
-import { DateTimePickerComponent } from "@syncfusion/ej2-react-calendars";
-// import { customStyles } from "../../../../utils/utils";
-// import Select from "react-select";
 
 export default function Calender() {
   const [scheduleData, setScheduleData] = useState([]);
