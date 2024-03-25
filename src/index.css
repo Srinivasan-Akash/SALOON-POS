@@ -42,3 +42,17 @@
               /* Second stripe */
           ) !important;
   }
+
+
+  .Toastify__toast-container {
+    width: 50%;
+   
+  }
+
+  .Toastify__toast {
+    border: 2px solid black; /* Add border style here */
+  }
+
+  .Toastify__progress-bar {
+    background-color: black; /* Add border style here */
+  }

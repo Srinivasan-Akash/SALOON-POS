@@ -5,6 +5,7 @@ import { MdDelete } from "react-icons/md";
 import { useDataContext } from "../../../../context api/DataContext";
 import { databaseID, databases, servicesCollection } from "../../../../appwrite/config";
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from "react-toastify";
 
 export default function Settings() {
   const { services, reFetch } = useDataContext();
@@ -47,7 +48,7 @@ export default function Settings() {
       });
     } catch (error) {
       console.error("Error performing action:", error);
-      alert(`Failed to ${selectedItemId ? "edit" : "add"} item. Please try again.`);
+      toast.error(`Failed to ${selectedItemId ? "edit" : "add"} item. Please try again.`)
     } finally {
       setLoading(false);
     }
@@ -58,9 +59,9 @@ export default function Settings() {
       const collection = servicesCollection;
       await databases.deleteDocument(databaseID, collection, documentId);
       reFetch("services");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error deleting item:", error);
-      alert("Failed to delete item. Please try again.");
+      toast.error(error.message)
     }
   }
 
@@ -76,9 +77,9 @@ export default function Settings() {
         });
         setSelectedItemId(documentId);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error editing item:", error);
-      alert("Failed to fetch item data. Please try again.");
+      toast.error(error.message)
     }
   }
 

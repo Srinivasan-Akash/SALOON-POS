@@ -3,6 +3,7 @@ import "./productRegistration.scss";
 import { useState } from "react";
 import { databaseID, databases, inventoryCollection } from "../../appwrite/config";
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from "react-toastify";
 
 export default function ProductRegistration() {
   const [productName, setProductName] = useState("");
@@ -15,6 +16,8 @@ export default function ProductRegistration() {
     // Access the form data using individual state values
     if (!productName || quantity === 0 || !liquid || price === 0) {
       alert("Please fill in all fields before submitting.");
+      toast.info("Please fill in all fields before submitting !!");
+
       return;
     }
 

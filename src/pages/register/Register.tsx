@@ -5,6 +5,7 @@ import { account } from '../../appwrite/config';
 import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
 import { FaSpinner } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -19,16 +20,15 @@ export default function Register() {
   
       // Check if any field is empty
       if (!saloonName || !gmail || !password) {
-        alert('Please fill in all fields');
+        toast.info("Please Fill In All Fields");
       } else if (authType === 'email') {
         const response = await account.create(uuidv4(), gmail, password, saloonName);
         console.log(response); // Success
-        alert('Successfully Registered');
+        toast.success("Registered Sucessfully !!");
         navigate('/dashboard');
       }
-    } catch (error) {
-      console.error(error);
-      alert(error)
+    } catch (error: any) {
+      toast.error(error.message);
     } finally {
       setIsLoading(false);
     }

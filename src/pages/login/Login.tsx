@@ -4,6 +4,8 @@ import loginImg from '../../assets/login.png';
 import { useNavigate } from 'react-router-dom';
 import { account } from '../../appwrite/config';
 import { FaSpinner } from 'react-icons/fa'; // Import the loading spinner icon
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -16,6 +18,7 @@ export default function Login() {
   };
 
   const handleLogin = (authType: string) => {
+
     if (authType === 'email') {
       setIsLoading(true); // Set loading to true when starting the login process
 
@@ -23,12 +26,13 @@ export default function Login() {
       promise.then(
         function (response) {
           console.log(response); // Success
-          alert('Logged In Successfully');
+          toast.success('Logged In Successfully');
+
           navigate("/dashboard")
+
         },
         function (error) {
-          console.log(error); // Failure
-          alert(error);
+          toast.error(error.message);
         }
       ).finally(() => {
         setIsLoading(false); // Set loading to false whether the process succeeds or fails
@@ -38,7 +42,9 @@ export default function Login() {
 
   return (
     <div className='loginScreen'>
-      <div className="bg"></div>
+      <div className="bg">
+      
+      </div>
       <div className="loginContainer">
         <div className="left">
           <img src={loginImg} alt='Login' />
@@ -84,6 +90,7 @@ export default function Login() {
           </div>
         </div>
       </div>
+      
     </div>
   );
 }

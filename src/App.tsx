@@ -8,6 +8,7 @@ import InvoicePage from './pages/invoice page/invoicePage';
 import ProductRegistration from './pages/product registration/productRegistration';
 import CustomerRegistration from './pages/customer registration/customerRegistration';
 import ProductInformation from './pages/product information/productInformation';
+// import { ToastContainer } from 'react-toastify';
 // import CustomerBill from './pages/customer bill/customerBill';
 function App() {
   return (
