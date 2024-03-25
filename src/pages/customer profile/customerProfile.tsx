@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { PayNewBill } from "./payNewBill";
 import { databaseID, databases, invoiceCollection } from "../../appwrite/config";
 import { Query } from "appwrite";
-import calculateTotalPrice from "../../utils/utils";
+import calculateTotalPrice, { getStylistName } from "../../utils/utils";
 import { useSearchParams } from 'react-router-dom';
 import PayNewInventoryBill from "./payNewInventoryBill";
 
@@ -174,7 +174,7 @@ export function Profile({ data, showBills }: { data: any, showBills?: boolean })
                         <div className="tabularDisplay">
                             <div className="head">
                                 <div>Status</div>
-                                <div>Price</div>
+                                <div>Stylist Name</div>
                                 <div>Date</div>
                             </div>
                             {invoices.map((item: any, index: number) => (
@@ -182,7 +182,7 @@ export function Profile({ data, showBills }: { data: any, showBills?: boolean })
                                     <div>
                                         <span className={item.status === true ? "green" : "red"}>{item.status === true ? "PAID" : "PENDING"}</span>
                                     </div>
-                                    <div>{calculateTotalPrice(item.services)} ₹</div>
+                                    <div>{getStylistName(item.services)}</div>
                                     <div>{new Date(item.$updatedAt).toLocaleDateString("en-GB")}</div>
                                 </div>
                             ))}

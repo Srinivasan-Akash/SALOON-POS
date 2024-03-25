@@ -6,6 +6,16 @@ export default function calculateTotalPrice(services: string): number {
     return totalPrice;
 }
 
+export function getStylistName(services: string): any {
+    const parsedServices = JSON.parse(services);
+    let stylists = ""
+    parsedServices.forEach((item:any) => {
+        stylists += item.selectedStaff.value
+    })
+    console.log(stylists)
+    return (stylists)
+}
+
 interface Option {
     value: string;
     price?: number;
