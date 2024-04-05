@@ -51,6 +51,7 @@ export default function PayNewInventoryBill({ data }: { data: any }) {
     const [paymentModeInput, setPaymentModeInput] = useState<Option | null>(null);
     const [paidAmount, setPaidAmount] = useState<string>("");
     const [paymentStatusInput, setPaymentStatusInput] = useState<Option | null>(null);
+    const [gstinNumber, setGstinNumber] = useState<string>();
 
     const [formRows, setFormRows] = useState<FormRow[]>([
         { selectedService: null, selectedStaff: null, quantity: 0, price: 0 }
@@ -169,7 +170,7 @@ Thank you for choosing our products! If you have any questions, feel free to rea
                 status: paymentStatusInput?.value === "PAID", // Store as true or false
                 services: JSON.stringify(formRows),
                 paymentMode: paymentModeInput?.value || "",
-                paidAmount: String(paidAmount) || String(total),
+                paidAmount: String(paidAmount),
                 discount: Math.round(appliedDiscount),
                 paidFor: "product"
             });
@@ -302,6 +303,14 @@ Thank you for choosing our products! If you have any questions, feel free to rea
                     </div>
                 </div>
 
+                <input
+          type="text"
+          placeholder="Enter Customer GST Number"
+          value={gstinNumber}
+          onChange={(e) => setGstinNumber(e.target.value)}
+          className="GST-NUMBER-INPUT"
+        />     
+        
                 <button className="total" disabled={isLoading} onClick={addTransaction}>{isLoading ? (
                     <>
                         <FaSpinner className="loading-icon" /> LOADING PLEASE WAIT...
@@ -321,7 +330,7 @@ Thank you for choosing our products! If you have any questions, feel free to rea
                     </div>
                 </div>
                 <div className="preview" ref={invoicePreviewRef}>
-                    <InvoiceTemplate data={data} services={formRows} total={total} GST={GST} discount={Math.round(appliedDiscount)} />
+                    <InvoiceTemplate data={data} services={formRows} total={total} GST={GST} discount={Math.round(appliedDiscount)} customGstNumber={gstinNumber} />
                 </div>
             </div>
         </div>

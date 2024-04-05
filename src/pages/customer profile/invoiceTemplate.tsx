@@ -1,4 +1,4 @@
-export default function InvoiceTemplate({ data, services, total, GST, discount, customGstNumber }: { data: any, services: any, total: number, GST: number, discount: number, customGstNumber: any }) {
+export default function InvoiceTemplate({ data, services, total, GST, discount, customGstNumber }: { data: any, services: any, total: number, GST: number, discount: number, customGstNumber?: any }) {
   const invoiceStyle: any = {
     container: {
       padding: '1em',

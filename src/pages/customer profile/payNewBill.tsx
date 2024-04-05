@@ -201,7 +201,7 @@ Thank you for choosing our services! If you have any questions, feel free to rea
           status: paymentStatusInput?.value === "PAID", // Store as true or false
           services: JSON.stringify(formRows),
           paymentMode: paymentModeInput?.value || "",
-          paidAmount: String(paidAmount) || String(total),
+          paidAmount: String(paidAmount),
           discount: Math.round(appliedDiscount),
           paidFor: "service",
         }

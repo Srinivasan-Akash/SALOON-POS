@@ -1,6 +1,9 @@
 import "./index.scss"
 import calculateTotalPrice from "../../../../utils/utils";
 import { useDataContext } from "../../../../context api/DataContext";
+import { PiCreditCardFill } from "react-icons/pi";
+import { GiCash } from "react-icons/gi";
+import { SiPhonepe } from "react-icons/si";
 
 export default function Index() {
 
@@ -21,10 +24,20 @@ export default function Index() {
   const dailyInvoices = invoices.filter((item) => isSameDay(new Date(item.$updatedAt), today));
   const weeklyInvoices = invoices.filter((item) => new Date(item.$updatedAt) >= oneWeekAgo && new Date(item.$updatedAt) <= today);
   const monthlyInvoices = invoices.filter((item) => new Date(item.$updatedAt) >= oneMonthAgo && new Date(item.$updatedAt) <= today);
+ 
 
   const dailyRevenue = dailyInvoices.reduce((total, invoice: any) => total + Number(invoice.paidAmount), 0)
   const weeklyRevenue = weeklyInvoices.reduce((total, invoice: any) => total + Number(invoice.paidAmount), 0)
   const monthlyRevenue = monthlyInvoices.reduce((total, invoice: any) => total + Number(invoice.paidAmount), 0)
+  
+  const creditCardInvoices = dailyInvoices.filter((item: any) => item.paymentMode === "Card");
+  const cashInvoices = dailyInvoices.filter((item: any) => item.paymentMode === "Cash");
+  const UPIInvoices = dailyInvoices.filter((item: any) => item.paymentMode === "UPI");
+
+  const creditCardRevenue = creditCardInvoices.reduce((total, invoice: any) => total + Number(invoice.paidAmount), 0)
+  const cashRevenue = cashInvoices.reduce((total, invoice: any) => total + Number(invoice.paidAmount), 0)
+  const UPIRevenue = UPIInvoices.reduce((total, invoice: any) => total + Number(invoice.paidAmount), 0)
+
 
   const pendingInvoices = invoices.filter((item: any) => item.status === false);
   const newPendingAmount = pendingInvoices.reduce(
@@ -47,9 +60,33 @@ export default function Index() {
           <h2>{newPendingAmount.toLocaleString('en-IN')} ₹</h2>
           <p>Total Pending Amount</p>
         </div>
-        <div className="card">
-          <h2>40₹</h2>
-          <p>Monthly Expenses</p>
+        <div className="card special">
+          <div className="subCard">
+            <div className="img">
+              <PiCreditCardFill size={25} />
+            </div>
+            <div className="content">
+              <h2>{creditCardRevenue.toLocaleString() || 0} ₹</h2>
+            </div>
+          </div>
+          
+          <div className="subCard">
+            <div className="img">
+            <GiCash size={25} />
+            </div>
+            <div className="content">
+              <h2>{cashRevenue.toLocaleString() || 0} ₹</h2>
+            </div>
+          </div>
+
+          <div className="subCard">
+            <div className="img">
+            <SiPhonepe size={25} />
+            </div>
+            <div className="content">
+              <h2>{UPIRevenue.toLocaleString() || 0} ₹</h2>
+            </div>
+          </div>
         </div>
       </div>
       <div className="extras">
@@ -71,20 +108,23 @@ export default function Index() {
       <div className="tabularDisplay">
         <div className="head">
           <div>Name</div>
-          <div>Status</div>
           <div>Price</div>
           <div>Date</div>
+          <div>Status</div>
         </div>
-        {invoices.map((item: any, index) => (
+        {monthlyInvoices.reverse().map((item: any, index) => (
           <div key={index} className="row">
             <div>{item.customerName}</div>
-            <div>
-              <span className={item.status === true ? "green" : "red"}>
-                {item.status === true ? "PAID" : "PENDING"}
-              </span>
-            </div>
             <div>{calculateTotalPrice(item.services)} ₹</div>
             <div>{new Date(item.$updatedAt).toLocaleDateString("en-GB")}</div>
+            <div style={{display: "flex"}}>
+              <span className={item.status === true ? "green" : "red"} style={{width: "50%"}}>
+                {item.status === true ? "PAID" : "PENDING"}
+              </span>
+              <span className={item.status === true ? "green" : "red"} style={{marginLeft: "1em", width: "50%"}}>
+                {item.paymentMode || "NULL"}
+              </span>
+            </div>
           </div>
         ))}
 

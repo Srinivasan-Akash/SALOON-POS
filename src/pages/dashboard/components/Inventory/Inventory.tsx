@@ -38,7 +38,8 @@ export default function Inventory() {
 
   return (
     <main className="inventoryContainer">
-      <Swiper className="swiper">
+      {
+        replenishedInventory.length !== 0 ? (<Swiper className="swiper">
         {replenishedInventory.map((product: any) => {
           const completionPercentage =
             (Number(
@@ -76,9 +77,11 @@ export default function Inventory() {
             </SwiperSlide>
           );
         })}
-      </Swiper>
+      </Swiper>) : <></>
+      }
+      
 
-      <div className="addItems">
+      <div className="addItems" style={{marginTop: replenishedInventory.length === 0 ? ".5em": "0"}}>
         <h2 className="title">Search For The Product</h2>
         <p className="desc">
           Search via product name in the below search box provided

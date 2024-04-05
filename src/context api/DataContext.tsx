@@ -125,7 +125,7 @@ export const DataContextProvider: React.FC<DataContextProviderProps> = ({ childr
             const inventoryData: Customer[] = inventoryResponse.documents;
             console.log(inventoryResponse, inventoryData)
             setInventory(inventoryData);
-            setReplenishedInventory(inventoryData.filter((product: any) => product.quantity < 5));
+            setReplenishedInventory(inventoryData.filter((product: any) => product.quantity < 3));
         } catch (error) {
             console.error('Error fetching inventory data:', error);
             alert('Error fetching inventory data');
