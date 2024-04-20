@@ -43,6 +43,36 @@ export default function Calender() {
     (service: any) => `${service.serviceName} - ${service.time}`
   );
 
+  const eventTemplate = (args) => {
+    console.log(args, "WWWWW");
+    const currentTime = new Date(); // Current time
+
+    // Check if the current time is before the end time
+    const isBeforeEndTime =
+      currentTime.getTime() < new Date(args.EndTime).getTime();
+    return (
+      <div
+        className="event"
+        style={{ background: isBeforeEndTime ? "red" : "green" }}
+      >
+        <h4>{args.Subject}</h4>
+        <p>
+          {new Date(args.StartTime).toLocaleString("en-US", {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+          })}
+          {" - "}
+          {new Date(args.EndTime).toLocaleString("en-US", {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+          })}
+        </p>
+      </div>
+    );
+  }
+
   useEffect(() => {
     const popup = document.querySelector('[style*="z-index: 999999999;"]');
     const popup2 = document.querySelector('[style*="z-index: 99999;"]');
@@ -71,6 +101,22 @@ export default function Calender() {
 
   useEffect(() => {
     if (scheduleData.length > 0) {
+      // scheduleData.forEach((item) => {
+      //   console.log(item, "BOO");
+
+      //   const appointmentDate = new Date(item.StartTime);
+      //   const currentDate = new Date();
+
+      //   // Check if appointment time (including time) is in the past
+      //   if (appointmentDate.getTime() < currentDate.getTime()) {
+      //     console.log(item, " - Finished Appointment"); // Log data and mark finished
+      //     // addClass([args.element], "done");
+
+      //   } else {
+      //     // Optional: Log data for upcoming appointments (if needed)
+      //     // console.log(args, " - Upcoming Appointment");
+      //   }
+      // });
       databases
         .updateDocument(
           databaseID,
@@ -87,6 +133,7 @@ export default function Calender() {
           console.error("Error updating schedule data:", error);
         });
     }
+    console.log(scheduleData, "GANESH");
   }, [scheduleData]);
 
   const resourceData: Record<string, any>[] = employees.map((item: any) => {
@@ -110,6 +157,22 @@ export default function Calender() {
       args.element.getAttribute("data-group-index"),
       10
     );
+    // // TODO:
+    //     if (args.elementType === "majorSlot" || args.elementType === "minorSlot") {
+    //       const appointmentDate = new Date(args.date);
+    //       const currentDate = new Date();
+    //       console.log(args)
+
+    //       // Check if appointment time (including time) is in the past
+    //       if (appointmentDate.getTime() < currentDate.getTime()) {
+    //         console.log(args, " - Finished Appointment"); // Log data and mark finished
+    //         addClass([args.element], "done");
+    //       } else {
+    //         // Optional: Log data for upcoming appointments (if needed)
+    //         // console.log(args, " - Upcoming Appointment");
+    //       }
+    //     }
+
     if (!isNaN(groupIndex)) {
       if (
         args.element.classList.contains("e-work-hours") ||
@@ -216,8 +279,8 @@ export default function Calender() {
                   ? "Editing..."
                   : "Adding..."
                 : selectedItemId
-                  ? "EDIT"
-                  : "ADD"}
+                ? "EDIT"
+                : "ADD"}
             </button>
           </div>
         </div>
@@ -245,7 +308,8 @@ export default function Calender() {
           renderCell={onRenderCell}
           eventSettings={{ dataSource: scheduleData }}
           height={"100%"}
-          selectedDate={new Date(2024, 2, 20, 10, 30, 0)}
+          // selectedDate={new Date()}
+
           cssClass="schedule-cell-dimension"
           className="scheduler"
           group={groupData}
@@ -294,11 +358,21 @@ export default function Calender() {
                             console.log(args);
                             navigator.clipboard
                               .writeText(
-`Hello There 👋
+                                `Hello There 👋
 This is your task.
 
 *Service Name:-* ${args.Subject}
-*Appointment On:-* ${args.StartTime.toLocaleDateString("en-US", {month: "long", day: "numeric", year: "numeric"})} (${args.StartTime.toLocaleTimeString("en-US", {hour: "numeric", minute: "numeric"})} to ${args.EndTime.toLocaleTimeString("en-US", {hour: "numeric", minute: "numeric" })})
+*Appointment On:-* ${args.StartTime.toLocaleDateString("en-US", {
+                                  month: "long",
+                                  day: "numeric",
+                                  year: "numeric",
+                                })} (${args.StartTime.toLocaleTimeString(
+                                  "en-US",
+                                  { hour: "numeric", minute: "numeric" }
+                                )} to ${args.EndTime.toLocaleTimeString(
+                                  "en-US",
+                                  { hour: "numeric", minute: "numeric" }
+                                )})
 *Staff Name:-* ${args.DoctorId}
 *Description:-* ${args.Description}`
                               )
@@ -359,16 +433,16 @@ This is your task.
             },
           }}
 
-        // editorTemplate={(args) => {
-        //   return (
-        //     <table className="custom-event-editor">
-        //       <tr>
-        //         <td className="e-textlabel">Summary</td>
-        //         <td> <input type="text" id="Subject" name="Subject" /> </td>
-        //       </tr>
-        //     </table>
-        //   )
-        // }}
+          // editorTemplate={(args) => {
+          //   return (
+          //     <table className="custom-event-editor">
+          //       <tr>
+          //         <td className="e-textlabel">Summary</td>
+          //         <td> <input type="text" id="Subject" name="Subject" /> </td>
+          //       </tr>
+          //     </table>
+          //   )
+          // }}
         >
           <ResourcesDirective>
             <ResourceDirective
@@ -386,12 +460,15 @@ This is your task.
             />
           </ResourcesDirective>
           <ViewsDirective>
-            <ViewDirective option="Week" />
+            <ViewDirective
+              option="Week"
+              eventTemplate={eventTemplate}
+            />
 
-            <ViewDirective option="Day" />
+            <ViewDirective option="Day" eventTemplate={eventTemplate}/>
 
-            <ViewDirective option="TimelineDay" />
-            <ViewDirective option="TimelineMonth" />
+            <ViewDirective option="TimelineDay" eventTemplate={eventTemplate}/>
+            <ViewDirective option="TimelineMonth" eventTemplate={eventTemplate}/>
           </ViewsDirective>
           <Inject
             services={[

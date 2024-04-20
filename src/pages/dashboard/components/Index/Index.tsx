@@ -115,7 +115,7 @@ export default function Index() {
         {monthlyInvoices.reverse().map((item: any, index) => (
           <div key={index} className="row">
             <div>{item.customerName}</div>
-            <div>{calculateTotalPrice(item.services)} ₹</div>
+            <div>{(item.paidAmount)} ₹</div>
             <div>{new Date(item.$updatedAt).toLocaleDateString("en-GB")}</div>
             <div style={{display: "flex"}}>
               <span className={item.status === true ? "green" : "red"} style={{width: "50%"}}>
